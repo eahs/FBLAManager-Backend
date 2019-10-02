@@ -13,6 +13,8 @@ namespace ADSBackend.Data
 
         public DbSet<ConfigurationItem> ConfigurationItem { get; set; }
 
+        public DbSet<Member> Member { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

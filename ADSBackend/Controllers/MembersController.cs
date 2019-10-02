@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using ADSBackend.Data;
+using ADSBackend.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using ADSBackend.Models;
 
 namespace ADSBackend.Controllers
 {
     public class MembersController : Controller
     {
-        private readonly ADSBackendContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public MembersController(ADSBackendContext context)
+        public MembersController(ApplicationDbContext context)
         {
             _context = context;
         }
