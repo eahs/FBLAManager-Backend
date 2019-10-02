@@ -11,12 +11,19 @@ namespace ADSBackend.Models
     {
         public int Id { get; set; }
 
-        [DataType(DataType.Time)]
-        public DateTime Start { get; set; }
+        public int PlannerId { get; set; } //meeting creator
+
+        [DataType(DataType.Date)]
+        public DateTime Date { get; set; }
 
         [DataType(DataType.Time)]
-        public DateTime End { get; set; }
+        public DateTime StartTime { get; set; }
+
+        [DataType(DataType.Time)]
+        public DateTime EndTime { get; set; }
+
         public string Password { get; set; }
-        public List<int> MemberIds { get; set; } 
+
+        public List<int> MemberIds { get; set; } //attendees
     }
 }
