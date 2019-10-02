@@ -9,6 +9,7 @@ namespace ADSBackend.Models
 {
     public class Meeting
     {
+        [Key]
         public int Id { get; set; }
 
         public int PlannerId { get; set; } //meeting creator
@@ -24,6 +25,6 @@ namespace ADSBackend.Models
 
         public string Password { get; set; }
 
-        public List<int> MemberIds { get; set; } //attendees
+        public List<Member> Members { get; set; } //attendees
     }
 }
