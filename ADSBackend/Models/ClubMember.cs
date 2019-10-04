@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace ADSBackend.Models
 {
-    public class MemberClubs
+    public class ClubMember
     {
-        public int Id { get; set; }
+        public int MemberId { get; set; }
         public Member Member { get; set; }
         public int ClubId { get; set; }
         public Club Club { get; set; }

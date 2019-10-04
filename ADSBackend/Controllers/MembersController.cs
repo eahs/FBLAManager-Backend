@@ -30,8 +30,8 @@ namespace ADSBackend.Controllers
                 return NotFound();
             }
 
-            var member = await _context.Member
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var member = await _context.Member.Include(m => m.ClubMembers).ThenInclude(mc => mc.Club)
+                .FirstOrDefaultAsync(m => m.MemberId == id);
             if (member == null)
             {
                 return NotFound();
@@ -85,7 +85,7 @@ namespace ADSBackend.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Username,Email,Phone,Password")] Member member)
         {
-            if (id != member.Id)
+            if (id != member.MemberId)
             {
                 return NotFound();
             }
@@ -99,7 +99,7 @@ namespace ADSBackend.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MemberExists(member.Id))
+                    if (!MemberExists(member.MemberId))
                     {
                         return NotFound();
                     }
@@ -122,7 +122,7 @@ namespace ADSBackend.Controllers
             }
 
             var member = await _context.Member
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.MemberId == id);
             if (member == null)
             {
                 return NotFound();
@@ -144,7 +144,7 @@ namespace ADSBackend.Controllers
 
         private bool MemberExists(int id)
         {
-            return _context.Member.Any(e => e.Id == id);
+            return _context.Member.Any(e => e.MemberId == id);
         }
     }
 }
