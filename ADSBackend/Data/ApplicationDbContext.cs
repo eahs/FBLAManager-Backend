@@ -42,5 +42,7 @@ namespace ADSBackend.Data
                 .WithMany(m => m.ClubMembers)
                 .HasForeignKey(cm => cm.MemberId);
         }
+
+        public DbSet<ADSBackend.Models.Meeting> Meeting { get; set; }
     }
 }

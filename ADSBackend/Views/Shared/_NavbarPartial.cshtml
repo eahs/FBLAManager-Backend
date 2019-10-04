@@ -51,7 +51,17 @@
                 }
                 <li is-active-route asp-controller="Members">
                     <a asp-controller="Members" asp-action="Index">
-                        <i class="fa fa-truck"></i><span class="nav-label">Members</span>
+                        <i class="fa fa-user-circle"></i><span class="nav-label">Members</span>
+                    </a>
+                </li>
+                <li is-active-route asp-controller="Clubs">
+                    <a asp-controller="Clubs" asp-action="Index">
+                        <i class="fa fa-users"></i><span class="nav-label">Clubs</span>
+                    </a>
+                </li>
+                <li is-active-route asp-controller="Meetings">
+                    <a asp-controller="Meetings" asp-action="Index">
+                        <i class="fa fa-meetup"></i><span class="nav-label">Meetings</span>
                     </a>
                 </li>
             }
