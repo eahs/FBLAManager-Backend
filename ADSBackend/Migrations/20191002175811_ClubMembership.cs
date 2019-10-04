@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace ADSBackend.Migrations.ADSBackend
+namespace ADSBackend.Migrations
 {
     public partial class ClubMembership : Migration
     {
@@ -19,6 +19,22 @@ namespace ADSBackend.Migrations.ADSBackend
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Club", x => x.ClubId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Member",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Username = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: true),
+                    Phone = table.Column<string>(nullable: true),
+                    Password = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Member", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -65,6 +81,9 @@ namespace ADSBackend.Migrations.ADSBackend
 
             migrationBuilder.DropTable(
                 name: "Club");
+
+            migrationBuilder.DropTable(
+                name: "Member");
         }
     }
 }
