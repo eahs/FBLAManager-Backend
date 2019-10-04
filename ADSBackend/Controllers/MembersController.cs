@@ -30,7 +30,7 @@ namespace ADSBackend.Controllers
                 return NotFound();
             }
 
-            var member = await _context.Member
+            var member = await _context.Member.Include(m => m.ClubMembers).ThenInclude(mc => mc.Club)
                 .FirstOrDefaultAsync(m => m.MemberId == id);
             if (member == null)
             {
