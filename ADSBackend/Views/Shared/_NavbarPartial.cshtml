@@ -49,6 +49,11 @@
                         <a asp-controller="Configuration" asp-action="Index"><i class="fa fa-cog"></i><span class="nav-label">Configuration</span></a>
                     </li>
                 }
+                <li is-active-route asp-controller="Members">
+                    <a asp-controller="Members" asp-action="Index">
+                        <i class="fa fa-truck"></i><span class="nav-label">Members</span>
+                    </a>
+                </li>
             }
             else
             {
