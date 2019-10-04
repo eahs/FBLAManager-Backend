@@ -9,7 +9,7 @@ namespace ADSBackend.Models
     public class Member
     {
         [Key]
-        public int Id { get; set; }
+        public int MemberId { get; set; }
 
         public string Username { get; set; }
 
@@ -19,6 +19,6 @@ namespace ADSBackend.Models
 
         public string Password { get; set; }
 
-        public List<MemberClubs> MemberClubs { get; set; }
+        public List<ClubMember> MemberClubs { get; set; }
     }
 }

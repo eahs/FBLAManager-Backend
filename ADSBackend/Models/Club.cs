@@ -15,6 +15,6 @@ namespace ADSBackend.Models
 
         public string Description { get; set; }
 
-        public List<MemberClubs> MemberClubs { get; set; }
+        public List<ClubMember> MemberClubs { get; set; }
     }
 }
