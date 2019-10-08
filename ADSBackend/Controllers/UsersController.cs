@@ -78,9 +78,9 @@ namespace ADSBackend.Controllers
                 await _userManager.AddToRoleAsync(user, viewModel.Role);
 
                 // send confirmation email
-                var confirmationCode = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                /* var confirmationCode = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 var confirmationLink = Url.EmailConfirmationLink(user.Id, confirmationCode, Request.Scheme);
-                await _emailSender.SendEmailConfirmationAsync(viewModel.Email, confirmationLink);
+                await _emailSender.SendEmailConfirmationAsync(viewModel.Email, confirmationLink); */
 
                 return RedirectToAction(nameof(Index));
             }
@@ -132,7 +132,7 @@ namespace ADSBackend.Controllers
                         user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, viewModel.Password);
                     }
 
-                    // upadate user
+                    // update user
                     _context.Update(user);
                     await _context.SaveChangesAsync();
 
