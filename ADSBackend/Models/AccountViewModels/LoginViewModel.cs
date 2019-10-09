@@ -5,6 +5,7 @@ namespace ADSBackend.Models.AccountViewModels
     public class LoginViewModel
     {
         [Required]
+        [Display(Name = "Email")]
         public string Username { get; set; }
 
         [Required]
