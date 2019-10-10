@@ -10,20 +10,29 @@ namespace ADSBackend.Models
     public class Meeting
     {
         [Key]
-        public int MeetingId { get; set; }
+        public int MeetingId { get; set; } //backend
 
-        public int PlannerId { get; set; } //meeting creator
+        public int OrganizerId { get; set; } //meeting creator, backend
 
-        [DataType(DataType.Date)]
-        public DateTime Date { get; set; }
+        public string Organizer { get; set; }
 
-        [DataType(DataType.Time)]
-        public DateTime StartTime { get; set; }
+        public string ContactId { get; set; }
 
-        [DataType(DataType.Time)]
-        public DateTime EndTime { get; set; }
+        public string EventName { get; set; }
+
+        public int Capacity { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTime Start { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTime End { get; set; }
 
         public string Password { get; set; }
+
+        public string Color { get; set; }
+
+        public bool AllDay { get; set; }
 
         public List<Member> Members { get; set; } //attendees
     }
