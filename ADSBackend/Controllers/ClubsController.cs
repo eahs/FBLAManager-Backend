@@ -8,22 +8,33 @@ using Microsoft.EntityFrameworkCore;
 using ADSBackend.Data;
 using ADSBackend.Models;
 using Microsoft.AspNetCore.Identity;
+using ADSBackend.Models.Identity;
 
 namespace ADSBackend.Controllers
 {
     public class ClubsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public ClubsController(ApplicationDbContext context)
+        public ClubsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Clubs
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Club.ToListAsync());
+            var user = await _userManager.GetUserAsync(User);
+            if(await _userManager.IsInRoleAsync(user,"Admin"))
+            {
+                return View(await _context.Club.ToListAsync());
+            }
+            else
+            {
+                return View(await _context.Club.Where(m => m.CreatorId == user.Id).ToListAsync());
+            }
         }
 
         // GET: Clubs/Details/5
@@ -59,6 +70,10 @@ namespace ADSBackend.Controllers
         {
             if (ModelState.IsValid)
             {
+                var user = await _userManager.GetUserAsync(User);
+                club.CreatorId = user.Id;
+                club.Creator = user.FullName;
+
                 _context.Add(club);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

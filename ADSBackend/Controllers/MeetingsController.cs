@@ -26,7 +26,15 @@ namespace ADSBackend.Controllers
         // GET: Meetings
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Meeting.ToListAsync());
+            var user = await _userManager.GetUserAsync(User);
+            if(await _userManager.IsInRoleAsync(user, "Admin"))
+            {
+                return View(await _context.Meeting.ToListAsync());
+            }
+            else
+            {
+                return View(await _context.Meeting.Where(m => m.OrganizerId == user.Id).ToListAsync());
+            }
         }
 
         // GET: Meetings/Details/5
