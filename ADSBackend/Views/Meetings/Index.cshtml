@@ -15,9 +15,6 @@
             <thead>
                 <tr>
                     <th>
-                        @Html.DisplayNameFor(model => model.OrganizerId)
-                    </th>
-                    <th>
                         @Html.DisplayNameFor(model => model.Organizer)
                     </th>
                     <th>
@@ -52,9 +49,6 @@
                 {
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.OrganizerId)
-                        </td>
-                        <td>
                             @Html.DisplayFor(modelItem => item.Organizer)
                         </td>
                         <td>
@@ -82,9 +76,7 @@
                             @Html.DisplayFor(modelItem => item.AllDay)
                         </td>
                         <td>
-                            <a asp-action="Edit" asp-route-id="@item.MeetingId">Edit</a> |
-                            <a asp-action="Details" asp-route-id="@item.MeetingId">Details</a> |
-                            <a asp-action="Delete" asp-route-id="@item.MeetingId">Delete</a>
+                            @await Html.PartialAsync("_CrudButtons", item.MeetingId)
                         </td>
                     </tr>
                 }

@@ -15,9 +15,6 @@
             <thead>
                 <tr>
                     <th>
-                        @Html.DisplayNameFor(model => model.CreatorId)
-                    </th>
-                    <th>
                         @Html.DisplayNameFor(model => model.Creator)
                     </th>
                     <th>
@@ -26,16 +23,15 @@
                     <th>
                         @Html.DisplayNameFor(model => model.Description)
                     </th>
-                    <th></th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Password)
+                    </th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model)
                 {
                 <tr>
-                    <th>
-                        @Html.DisplayFor(modelItem => item.CreatorId)
-                    </th>
                     <th>
                         @Html.DisplayFor(modelItem => item.Creator)
                     </th>
@@ -46,9 +42,10 @@
                         @Html.DisplayFor(modelItem => item.Description)
                     </td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.ClubId">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.ClubId">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.ClubId">Delete</a>
+                        @Html.DisplayFor(modelItem => item.Password)
+                    </td>
+                    <td>
+                        @await Html.PartialAsync("_CrudButtons", item.ClubId)
                     </td>
                 </tr>
                 }

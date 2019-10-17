@@ -83,7 +83,7 @@ namespace ADSBackend.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Username,Email,Phone,Password")] Member member)
+        public async Task<IActionResult> Edit(int id, [Bind("MemberId,Username,Email,Phone,Password")] Member member)
         {
             if (id != member.MemberId)
             {
@@ -94,6 +94,7 @@ namespace ADSBackend.Controllers
             {
                 try
                 {
+                    var _member = await _context.Club.FindAsync(id);
                     _context.Update(member);
                     await _context.SaveChangesAsync();
                 }

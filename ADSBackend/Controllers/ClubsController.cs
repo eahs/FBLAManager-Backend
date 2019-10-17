@@ -66,7 +66,7 @@ namespace ADSBackend.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ClubId,Name,Description")] Club club)
+        public async Task<IActionResult> Create([Bind("ClubId,Name,Description,Password")] Club club)
         {
             if (ModelState.IsValid)
             {
@@ -102,7 +102,7 @@ namespace ADSBackend.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ClubId,Name,Description")] Club club)
+        public async Task<IActionResult> Edit(int id, [Bind("ClubId,Name,Description,Password")] Club club)
         {
             if (id != club.ClubId)
             {
@@ -113,7 +113,13 @@ namespace ADSBackend.Controllers
             {
                 try
                 {
-                    _context.Update(club);
+                    var _club = await _context.Club.FindAsync(id);
+
+                    _club.Name = club.Name;
+                    _club.Description = club.Description;
+                    _club.Password = club.Password;
+
+                    _context.Update(_club);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
