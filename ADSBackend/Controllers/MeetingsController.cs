@@ -27,13 +27,17 @@ namespace ADSBackend.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(User);
-            if(await _userManager.IsInRoleAsync(user, "Admin"))
+            var meetings = await _context.Meeting
+                .Include(mem => mem.MeetingAttendees)
+                .ThenInclude(ma => ma.Member)
+                .ToListAsync();
+            if (await _userManager.IsInRoleAsync(user, "Admin"))
             {
-                return View(await _context.Meeting.ToListAsync());
+                return View(meetings);
             }
             else
             {
-                return View(await _context.Meeting.Where(m => m.OrganizerId == user.Id).ToListAsync());
+                return View(meetings.Where(m => m.OrganizerId == user.Id));
             }
         }
 

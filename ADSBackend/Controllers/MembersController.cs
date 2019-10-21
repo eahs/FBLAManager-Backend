@@ -19,7 +19,14 @@ namespace ADSBackend.Controllers
         // GET: Members
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Member.ToListAsync());
+            var members = await _context.Member
+                .Include(m => m.ClubMembers)
+                .ThenInclude(cm => cm.Club)
+                .Include(meet => meet.MeetingAttendees)
+                .ThenInclude(ma => ma.Meeting)
+                .ToListAsync();
+
+            return View(members);
         }
 
         // GET: Members/Details/5
