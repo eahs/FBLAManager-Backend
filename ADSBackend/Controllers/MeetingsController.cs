@@ -102,7 +102,7 @@ namespace ADSBackend.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MeetingId,OrganizerId,ContactId,EventName,Capacity,Start,End,Password,Color,AllDay")] Meeting meeting)
+        public async Task<IActionResult> Edit(int id, [Bind("MeetingId,ContactId,EventName,Capacity,Start,End,Password,Color,AllDay")] Meeting meeting)
         {
             if (id != meeting.MeetingId)
             {
@@ -113,8 +113,16 @@ namespace ADSBackend.Controllers
             {
                 try
                 {
-                    var _meeting = await _context.Club.FindAsync(id);
-                    _context.Update(meeting);
+                    var _meeting = await _context.Meeting.FindAsync(id);
+                    _meeting.ContactId = meeting.ContactId;
+                    _meeting.EventName = meeting.EventName;
+                    _meeting.Capacity = meeting.Capacity;
+                    _meeting.Start = meeting.Start;
+                    _meeting.End = meeting.End;
+                    _meeting.Password = meeting.Password;
+                    _meeting.Color = meeting.Color;
+                    _meeting.AllDay = meeting.AllDay;
+                    _context.Update(_meeting);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
