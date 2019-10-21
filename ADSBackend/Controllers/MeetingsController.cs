@@ -7,22 +7,34 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ADSBackend.Data;
 using ADSBackend.Models;
+using ADSBackend.Models.Identity;
+using Microsoft.AspNetCore.Identity;
 
 namespace ADSBackend.Controllers
 {
     public class MeetingsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public MeetingsController(ApplicationDbContext context)
+        public MeetingsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Meetings
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Meeting.ToListAsync());
+            var user = await _userManager.GetUserAsync(User);
+            if(await _userManager.IsInRoleAsync(user, "Admin"))
+            {
+                return View(await _context.Meeting.ToListAsync());
+            }
+            else
+            {
+                return View(await _context.Meeting.Where(m => m.OrganizerId == user.Id).ToListAsync());
+            }
         }
 
         // GET: Meetings/Details/5
@@ -54,10 +66,14 @@ namespace ADSBackend.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MeetingId,PlannerId,Date,StartTime,EndTime,Password")] Meeting meeting)
+        public async Task<IActionResult> Create([Bind("MeetingId,ContactId,EventName,Capacity,Start,End,Password,Color,AllDay")] Meeting meeting)
         {
             if (ModelState.IsValid)
             {
+                var user = await _userManager.GetUserAsync(User);
+                meeting.OrganizerId = user.Id;
+                meeting.Organizer = user.FullName;
+
                 _context.Add(meeting);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -86,7 +102,7 @@ namespace ADSBackend.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MeetingId,PlannerId,Date,StartTime,EndTime,Password")] Meeting meeting)
+        public async Task<IActionResult> Edit(int id, [Bind("MeetingId,ContactId,EventName,Capacity,Start,End,Password,Color,AllDay")] Meeting meeting)
         {
             if (id != meeting.MeetingId)
             {
@@ -97,7 +113,16 @@ namespace ADSBackend.Controllers
             {
                 try
                 {
-                    _context.Update(meeting);
+                    var _meeting = await _context.Meeting.FindAsync(id);
+                    _meeting.ContactId = meeting.ContactId;
+                    _meeting.EventName = meeting.EventName;
+                    _meeting.Capacity = meeting.Capacity;
+                    _meeting.Start = meeting.Start;
+                    _meeting.End = meeting.End;
+                    _meeting.Password = meeting.Password;
+                    _meeting.Color = meeting.Color;
+                    _meeting.AllDay = meeting.AllDay;
+                    _context.Update(_meeting);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

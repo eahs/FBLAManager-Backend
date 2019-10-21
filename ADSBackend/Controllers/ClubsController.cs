@@ -7,22 +7,34 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ADSBackend.Data;
 using ADSBackend.Models;
+using Microsoft.AspNetCore.Identity;
+using ADSBackend.Models.Identity;
 
 namespace ADSBackend.Controllers
 {
     public class ClubsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public ClubsController(ApplicationDbContext context)
+        public ClubsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Clubs
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Club.ToListAsync());
+            var user = await _userManager.GetUserAsync(User);
+            if(await _userManager.IsInRoleAsync(user,"Admin"))
+            {
+                return View(await _context.Club.ToListAsync());
+            }
+            else
+            {
+                return View(await _context.Club.Where(m => m.CreatorId == user.Id).ToListAsync());
+            }
         }
 
         // GET: Clubs/Details/5
@@ -54,10 +66,14 @@ namespace ADSBackend.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ClubId,Name,Description")] Club club)
+        public async Task<IActionResult> Create([Bind("ClubId,Name,Description,Password")] Club club)
         {
             if (ModelState.IsValid)
             {
+                var user = await _userManager.GetUserAsync(User);
+                club.CreatorId = user.Id;
+                club.Creator = user.FullName;
+
                 _context.Add(club);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -86,7 +102,7 @@ namespace ADSBackend.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ClubId,Name,Description")] Club club)
+        public async Task<IActionResult> Edit(int id, [Bind("ClubId,Name,Description,Password")] Club club)
         {
             if (id != club.ClubId)
             {
@@ -97,7 +113,13 @@ namespace ADSBackend.Controllers
             {
                 try
                 {
-                    _context.Update(club);
+                    var _club = await _context.Club.FindAsync(id);
+
+                    _club.Name = club.Name;
+                    _club.Description = club.Description;
+                    _club.Password = club.Password;
+
+                    _context.Update(_club);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

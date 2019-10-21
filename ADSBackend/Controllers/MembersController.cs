@@ -83,7 +83,7 @@ namespace ADSBackend.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Username,Email,Phone,Password")] Member member)
+        public async Task<IActionResult> Edit(int id, [Bind("MemberId,Username,Email,Phone")] Member member)
         {
             if (id != member.MemberId)
             {
@@ -94,7 +94,13 @@ namespace ADSBackend.Controllers
             {
                 try
                 {
-                    _context.Update(member);
+                    var _member = await _context.Member.FindAsync(id);
+
+                    _member.Username = member.Username;
+                    _member.Email = member.Email;
+                    _member.Phone = member.Phone;
+
+                    _context.Update(_member);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
