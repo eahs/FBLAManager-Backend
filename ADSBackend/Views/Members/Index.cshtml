@@ -23,26 +23,32 @@
                     <th>
                         @Html.DisplayNameFor(model => model.Phone)
                     </th>
+                    <th>
+                        Clubs
+                    </th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model)
                 {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Username)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Email)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Phone)
-                        </td>
-                        <td>
-                            @await Html.PartialAsync("_CrudButtons", item.MemberId)
-                        </td>
-                    </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Username)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Phone)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ClubMembers)
+                    </td>
+                    <td>
+                        @await Html.PartialAsync("_CrudButtons", item.MemberId)
+                    </td>
+                </tr>
                 }
             </tbody>
         </table>

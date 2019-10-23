@@ -26,6 +26,9 @@
                     <th>
                         @Html.DisplayNameFor(model => model.Password)
                     </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ClubMembers)
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -43,6 +46,9 @@
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Password)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ClubMembers)
                     </td>
                     <td>
                         @await Html.PartialAsync("_CrudButtons", item.ClubId)
