@@ -108,12 +108,17 @@ namespace ADSBackend.Controllers
                 return NotFound();
             }
 
-            var member = await _context.Member.FindAsync(id);
+            var member = await _context.Member.Include(m => m.ClubMembers).FirstOrDefaultAsync(m => m.MemberId == id);
             if (member == null)
             {
                 return NotFound();
             }
-            return View(member);
+
+            var clubs = await _context.Club.OrderBy(c => c.Name).ToListAsync();
+            ViewBag.Clubs = new MultiSelectList(clubs, "ClubId", "Name");
+
+            var vm = new MemberViewModel(member);
+            return View(vm);
         }
 
         // POST: Members/Edit/5
@@ -121,8 +126,9 @@ namespace ADSBackend.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MemberId,Username,Email,Phone")] Member member)
+        public async Task<IActionResult> Edit(int id, [Bind("MemberId,Username,Email,Phone,ClubIds")] MemberViewModel vm)
         {
+            var member = await _context.Member.Include(m => m.ClubMembers).ThenInclude(cm => cm.Club).FirstOrDefaultAsync(m => m.MemberId == id);
             if (id != member.MemberId)
             {
                 return NotFound();
@@ -132,13 +138,35 @@ namespace ADSBackend.Controllers
             {
                 try
                 {
-                    var _member = await _context.Member.FindAsync(id);
+                    member.Username = vm.Username;
+                    member.Email = vm.Email;
+                    member.Phone = vm.Phone;
 
-                    _member.Username = member.Username;
-                    _member.Email = member.Email;
-                    _member.Phone = member.Phone;
+                    _context.Update(member);
+                    await _context.SaveChangesAsync();
+                    var oldClubIds = member.ClubMembers.Select(cm => cm.Club.ClubId).ToList();
+                    foreach (var clubId in vm.ClubIds)
+                    {
+                        if (!oldClubIds.Contains(clubId))
+                        {
+                            var clubMember = new ClubMember
+                            {
+                                ClubId = clubId,
+                                MemberId = member.MemberId
+                            };
 
-                    _context.Update(_member);
+                            _context.ClubMember.Add(clubMember);
+                            await _context.SaveChangesAsync();
+                        }
+                    }
+                    foreach (var oldClubId in oldClubIds)
+                    {
+                        if (!vm.ClubIds.Contains(oldClubId))
+                        {
+                            _context.ClubMember.Remove(member.ClubMembers.FirstOrDefault(cm => cm.ClubId == oldClubId && cm.MemberId == member.MemberId));
+                            await _context.SaveChangesAsync();
+                        }
+                    }
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -154,7 +182,9 @@ namespace ADSBackend.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(member);
+            var clubs = await _context.Club.OrderBy(c => c.Name).ToListAsync();
+            ViewBag.Clubs = new MultiSelectList(clubs, "ClubId", "Name");
+            return View(vm);
         }
 
         // GET: Members/Delete/5

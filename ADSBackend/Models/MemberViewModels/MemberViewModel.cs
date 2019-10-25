@@ -24,5 +24,22 @@ namespace ADSBackend.Models.MemberViewModels
         public List<MeetingAttendees> MeetingAttendees { get; set; } //attendees
 
         public List<int> ClubIds { get; set; }
+
+        public MemberViewModel()
+        {
+
+        }
+
+        public MemberViewModel(Member member)
+        {
+            this.MemberId = member.MemberId;
+            this.Username = member.Username;
+            this.Email = member.Email;
+            this.Password = member.Password;
+            this.Phone = member.Phone;
+            this.ClubMembers = member.ClubMembers;
+            this.MeetingAttendees = member.MeetingAttendees;
+            this.ClubIds = member.ClubMembers?.Select(cm => cm.ClubId).ToList();
+        }
     }
 }
