@@ -1,6 +1,8 @@
 ﻿using ADSBackend.Data;
 using ADSBackend.Models;
+using ADSBackend.Models.MemberViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
@@ -48,8 +50,11 @@ namespace ADSBackend.Controllers
         }
 
         // GET: Members/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var clubs = await _context.Club.OrderBy(c => c.Name).ToListAsync();
+            ViewBag.Clubs = new MultiSelectList(clubs, "ClubId", "Name");
+
             return View();
         }
 
@@ -58,15 +63,41 @@ namespace ADSBackend.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Username,Email,Phone,Password")] Member member)
+        public async Task<IActionResult> Create([Bind("Username,Email,Phone,Password,ClubIds")] MemberViewModel vm)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(member);
+                var member = new Member
+                {
+                    Username = vm.Username,
+                    Email = vm.Email,
+                    Phone = vm.Phone,
+                    Password = vm.Password
+                };
+                _context.Member.Add(member);
                 await _context.SaveChangesAsync();
+
+                // add this new member to the relevant clubs
+                foreach (var clubId in vm.ClubIds)
+                {
+                    var clubMember = new ClubMember
+                    {
+                        ClubId = clubId,
+                        MemberId = member.MemberId
+                    };
+
+                    _context.ClubMember.Add(clubMember);
+                    await _context.SaveChangesAsync();
+                }
+                await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
-            return View(member);
+
+            var clubs = await _context.Club.OrderBy(c => c.Name).ToListAsync();
+            ViewBag.Clubs = new MultiSelectList(clubs, "ClubId", "Name");
+
+            return View(vm);
         }
 
         // GET: Members/Edit/5

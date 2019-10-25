@@ -32,26 +32,26 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model)
+                @foreach (var club in Model)
                 {
                 <tr>
                     <th>
-                        @Html.DisplayFor(modelItem => item.Creator)
+                        @Html.DisplayFor(modelItem => club.Creator)
                     </th>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Name)
+                        @Html.DisplayFor(modelItem => club.Name)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Description)
+                        @Html.DisplayFor(modelItem => club.Description)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Password)
+                        @Html.DisplayFor(modelItem => club.Password)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.ClubMembers)
+                        @Html.DisplayFor(modelItem => club.ClubMembers)
                     </td>
                     <td>
-                        @await Html.PartialAsync("_CrudButtons", item.ClubId)
+                        @await Html.PartialAsync("_CrudButtons", club.ClubId)
                     </td>
                 </tr>
                 }

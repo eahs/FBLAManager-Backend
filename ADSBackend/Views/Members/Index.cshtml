@@ -30,23 +30,23 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model)
+                @foreach (var member in Model)
                 {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Username)
+                        @Html.DisplayFor(modelItem => member.Username)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Email)
+                        @Html.DisplayFor(modelItem => member.Email)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Phone)
+                        @Html.DisplayFor(modelItem => member.Phone)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.ClubMembers)
+                        @string.Join(", ", member.ClubMembers.Select(cm => cm.Club?.Name))
                     </td>
                     <td>
-                        @await Html.PartialAsync("_CrudButtons", item.MemberId)
+                        @await Html.PartialAsync("_CrudButtons", member.MemberId)
                     </td>
                 </tr>
                 }
