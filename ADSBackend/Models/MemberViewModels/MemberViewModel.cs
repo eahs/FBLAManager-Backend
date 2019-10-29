@@ -25,6 +25,8 @@ namespace ADSBackend.Models.MemberViewModels
 
         public List<int> ClubIds { get; set; }
 
+        public List<int> MeetingIds { get; set; }
+
         public MemberViewModel()
         {
 
@@ -40,6 +42,7 @@ namespace ADSBackend.Models.MemberViewModels
             this.ClubMembers = member.ClubMembers;
             this.MeetingAttendees = member.MeetingAttendees;
             this.ClubIds = member.ClubMembers?.Select(cm => cm.ClubId).ToList();
+            this.MeetingIds = member.MeetingAttendees?.Select(ma => ma.MeetingId).ToList();
         }
     }
 }
