@@ -47,41 +47,41 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model)
+                @foreach (var meeting in Model)
                 {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Organizer)
+                        @Html.DisplayFor(modelItem => meeting.Organizer)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.ContactId)
+                        @Html.DisplayFor(modelItem => meeting.ContactId)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.EventName)
+                        @Html.DisplayFor(modelItem => meeting.EventName)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Capacity)
+                        @Html.DisplayFor(modelItem => meeting.Capacity)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Start)
+                        @Html.DisplayFor(modelItem => meeting.Start)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.End)
+                        @Html.DisplayFor(modelItem => meeting.End)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Password)
+                        @Html.DisplayFor(modelItem => meeting.Password)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Color)
+                        @Html.DisplayFor(modelItem => meeting.Color)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.AllDay)
+                        @Html.DisplayFor(modelItem => meeting.AllDay)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.MeetingAttendees)
+                        @string.Join(", ", meeting.MeetingAttendees.Select(ma => ma.Member?.Username))
                     </td>
                     <td>
-                        @await Html.PartialAsync("_CrudButtons", item.MeetingId)
+                        @await Html.PartialAsync("_CrudButtons", meeting.MeetingId)
                     </td>
                 </tr>
                 }

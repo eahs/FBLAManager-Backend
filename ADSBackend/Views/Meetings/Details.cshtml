@@ -64,6 +64,12 @@
         <dd>
             @Html.DisplayFor(model => model.AllDay)
         </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.MeetingAttendees)
+        </dt>
+        <dd>
+            @string.Join(", ", Model.MeetingAttendees.Select(cm => cm.Member?.Username))
+        </dd>
     </dl>
 </div>
 <div>

@@ -120,7 +120,9 @@ namespace ADSBackend.Controllers
                 return NotFound();
             }
 
-            var club = await _context.Club.Include(c => c.ClubMembers).FirstOrDefaultAsync(c => c.ClubId == id);
+            var club = await _context.Club
+                .Include(c => c.ClubMembers)
+                .FirstOrDefaultAsync(c => c.ClubId == id);
             if (club == null)
             {
                 return NotFound();
@@ -153,9 +155,9 @@ namespace ADSBackend.Controllers
                 try
                 {
 
-                    club.Name = club.Name;
-                    club.Description = club.Description;
-                    club.Password = club.Password;
+                    club.Name = vm.Name;
+                    club.Description = vm.Description;
+                    club.Password = vm.Password;
 
                     _context.Update(club);
                     await _context.SaveChangesAsync();

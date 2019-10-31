@@ -32,8 +32,4 @@
     <None Include="wwwroot\lib\inspinia\plugins\slimscroll\jquery.slimscroll.min.js" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\MeetingViewModels\" />
-  </ItemGroup>
-
 </Project>
