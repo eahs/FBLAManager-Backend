@@ -23,6 +23,8 @@ namespace ADSBackend.Data
 
         public DbSet<MeetingAttendees> MeetingAttendees { get; set; }
 
+        public DbSet<Session> Session { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
