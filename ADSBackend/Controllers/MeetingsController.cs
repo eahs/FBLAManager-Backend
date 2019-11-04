@@ -85,6 +85,7 @@ namespace ADSBackend.Controllers
                 {
                     OrganizerId = user.Id,
                     Organizer = user.FullName,
+                    ContactId = vm.ContactId,
                     EventName = vm.EventName,
                     Capacity = vm.Capacity,
                     Start = vm.Start,
@@ -166,6 +167,31 @@ namespace ADSBackend.Controllers
                     meeting.AllDay = vm.AllDay;
                     _context.Update(meeting);
                     await _context.SaveChangesAsync();
+
+                    var oldMemberIds = meeting.MeetingAttendees.Select(ma => ma.Member.MemberId).ToList();
+                    foreach (var memberId in vm.MemberIds)
+                    {
+                        if (!oldMemberIds.Contains(memberId))
+                        {
+                            var meetingAttendees = new MeetingAttendees
+                            {
+                                MeetingId = meeting.MeetingId,
+                                MemberId = memberId
+                            };
+
+                            _context.MeetingAttendees.Add(meetingAttendees);
+                            await _context.SaveChangesAsync();
+                        }
+                    }
+                    foreach (var oldMemberId in oldMemberIds)
+                    {
+                        if (!vm.MemberIds.Contains(oldMemberId))
+                        {
+                            _context.MeetingAttendees.Remove(meeting.MeetingAttendees.FirstOrDefault(ma => ma.MemberId == oldMemberId && ma.MeetingId == meeting.MeetingId));
+                            await _context.SaveChangesAsync();
+                        }
+                    }
+                    await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -180,7 +206,10 @@ namespace ADSBackend.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(meeting);
+            var members = await _context.Member.OrderBy(c => c.Username).ToListAsync();
+            ViewBag.Members = new MultiSelectList(members, "MemberId", "Username");
+
+            return View(vm);
         }
 
         // GET: Meetings/Delete/5
