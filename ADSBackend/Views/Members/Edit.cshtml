@@ -1,4 +1,4 @@
-﻿@model ADSBackend.Models.Member
+﻿@model ADSBackend.Models.MemberViewModels.MemberViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -27,6 +27,16 @@
                 <label asp-for="Phone" class="control-label"></label>
                 <input asp-for="Phone" class="form-control" />
                 <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClubIds" class="control-label"></label>
+                <select asp-for="ClubIds" asp-items="ViewBag.Clubs" class="form-control"></select>
+                <span asp-validation-for="ClubIds" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MeetingIds" class="control-label"></label>
+                <select asp-for="MeetingIds" asp-items="ViewBag.Meetings" class="form-control"></select>
+                <span asp-validation-for="MeetingIds" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-default" />

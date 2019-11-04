@@ -35,6 +35,12 @@
         <dd>
             @Html.DisplayFor(model => model.Password)
         </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ClubMembers)
+        </dt>
+        <dd>
+            @string.Join(", ", Model.ClubMembers.Select(cm => cm.Member?.Username))
+        </dd>
     </dl>
     
     <form asp-action="Delete">

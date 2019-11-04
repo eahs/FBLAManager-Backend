@@ -9,6 +9,7 @@ using ADSBackend.Data;
 using ADSBackend.Models;
 using Microsoft.AspNetCore.Identity;
 using ADSBackend.Models.Identity;
+using ADSBackend.Models.ClubViewModels;
 
 namespace ADSBackend.Controllers
 {
@@ -27,13 +28,17 @@ namespace ADSBackend.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(User);
-            if(await _userManager.IsInRoleAsync(user,"Admin"))
+            var clubs = await _context.Club
+                .Include(c => c.ClubMembers)
+                .ThenInclude(cm => cm.Member)
+                .ToListAsync();
+            if (await _userManager.IsInRoleAsync(user,"Admin"))
             {
-                return View(await _context.Club.ToListAsync());
+                return View(clubs);
             }
             else
             {
-                return View(await _context.Club.Where(m => m.CreatorId == user.Id).ToListAsync());
+                return View(clubs.Where(m => m.CreatorId == user.Id));
             }
         }
 
@@ -46,6 +51,8 @@ namespace ADSBackend.Controllers
             }
 
             var club = await _context.Club
+                .Include(c => c.ClubMembers)
+                .ThenInclude(cm => cm.Member)
                 .FirstOrDefaultAsync(m => m.ClubId == id);
             if (club == null)
             {
@@ -56,8 +63,11 @@ namespace ADSBackend.Controllers
         }
 
         // GET: Clubs/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var members = await _context.Member.OrderBy(c => c.Username).ToListAsync();
+            ViewBag.Members = new MultiSelectList(members, "MemberId", "Username");
+
             return View();
         }
 
@@ -66,19 +76,40 @@ namespace ADSBackend.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ClubId,Name,Description,Password")] Club club)
+        public async Task<IActionResult> Create([Bind("ClubId,Name,Description,Password,MemberIds")] ClubViewModel vm)
         {
             if (ModelState.IsValid)
             {
                 var user = await _userManager.GetUserAsync(User);
-                club.CreatorId = user.Id;
-                club.Creator = user.FullName;
+                var club = new Club
+                {
+                    CreatorId = user.Id,
+                    Creator = user.FullName,
+                    Name = vm.Name,
+                    Description = vm.Description,
+                    Password = vm.Password
+                };
 
-                _context.Add(club);
+                _context.Club.Add(club);
+                await _context.SaveChangesAsync();
+
+                foreach (var memberId in vm.MemberIds)
+                {
+                    var clubMember = new ClubMember
+                    {
+                        ClubId = club.ClubId,
+                        MemberId = memberId
+                    };
+
+                    _context.ClubMember.Add(clubMember);
+                    await _context.SaveChangesAsync();
+                }
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(club);
+            var members = await _context.Member.OrderBy(c => c.Username).ToListAsync();
+            ViewBag.Members = new MultiSelectList(members, "MemberId", "Username");
+            return View(vm);
         }
 
         // GET: Clubs/Edit/5
@@ -89,12 +120,18 @@ namespace ADSBackend.Controllers
                 return NotFound();
             }
 
-            var club = await _context.Club.FindAsync(id);
+            var club = await _context.Club
+                .Include(c => c.ClubMembers)
+                .FirstOrDefaultAsync(c => c.ClubId == id);
             if (club == null)
             {
                 return NotFound();
             }
-            return View(club);
+            var members = await _context.Member.OrderBy(c => c.Username).ToListAsync();
+            ViewBag.Members = new MultiSelectList(members, "MemberId", "Username");
+
+            var vm = new ClubViewModel(club);
+            return View(vm);
         }
 
         // POST: Clubs/Edit/5
@@ -102,8 +139,12 @@ namespace ADSBackend.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ClubId,Name,Description,Password")] Club club)
+        public async Task<IActionResult> Edit(int id, [Bind("ClubId,Name,Description,Password,MemberIds")] ClubViewModel vm)
         {
+            var club = await _context.Club
+                .Include(c => c.ClubMembers)
+                .ThenInclude(cm => cm.Member)
+                .FirstOrDefaultAsync(c => c.ClubId == id);
             if (id != club.ClubId)
             {
                 return NotFound();
@@ -113,13 +154,37 @@ namespace ADSBackend.Controllers
             {
                 try
                 {
-                    var _club = await _context.Club.FindAsync(id);
 
-                    _club.Name = club.Name;
-                    _club.Description = club.Description;
-                    _club.Password = club.Password;
+                    club.Name = vm.Name;
+                    club.Description = vm.Description;
+                    club.Password = vm.Password;
 
-                    _context.Update(_club);
+                    _context.Update(club);
+                    await _context.SaveChangesAsync();
+
+                    var oldMemberIds = club.ClubMembers.Select(cm => cm.Member.MemberId).ToList();
+                    foreach (var memberId in vm.MemberIds)
+                    {
+                        if (!oldMemberIds.Contains(memberId))
+                        {
+                            var clubMember = new ClubMember
+                            {
+                                ClubId = club.ClubId,
+                                MemberId = memberId
+                            };
+
+                            _context.ClubMember.Add(clubMember);
+                            await _context.SaveChangesAsync();
+                        }
+                    }
+                    foreach (var oldMemberId in oldMemberIds)
+                    {
+                        if (!vm.MemberIds.Contains(oldMemberId))
+                        {
+                            _context.ClubMember.Remove(club.ClubMembers.FirstOrDefault(cm => cm.MemberId == oldMemberId && cm.ClubId ==club.ClubId));
+                            await _context.SaveChangesAsync();
+                        }
+                    }
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -135,7 +200,10 @@ namespace ADSBackend.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(club);
+            var members = await _context.Member.OrderBy(c => c.Username).ToListAsync();
+            ViewBag.Members = new MultiSelectList(members, "MemberId", "Username");
+
+            return View(vm);
         }
 
         // GET: Clubs/Delete/5
@@ -147,7 +215,9 @@ namespace ADSBackend.Controllers
             }
 
             var club = await _context.Club
-                .FirstOrDefaultAsync(m => m.ClubId == id);
+               .Include(c => c.ClubMembers)
+               .ThenInclude(cm => cm.Member)
+               .FirstOrDefaultAsync(m => m.ClubId == id);
             if (club == null)
             {
                 return NotFound();

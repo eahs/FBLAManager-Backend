@@ -19,6 +19,10 @@ namespace ADSBackend.Data
 
         public DbSet<ClubMember> ClubMember { get; set; }
 
+        public DbSet<Meeting> Meeting { get; set; }
+
+        public DbSet<MeetingAttendees> MeetingAttendees { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -41,8 +45,20 @@ namespace ADSBackend.Data
                 .HasOne(cm => cm.Member)
                 .WithMany(m => m.ClubMembers)
                 .HasForeignKey(cm => cm.MemberId);
-        }
 
-        public DbSet<ADSBackend.Models.Meeting> Meeting { get; set; }
+            builder.Entity<MeetingAttendees>()
+                .HasKey(t => new { t.MeetingId, t.MemberId });
+
+            builder.Entity<MeetingAttendees>()
+                .HasOne(ma => ma.Meeting)
+                .WithMany(meet => meet.MeetingAttendees)
+                .HasForeignKey(ma => ma.MeetingId);
+            // .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<MeetingAttendees>()
+                .HasOne(ma => ma.Member)
+                .WithMany(mem => mem.MeetingAttendees)
+                .HasForeignKey(ma => ma.MemberId);
+        }
     }
 }

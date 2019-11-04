@@ -26,26 +26,32 @@
                     <th>
                         @Html.DisplayNameFor(model => model.Password)
                     </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ClubMembers)
+                    </th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model)
+                @foreach (var club in Model)
                 {
                 <tr>
                     <th>
-                        @Html.DisplayFor(modelItem => item.Creator)
+                        @Html.DisplayFor(modelItem => club.Creator)
                     </th>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Name)
+                        @Html.DisplayFor(modelItem => club.Name)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Description)
+                        @Html.DisplayFor(modelItem => club.Description)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Password)
+                        @Html.DisplayFor(modelItem => club.Password)
                     </td>
                     <td>
-                        @await Html.PartialAsync("_CrudButtons", item.ClubId)
+                        @string.Join(", ", club.ClubMembers.Select(cm => cm.Member?.Username))
+                    </td>
+                    <td>
+                        @await Html.PartialAsync("_CrudButtons", club.ClubId)
                     </td>
                 </tr>
                 }

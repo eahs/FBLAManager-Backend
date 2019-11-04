@@ -9,6 +9,7 @@ using ADSBackend.Data;
 using ADSBackend.Models;
 using ADSBackend.Models.Identity;
 using Microsoft.AspNetCore.Identity;
+using ADSBackend.Models.MeetingViewModels;
 
 namespace ADSBackend.Controllers
 {
@@ -27,13 +28,17 @@ namespace ADSBackend.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(User);
-            if(await _userManager.IsInRoleAsync(user, "Admin"))
+            var meetings = await _context.Meeting
+                .Include(mem => mem.MeetingAttendees)
+                .ThenInclude(ma => ma.Member)
+                .ToListAsync();
+            if (await _userManager.IsInRoleAsync(user, "Admin"))
             {
-                return View(await _context.Meeting.ToListAsync());
+                return View(meetings);
             }
             else
             {
-                return View(await _context.Meeting.Where(m => m.OrganizerId == user.Id).ToListAsync());
+                return View(meetings.Where(m => m.OrganizerId == user.Id));
             }
         }
 
@@ -46,6 +51,8 @@ namespace ADSBackend.Controllers
             }
 
             var meeting = await _context.Meeting
+                .Include(mem => mem.MeetingAttendees)
+                .ThenInclude(ma => ma.Member)
                 .FirstOrDefaultAsync(m => m.MeetingId == id);
             if (meeting == null)
             {
@@ -56,8 +63,10 @@ namespace ADSBackend.Controllers
         }
 
         // GET: Meetings/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var members = await _context.Member.OrderBy(c => c.Username).ToListAsync();
+            ViewBag.Members = new MultiSelectList(members, "MemberId", "Username");
             return View();
         }
 
@@ -66,19 +75,45 @@ namespace ADSBackend.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MeetingId,ContactId,EventName,Capacity,Start,End,Password,Color,AllDay")] Meeting meeting)
+        public async Task<IActionResult> Create([Bind("MeetingId,ContactId,EventName,Capacity,Start,End,Password,Color,AllDay,MemberIds")] MeetingViewModel vm)
         {
             if (ModelState.IsValid)
             {
                 var user = await _userManager.GetUserAsync(User);
-                meeting.OrganizerId = user.Id;
-                meeting.Organizer = user.FullName;
 
+                var meeting = new Meeting
+                {
+                    OrganizerId = user.Id,
+                    Organizer = user.FullName,
+                    ContactId = vm.ContactId,
+                    EventName = vm.EventName,
+                    Capacity = vm.Capacity,
+                    Start = vm.Start,
+                    End = vm.End,
+                    Password = vm.Password,
+                    Color = vm.Color,
+                    AllDay = vm.AllDay
+                };
                 _context.Add(meeting);
+                await _context.SaveChangesAsync();
+
+                foreach (var memberId in vm.MemberIds)
+                {
+                    var meetingAttendees = new MeetingAttendees
+                    {
+                        MeetingId = meeting.MeetingId,
+                        MemberId = memberId
+                    };
+
+                    _context.MeetingAttendees.Add(meetingAttendees);
+                    await _context.SaveChangesAsync();
+                }
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(meeting);
+            var members = await _context.Member.OrderBy(c => c.Username).ToListAsync();
+            ViewBag.Members = new MultiSelectList(members, "MemberId", "Username");
+            return View(vm);
         }
 
         // GET: Meetings/Edit/5
@@ -89,12 +124,17 @@ namespace ADSBackend.Controllers
                 return NotFound();
             }
 
-            var meeting = await _context.Meeting.FindAsync(id);
+            var meeting = await _context.Meeting
+                .Include(m => m.MeetingAttendees)
+                .FirstOrDefaultAsync(m => m.MeetingId == id);
             if (meeting == null)
             {
                 return NotFound();
             }
-            return View(meeting);
+            var members = await _context.Member.OrderBy(c => c.Username).ToListAsync();
+            ViewBag.Members = new MultiSelectList(members, "MemberId", "Username");
+            var vm = new MeetingViewModel(meeting);
+            return View(vm);
         }
 
         // POST: Meetings/Edit/5
@@ -102,8 +142,12 @@ namespace ADSBackend.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MeetingId,ContactId,EventName,Capacity,Start,End,Password,Color,AllDay")] Meeting meeting)
+        public async Task<IActionResult> Edit(int id, [Bind("MeetingId,ContactId,EventName,Capacity,Start,End,Password,Color,AllDay,MemberIds")] MeetingViewModel vm)
         {
+            var meeting = await _context.Meeting
+                .Include(mem => mem.MeetingAttendees)
+                .ThenInclude(ma => ma.Member)
+                .FirstOrDefaultAsync(m => m.MeetingId == id);
             if (id != meeting.MeetingId)
             {
                 return NotFound();
@@ -113,16 +157,40 @@ namespace ADSBackend.Controllers
             {
                 try
                 {
-                    var _meeting = await _context.Meeting.FindAsync(id);
-                    _meeting.ContactId = meeting.ContactId;
-                    _meeting.EventName = meeting.EventName;
-                    _meeting.Capacity = meeting.Capacity;
-                    _meeting.Start = meeting.Start;
-                    _meeting.End = meeting.End;
-                    _meeting.Password = meeting.Password;
-                    _meeting.Color = meeting.Color;
-                    _meeting.AllDay = meeting.AllDay;
-                    _context.Update(_meeting);
+                    meeting.ContactId = vm.ContactId;
+                    meeting.EventName = vm.EventName;
+                    meeting.Capacity = vm.Capacity;
+                    meeting.Start = vm.Start;
+                    meeting.End = vm.End;
+                    meeting.Password = vm.Password;
+                    meeting.Color = vm.Color;
+                    meeting.AllDay = vm.AllDay;
+                    _context.Update(meeting);
+                    await _context.SaveChangesAsync();
+
+                    var oldMemberIds = meeting.MeetingAttendees.Select(ma => ma.Member.MemberId).ToList();
+                    foreach (var memberId in vm.MemberIds)
+                    {
+                        if (!oldMemberIds.Contains(memberId))
+                        {
+                            var meetingAttendees = new MeetingAttendees
+                            {
+                                MeetingId = meeting.MeetingId,
+                                MemberId = memberId
+                            };
+
+                            _context.MeetingAttendees.Add(meetingAttendees);
+                            await _context.SaveChangesAsync();
+                        }
+                    }
+                    foreach (var oldMemberId in oldMemberIds)
+                    {
+                        if (!vm.MemberIds.Contains(oldMemberId))
+                        {
+                            _context.MeetingAttendees.Remove(meeting.MeetingAttendees.FirstOrDefault(ma => ma.MemberId == oldMemberId && ma.MeetingId == meeting.MeetingId));
+                            await _context.SaveChangesAsync();
+                        }
+                    }
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -138,7 +206,10 @@ namespace ADSBackend.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(meeting);
+            var members = await _context.Member.OrderBy(c => c.Username).ToListAsync();
+            ViewBag.Members = new MultiSelectList(members, "MemberId", "Username");
+
+            return View(vm);
         }
 
         // GET: Meetings/Delete/5
@@ -150,6 +221,8 @@ namespace ADSBackend.Controllers
             }
 
             var meeting = await _context.Meeting
+                .Include(mem => mem.MeetingAttendees)
+                .ThenInclude(ma => ma.Member)
                 .FirstOrDefaultAsync(m => m.MeetingId == id);
             if (meeting == null)
             {

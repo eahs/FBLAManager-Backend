@@ -34,6 +34,6 @@ namespace ADSBackend.Models
 
         public bool AllDay { get; set; }
 
-        public List<Member> Members { get; set; } //attendees
+        public List<MeetingAttendees> MeetingAttendees { get; set; } //attendees
     }
 }
