@@ -24,6 +24,9 @@
                         @Html.DisplayNameFor(model => model.EventName)
                     </th>
                     <th>
+                        @Html.DisplayNameFor(model => model.Description)
+                    </th>
+                    <th>
                         @Html.DisplayNameFor(model => model.Capacity)
                     </th>
                     <th>
@@ -40,6 +43,9 @@
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.AllDay)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Type)
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.MeetingAttendees)
@@ -60,6 +66,9 @@
                         @Html.DisplayFor(modelItem => meeting.EventName)
                     </td>
                     <td>
+                        @Html.DisplayFor(modelItem => meeting.Description)
+                    </td>
+                    <td>
                         @Html.DisplayFor(modelItem => meeting.Capacity)
                     </td>
                     <td>
@@ -76,6 +85,9 @@
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => meeting.AllDay)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => meeting.Type)
                     </td>
                     <td>
                         @string.Join(", ", meeting.MeetingAttendees.Select(ma => ma.Member?.Username))

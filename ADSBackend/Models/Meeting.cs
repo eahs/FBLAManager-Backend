@@ -4,9 +4,17 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Drawing;
 
 namespace ADSBackend.Models
 {
+    public enum MeetingType
+    {
+        Meeting = 1,
+        Fundraiser = 2,
+        CompetitiveEvent = 3,
+        CommunityService = 4
+    }
     public class Meeting
     {
         [Key]
@@ -19,6 +27,8 @@ namespace ADSBackend.Models
         public string ContactId { get; set; }
 
         public string EventName { get; set; }
+
+        public string Description { get; set; }
 
         public int Capacity { get; set; }
 
@@ -33,6 +43,8 @@ namespace ADSBackend.Models
         public string Color { get; set; }
 
         public bool AllDay { get; set; }
+
+        public MeetingType Type { get; set; } = MeetingType.Meeting;
 
         public List<MeetingAttendees> MeetingAttendees { get; set; } //attendees
     }
