@@ -96,7 +96,7 @@ namespace ADSBackend.Controllers
                 };
                 _context.Add(meeting);
                 await _context.SaveChangesAsync();
-
+                if (vm.MemberIds == null) vm.MemberIds = new System.Collections.Generic.List<int>();
                 foreach (var memberId in vm.MemberIds)
                 {
                     var meetingAttendees = new MeetingAttendees
@@ -167,7 +167,7 @@ namespace ADSBackend.Controllers
                     meeting.AllDay = vm.AllDay;
                     _context.Update(meeting);
                     await _context.SaveChangesAsync();
-
+                    if (vm.MemberIds == null) vm.MemberIds = new System.Collections.Generic.List<int>();
                     var oldMemberIds = meeting.MeetingAttendees.Select(ma => ma.Member.MemberId).ToList();
                     foreach (var memberId in vm.MemberIds)
                     {
