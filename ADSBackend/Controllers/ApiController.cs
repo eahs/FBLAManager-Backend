@@ -35,6 +35,16 @@ namespace ADSBackend.Controllers
             return await _context.Meeting.OrderByDescending(x => x.Start).ToListAsync();
         }
 
+        [HttpGet("Officers")]
+        public async Task<List<Officer>> GetOfficers(int? level)
+        {
+            if (level == null)
+                return await _context.Officer.OrderBy(x => x.Order).ToListAsync();
+
+            return await _context.Officer.Where(o => o.Level == level).OrderBy(x => x.Order).ToListAsync();
+
+        }
+
         [HttpPost("Login")]
         public async Task<object> Login(IFormCollection forms)
         {

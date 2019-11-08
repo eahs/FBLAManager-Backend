@@ -34,7 +34,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="Start" class="control-label">Start (DD-MM-YYYY HH:MM(AM/PM)</label>
-                <input asp-for="Start" class="form-control" />
+                <div class="input-group date" id="startDate" data-target-input="nearest">
+                    <input asp-for="Start" class="form-control datetimepicker-input" data-target="#startDate" />
+                    <div class="input-group-append" data-target="#startDate" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                </div>
                 <span asp-validation-for="Start" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -81,5 +86,12 @@
 </div>
 
 @section Scripts {
+
+    <script type="text/javascript">
+            $(function () {
+                $('#startDate').datetimepicker();
+            });
+    </script>
+
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
