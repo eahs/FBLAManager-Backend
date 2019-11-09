@@ -4,9 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Drawing;
 
 namespace ADSBackend.Models.MeetingViewModels
 {
+
     public class MeetingViewModel
     {
         [Key]
@@ -19,6 +21,8 @@ namespace ADSBackend.Models.MeetingViewModels
         public string ContactId { get; set; }
 
         public string EventName { get; set; }
+
+        public string Description { get; set; }
 
         public int Capacity { get; set; }
 
@@ -34,6 +38,8 @@ namespace ADSBackend.Models.MeetingViewModels
 
         public bool AllDay { get; set; }
 
+        public MeetingType Type { get; set; } = MeetingType.Meeting;
+
         public List<int> MemberIds { get; set; }
 
         public MeetingViewModel()
@@ -48,12 +54,14 @@ namespace ADSBackend.Models.MeetingViewModels
             this.Organizer = meeting.Organizer;
             this.ContactId = meeting.ContactId;
             this.EventName = meeting.EventName;
+            this.Description = meeting.Description;
             this.Capacity = meeting.Capacity;
             this.Start = meeting.Start;
             this.End = meeting.End;
             this.Password = meeting.Password;
             this.Color = meeting.Color;
             this.AllDay = meeting.AllDay;
+            this.Type = meeting.Type;
             this.MemberIds = meeting.MeetingAttendees?.Select(ma => ma.MemberId).ToList();
         }
     }

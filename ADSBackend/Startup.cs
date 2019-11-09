@@ -25,7 +25,11 @@ namespace ADSBackend
         {
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("ADSBackendContext"));
+#if DEBUG
+                options.UseSqlServer(Configuration.GetConnectionString("ADSBackendProductionEAHSContext"));
+#else
+                options.UseSqlServer(Configuration.GetConnectionString("ADSBackendProductionContext"));
+#endif
             });
 
             services.AddIdentity<ApplicationUser, ApplicationRole>()

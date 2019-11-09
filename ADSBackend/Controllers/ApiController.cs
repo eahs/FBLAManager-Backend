@@ -1,5 +1,10 @@
-﻿using ADSBackend.Models.ApiModels;
+﻿using ADSBackend.Data;
+using ADSBackend.Models;
+using ADSBackend.Models.ApiModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,26 +18,93 @@ namespace ADSBackend.Controllers
     {
         private readonly Services.Configuration Configuration;
         private readonly Services.Cache _cache;
+        private readonly ApplicationDbContext _context;
 
-        public ApiController(Services.Configuration configuration, Services.Cache cache)
+        public ApiController(Services.Configuration configuration, Services.Cache cache, ApplicationDbContext context)
         {
             Configuration = configuration;
             _cache = cache;
+            _context = context;
         }
 
+
         // GET: api/News
-        [HttpGet("News")]
-        public async Task<List<NewsFeedItem>> GetNewsFeed()
+        [HttpGet("Meetings")]
+        public async Task<List<Meeting>> GetMeetings()
         {
-            var newsUrl = new Uri("https://www.eastonsd.org/apps/news/news_rss.jsp");
+            return await _context.Meeting.OrderByDescending(x => x.Start).ToListAsync();
+        }
 
-            string sourceUrl = newsUrl.GetLeftPart(UriPartial.Authority);
-            string endpoint = newsUrl.PathAndQuery;
+        [HttpGet("Officers")]
+        public async Task<List<Officer>> GetOfficers(int? level)
+        {
+            if (level == null)
+                return await _context.Officer.OrderBy(x => x.Order).ToListAsync();
 
-            Task<List<NewsFeedItem>> fetchNewsFromSource() => Util.RSS.GetNewsFeed(sourceUrl, endpoint);
+            return await _context.Officer.Where(o => o.Level == level).OrderBy(x => x.Order).ToListAsync();
 
-            var feedItems = await _cache.GetAsync("RSS", fetchNewsFromSource, TimeSpan.FromMinutes(5));
-            return feedItems.OrderByDescending(x => x.PublishDate).ToList();
+        }
+
+        [HttpPost("Login")]
+        public async Task<object> Login(IFormCollection forms)
+        {
+            string _email, _password;
+
+            if (!forms.ContainsKey("email") &&
+                !forms.ContainsKey("password"))
+                return new
+                {
+                    Status = "Invalid form data"
+                };
+
+            // Get fields from forms
+            _email = forms["email"];
+            _password = forms["password"];
+
+            // Look up username and password in _context.Member
+            Member member = await _context.Member.FirstOrDefaultAsync(m => m.Email == _email && m.Password == _password);
+
+            if (member == null)
+            {
+                // Member email or password is incorrect
+                return new
+                {
+                    Status = "InvalidCredentials"
+                };
+            }
+
+            var sessionKey = System.Guid.NewGuid().ToString();
+            var session = await _context.Session?.FirstOrDefaultAsync(s => s.MemberId == member.MemberId);
+
+            if (session != null)
+            {
+                sessionKey = session.Key;
+                session.LastAccessTime = DateTime.Now;
+                _context.Update(session);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                // Create a new session
+                session = new Session
+                {
+                    MemberId = member.MemberId,
+                    Key = sessionKey,
+                    Email = member.Email,
+                    LastAccessTime = DateTime.Now
+                };
+
+                _context.Add(session);
+                await _context.SaveChangesAsync();
+            }
+
+            var response = new
+            {
+                Status = "LoggedIn",
+                Key = sessionKey
+            };
+
+            return response;
         }
 
         // GET: api/Config

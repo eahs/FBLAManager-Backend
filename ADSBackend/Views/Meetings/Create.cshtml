@@ -23,13 +23,23 @@
                 <span asp-validation-for="EventName" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="Capacity" class="control-label"></label>
                 <input asp-for="Capacity" class="form-control" />
                 <span asp-validation-for="Capacity" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Start" class="control-label">Start (DD-MM-YYYY HH:MM(AM/PM)</label>
-                <input asp-for="Start" class="form-control" />
+                <div class="input-group date" id="startDate" data-target-input="nearest">
+                    <input asp-for="Start" class="form-control datetimepicker-input" data-target="#startDate" />
+                    <div class="input-group-append" data-target="#startDate" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                </div>
                 <span asp-validation-for="Start" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -55,6 +65,11 @@
                 </div>
             </div>
             <div class="form-group">
+                <label asp-for="Type" class="control-label"></label>
+                <input asp-for="Type" class="form-control" />
+                <span asp-validation-for="Type" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="MemberIds" class="control-label"></label>
                 <select asp-for="MemberIds" asp-items="ViewBag.Members" class="form-control"></select>
                 <span asp-validation-for="MemberIds" class="text-danger"></span>
@@ -71,5 +86,12 @@
 </div>
 
 @section Scripts {
+
+    <script type="text/javascript">
+            $(function () {
+                $('#startDate').datetimepicker();
+            });
+    </script>
+
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

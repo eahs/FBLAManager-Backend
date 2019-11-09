@@ -4,14 +4,16 @@ using ADSBackend.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ADSBackend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191107174044_MeetingDescriptions")]
+    partial class MeetingDescriptions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -213,29 +215,6 @@ namespace ADSBackend.Migrations
                     b.HasKey("MemberId");
 
                     b.ToTable("Member");
-                });
-
-            modelBuilder.Entity("ADSBackend.Models.Officer", b =>
-                {
-                    b.Property<int>("OfficerId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Image");
-
-                    b.Property<int>("Level");
-
-                    b.Property<string>("Name");
-
-                    b.Property<int>("Order");
-
-                    b.Property<string>("Position");
-
-                    b.Property<string>("WebsiteLink");
-
-                    b.HasKey("OfficerId");
-
-                    b.ToTable("Officer");
                 });
 
             modelBuilder.Entity("ADSBackend.Models.Session", b =>

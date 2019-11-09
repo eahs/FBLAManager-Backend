@@ -83,6 +83,9 @@ namespace ADSBackend.Controllers
                 _context.Member.Add(member);
                 await _context.SaveChangesAsync();
 
+                if (vm.ClubIds == null) vm.ClubIds = new System.Collections.Generic.List<int>();
+                if (vm.MeetingIds == null) vm.MeetingIds = new System.Collections.Generic.List<int>();
+
                 // add this new member to the relevant clubs
                 foreach (var clubId in vm.ClubIds)
                 {
@@ -171,6 +174,8 @@ namespace ADSBackend.Controllers
                     _context.Update(member);
                     await _context.SaveChangesAsync();
 
+                    if (vm.ClubIds == null) vm.ClubIds = new System.Collections.Generic.List<int>();
+
                     var oldClubIds = member.ClubMembers.Select(cm => cm.Club.ClubId).ToList();
                     foreach (var clubId in vm.ClubIds)
                     {
@@ -194,6 +199,8 @@ namespace ADSBackend.Controllers
                             await _context.SaveChangesAsync();
                         }
                     }
+
+                    if (vm.MeetingIds == null) vm.MeetingIds = new System.Collections.Generic.List<int>();
 
                     var oldMeetingIds = member.MeetingAttendees.Select(ma => ma.Meeting.MeetingId).ToList();
                     foreach (var meetingId in vm.MeetingIds)

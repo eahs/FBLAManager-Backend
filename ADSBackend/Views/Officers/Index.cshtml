@@ -1,0 +1,67 @@
+﻿@model IEnumerable<ADSBackend.Models.Officer>
+
+@{
+    ViewData["Title"] = "Officers";
+}
+
+<h2>Officers</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New Officer</a>
+</p>
+<div class="ibox">
+    <div class="ibox-content">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Position)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Image)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.WebsiteLink)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Level)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Order)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Position)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Image)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.WebsiteLink)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Level)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Order)
+                    </td>
+                    <td>
+                        @await Html.PartialAsync("_CrudButtons", item.OfficerId)
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

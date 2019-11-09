@@ -75,7 +75,7 @@ namespace ADSBackend.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MeetingId,ContactId,EventName,Capacity,Start,End,Password,Color,AllDay,MemberIds")] MeetingViewModel vm)
+        public async Task<IActionResult> Create([Bind("MeetingId,ContactId,EventName,Description,Capacity,Start,End,Password,Color,AllDay,Type,MemberIds")] MeetingViewModel vm)
         {
             if (ModelState.IsValid)
             {
@@ -87,16 +87,18 @@ namespace ADSBackend.Controllers
                     Organizer = user.FullName,
                     ContactId = vm.ContactId,
                     EventName = vm.EventName,
+                    Description = vm.Description,
                     Capacity = vm.Capacity,
                     Start = vm.Start,
                     End = vm.End,
                     Password = vm.Password,
                     Color = vm.Color,
-                    AllDay = vm.AllDay
+                    AllDay = vm.AllDay,
+                    Type = vm.Type
                 };
                 _context.Add(meeting);
                 await _context.SaveChangesAsync();
-
+                if (vm.MemberIds == null) vm.MemberIds = new System.Collections.Generic.List<int>();
                 foreach (var memberId in vm.MemberIds)
                 {
                     var meetingAttendees = new MeetingAttendees
@@ -142,7 +144,7 @@ namespace ADSBackend.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MeetingId,ContactId,EventName,Capacity,Start,End,Password,Color,AllDay,MemberIds")] MeetingViewModel vm)
+        public async Task<IActionResult> Edit(int id, [Bind("MeetingId,ContactId,EventName,Description,Capacity,Start,End,Password,Color,AllDay,Type,MemberIds")] MeetingViewModel vm)
         {
             var meeting = await _context.Meeting
                 .Include(mem => mem.MeetingAttendees)
@@ -159,15 +161,17 @@ namespace ADSBackend.Controllers
                 {
                     meeting.ContactId = vm.ContactId;
                     meeting.EventName = vm.EventName;
+                    meeting.Description = vm.Description;
                     meeting.Capacity = vm.Capacity;
                     meeting.Start = vm.Start;
                     meeting.End = vm.End;
                     meeting.Password = vm.Password;
                     meeting.Color = vm.Color;
                     meeting.AllDay = vm.AllDay;
+                    meeting.Type = vm.Type;
                     _context.Update(meeting);
                     await _context.SaveChangesAsync();
-
+                    if (vm.MemberIds == null) vm.MemberIds = new System.Collections.Generic.List<int>();
                     var oldMemberIds = meeting.MeetingAttendees.Select(ma => ma.Member.MemberId).ToList();
                     foreach (var memberId in vm.MemberIds)
                     {
