@@ -1,6 +1,7 @@
 ﻿using ADSBackend.Data;
 using ADSBackend.Models;
 using ADSBackend.Models.ApiModels;
+using ADSBackend.Util;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -28,7 +29,7 @@ namespace ADSBackend.Controllers
         }
 
 
-        // GET: api/News
+        // GET: api/Meetings
         [HttpGet("Meetings")]
         public async Task<List<Meeting>> GetMeetings()
         {
@@ -62,7 +63,7 @@ namespace ADSBackend.Controllers
             _password = forms["password"];
 
             // Look up username and password in _context.Member
-            Member member = await _context.Member.FirstOrDefaultAsync(m => m.Email == _email && m.Password == _password);
+            Member member = await _context.Member.FirstOrDefaultAsync(m => m.Email == _email && m.Password == PasswordHasher.Hash(_password, m.Salt).HashedPassword);
 
             if (member == null)
             {
@@ -102,6 +103,47 @@ namespace ADSBackend.Controllers
             {
                 Status = "LoggedIn",
                 Key = sessionKey
+            };
+
+            return response;
+        }
+
+        [HttpPost("CreateMember")]
+        public async Task<object> CreateMember(IFormCollection forms)
+        {
+            int grade;
+
+            if (forms["Email"] == "" || forms["Password"] == "")
+                return new { Status = "MissingFields" };
+
+            Int32.TryParse(forms["Grade"], out grade);
+
+            grade = Math.Max(9, Math.Min(grade, 12));
+
+            PasswordHash ph = PasswordHasher.Hash(forms["Password"]);
+
+            var member = new Member
+            {
+                FirstName = forms["FirstName"],
+                LastName = forms["LastName"],
+                Gender = forms["Gender"],
+                Address = forms["Address"],
+                City = forms["City"],
+                State = forms["State"],
+                ZipCode = forms["ZipCode"],
+                Grade = grade,
+                RecruitedBy = forms["RecruitedBy"],
+                Email = forms["Email"],
+                Phone = forms["Phone"],
+                Password = ph.HashedPassword,
+                Salt = ph.Salt
+            };
+            _context.Member.Add(member);
+            await _context.SaveChangesAsync();
+
+            var response = new
+            {
+                Status = "Success"
             };
 
             return response;

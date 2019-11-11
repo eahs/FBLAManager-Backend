@@ -1,6 +1,7 @@
 ﻿using ADSBackend.Data;
 using ADSBackend.Models;
 using ADSBackend.Models.MemberViewModels;
+using ADSBackend.Util;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -73,6 +74,8 @@ namespace ADSBackend.Controllers
         {
             if (ModelState.IsValid)
             {
+                PasswordHash ph = PasswordHasher.Hash(vm.Password);
+
                 var member = new Member
                 {
                     FirstName = vm.FirstName,
@@ -85,7 +88,8 @@ namespace ADSBackend.Controllers
                     RecruitedBy = vm.RecruitedBy,
                     Email = vm.Email,
                     Phone = vm.Phone,
-                    Password = vm.Password
+                    Password = ph.HashedPassword,
+                    Salt = ph.Salt
                 };
                 _context.Member.Add(member);
                 await _context.SaveChangesAsync();
