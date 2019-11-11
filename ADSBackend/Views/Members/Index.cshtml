@@ -15,7 +15,28 @@
             <thead>
                 <tr>
                     <th>
-                        @Html.DisplayNameFor(model => model.Username)
+                        @Html.DisplayNameFor(model => model.FirstName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.LastName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Gender)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Address)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.City)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ZipCode)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Grade)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.RecruitedBy)
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.Email)
@@ -36,7 +57,28 @@
                 {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => member.Username)
+                        @Html.DisplayFor(modelItem => member.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => member.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => member.Gender)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => member.Address)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => member.City)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => member.ZipCode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => member.Grade)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => member.RecruitedBy)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => member.Email)

@@ -69,13 +69,20 @@ namespace ADSBackend.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Username,Email,Phone,Password,ClubIds,MeetingIds")] MemberViewModel vm)
+        public async Task<IActionResult> Create([Bind("FirstName,LastName,Gender,Address,City,ZipCode,Grade,RecruitedBy,Email,Phone,Password,ClubIds,MeetingIds")] MemberViewModel vm)
         {
             if (ModelState.IsValid)
             {
                 var member = new Member
                 {
-                    Username = vm.Username,
+                    FirstName = vm.FirstName,
+                    LastName = vm.LastName,
+                    Gender = vm.Gender,
+                    Address = vm.Address,
+                    City = vm.City,
+                    ZipCode = vm.ZipCode,
+                    Grade = vm.Grade,
+                    RecruitedBy = vm.RecruitedBy,
                     Email = vm.Email,
                     Phone = vm.Phone,
                     Password = vm.Password
@@ -150,7 +157,7 @@ namespace ADSBackend.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MemberId,Username,Email,Phone,ClubIds,MeetingIds")] MemberViewModel vm)
+        public async Task<IActionResult> Edit(int id, [Bind("MemberId,FirstName,LastName,Gender,Address,City,ZipCode,Grade,Email,Phone,ClubIds,MeetingIds")] MemberViewModel vm)
         {
             var member = await _context.Member
                 .Include(m => m.ClubMembers)
@@ -167,7 +174,13 @@ namespace ADSBackend.Controllers
             {
                 try
                 {
-                    member.Username = vm.Username;
+                    member.FirstName = vm.FirstName;
+                    member.LastName = vm.LastName;
+                    member.Gender = vm.Gender;
+                    member.Address = vm.Address;
+                    member.City = vm.City;
+                    member.ZipCode = vm.ZipCode;
+                    member.Grade = vm.Grade;
                     member.Email = vm.Email;
                     member.Phone = vm.Phone;
 

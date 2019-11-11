@@ -48,7 +48,7 @@
                         @Html.DisplayFor(modelItem => club.Password)
                     </td>
                     <td>
-                        @string.Join(", ", club.ClubMembers.Select(cm => cm.Member?.Username))
+                        @string.Join(", ", club.ClubMembers.Select(cm => cm.Member?.Email))
                     </td>
                     <td>
                         @await Html.PartialAsync("_CrudButtons", club.ClubId)

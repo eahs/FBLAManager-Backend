@@ -38,7 +38,7 @@
             @Html.DisplayNameFor(model => model.ClubMembers)
         </dt>
         <dd>
-            @string.Join(", ", Model.ClubMembers.Select(cm => cm.Member?.Username))
+            @string.Join(", ", Model.ClubMembers.Select(cm => cm.Member?.Email))
         </dd>
     </dl>
 </div>

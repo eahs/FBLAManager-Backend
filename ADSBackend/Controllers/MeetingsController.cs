@@ -65,7 +65,7 @@ namespace ADSBackend.Controllers
         // GET: Meetings/Create
         public async Task<IActionResult> Create()
         {
-            var members = await _context.Member.OrderBy(c => c.Username).ToListAsync();
+            var members = await _context.Member.OrderBy(c => c.LastName).ToListAsync();
             ViewBag.Members = new MultiSelectList(members, "MemberId", "Username");
             return View();
         }
@@ -113,7 +113,7 @@ namespace ADSBackend.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            var members = await _context.Member.OrderBy(c => c.Username).ToListAsync();
+            var members = await _context.Member.OrderBy(c => c.LastName).ToListAsync();
             ViewBag.Members = new MultiSelectList(members, "MemberId", "Username");
             return View(vm);
         }
@@ -133,7 +133,7 @@ namespace ADSBackend.Controllers
             {
                 return NotFound();
             }
-            var members = await _context.Member.OrderBy(c => c.Username).ToListAsync();
+            var members = await _context.Member.OrderBy(c => c.LastName).ToListAsync();
             ViewBag.Members = new MultiSelectList(members, "MemberId", "Username");
             var vm = new MeetingViewModel(meeting);
             return View(vm);
@@ -210,7 +210,7 @@ namespace ADSBackend.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            var members = await _context.Member.OrderBy(c => c.Username).ToListAsync();
+            var members = await _context.Member.OrderBy(c => c.LastName).ToListAsync();
             ViewBag.Members = new MultiSelectList(members, "MemberId", "Username");
 
             return View(vm);
