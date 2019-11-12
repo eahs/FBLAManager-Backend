@@ -28,17 +28,37 @@ namespace ADSBackend.Controllers
             _context = context;
         }
 
+        public async Task<Session> IsAuthorized()
+        {
+            if (Request.Headers.ContainsKey("auth"))
+            {
+                string key = Request.Headers["auth"];
+
+                var session = await _context.Session.FirstOrDefaultAsync(s => s.Key == key);
+
+                return session;
+            }
+
+            return null;
+        }
+
 
         // GET: api/Meetings
         [HttpGet("Meetings")]
         public async Task<List<Meeting>> GetMeetings()
         {
+            if (await IsAuthorized() == null)
+                return new List<Meeting>();
+
             return await _context.Meeting.OrderByDescending(x => x.Start).ToListAsync();
         }
 
         [HttpGet("Officers")]
         public async Task<List<Officer>> GetOfficers(int? level)
         {
+            if (await IsAuthorized() == null)
+                return new List<Officer>();
+
             if (level == null)
                 return await _context.Officer.OrderBy(x => x.Order).ToListAsync();
 
@@ -119,6 +139,13 @@ namespace ADSBackend.Controllers
             Int32.TryParse(forms["Grade"], out grade);
 
             grade = Math.Max(9, Math.Min(grade, 12));
+
+            // Check to see if the member already exists - emails must be unique
+            var existingMember = await _context.Member.FirstOrDefaultAsync(m => m.Email == forms["Email"]);
+            if (existingMember != null)
+            {
+                return new { Status = "UserExists" };
+            }
 
             PasswordHash ph = PasswordHasher.Hash(forms["Password"]);
 
