@@ -50,7 +50,76 @@ namespace ADSBackend.Controllers
             if (await IsAuthorized() == null)
                 return new List<Meeting>();
 
-            return await _context.Meeting.OrderByDescending(x => x.Start).ToListAsync();
+            var meetings = await _context.Meeting.Include(mem => mem.MeetingAttendees).ThenInclude(a => a.Member).OrderByDescending(x => x.Start).ToListAsync();
+
+            foreach (var meeting in meetings)
+            {
+                meeting.Password = "";
+
+                foreach (var attendee in meeting.MeetingAttendees)
+                {
+                    attendee.Meeting = null;
+
+                    Member m = attendee.Member;
+                    attendee.Member = new Member
+                    {
+                        MemberId = m.MemberId,
+                        FirstName = m.FirstName,
+                        LastName = m.LastName,
+                        Email = m.Email
+                    };
+
+                }
+            }
+
+            //string test = JsonConvert.SerializeObject(meetings);
+
+            return meetings;
+        }
+
+        [HttpPost("MeetingSignup")]
+        public async Task<object> MeetingSignup(IFormCollection forms)
+        {
+            var _session = await IsAuthorized();
+            if (_session == null)
+                return new
+                {
+                    Status = "NotLoggedIn"
+                };
+
+            int meetingid;
+            Int32.TryParse(forms["meetingid"], out meetingid);
+            var _member = await _context.Member.FirstOrDefaultAsync(m => m.MemberId == _session.MemberId);
+            var _meeting = await _context.Meeting.FirstOrDefaultAsync(m => m.MeetingId == meetingid);
+            
+            if(_meeting.Type == MeetingType.Meeting && forms["password"] != _meeting.Password)
+            {
+                return new
+                {
+                    Status = "InvalidCredentials"
+                };
+            }
+            var meetingAttendees = new MeetingAttendees
+            {
+                MemberId = _member.MemberId,
+                MeetingId = meetingid
+            };
+
+            var attendee = await _context.MeetingAttendees.FirstOrDefaultAsync(ma => ma.MeetingId == meetingid && ma.MemberId == _session.MemberId);
+
+            if (attendee != null)
+                return new
+                {
+                    Status = "Success"
+                };
+
+            _context.MeetingAttendees.Add(meetingAttendees);
+            await _context.SaveChangesAsync();
+            
+            return new
+            {
+                Status = "Success"
+            };
         }
 
         [HttpGet("Officers")]
