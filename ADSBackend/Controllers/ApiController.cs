@@ -42,6 +42,35 @@ namespace ADSBackend.Controllers
             return null;
         }
 
+        [HttpGet("SingleMeeting")]
+        public async Task<Meeting> GetSingleMeeting(int meetingId)
+        {
+            if (await IsAuthorized() == null)
+                return new Meeting();
+
+            Meeting meeting = await _context.Meeting.Include(mem => mem.MeetingAttendees)
+                                                    .ThenInclude(a => a.Member)
+                                                    .FirstOrDefaultAsync(m => m.MeetingId == meetingId);
+
+            meeting.Password = "";
+
+            foreach (var attendee in meeting.MeetingAttendees)
+            {
+                attendee.Meeting = null;
+
+                Member m = attendee.Member;
+                attendee.Member = new Member
+                {
+                    MemberId = m.MemberId,
+                    FirstName = m.FirstName,
+                    LastName = m.LastName,
+                    Email = m.Email
+                };
+
+            }
+
+            return meeting;
+        }
 
         // GET: api/Meetings
         [HttpGet("Meetings")]
@@ -110,7 +139,8 @@ namespace ADSBackend.Controllers
             if (attendee != null)
                 return new
                 {
-                    Status = "Success"
+                    Status = "Success",
+                    Meeting = await GetSingleMeeting(meetingid)
                 };
 
             _context.MeetingAttendees.Add(meetingAttendees);
@@ -118,7 +148,8 @@ namespace ADSBackend.Controllers
             
             return new
             {
-                Status = "Success"
+                Status = "Success",
+                Meeting = await GetSingleMeeting(meetingid)
             };
         }
 
