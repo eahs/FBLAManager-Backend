@@ -1,0 +1,58 @@
+﻿@model IEnumerable<ADSBackend.Models.BoardPost>
+
+@{
+    ViewData["Title"] = "Messageboard";
+}
+
+<h2>Messageboard</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">New Post</a>
+</p>
+<div class="ibox">
+    <div class="ibox-content">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Title)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Director)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PostTime)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Message)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Director)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PostTime)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Message)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.PostId">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.PostId">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.PostId">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

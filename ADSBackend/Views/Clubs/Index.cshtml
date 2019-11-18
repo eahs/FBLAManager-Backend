@@ -34,26 +34,27 @@
             <tbody>
                 @foreach (var club in Model)
                 {
-                <tr>
-                    <th>
-                        @Html.DisplayFor(modelItem => club.Creator)
-                    </th>
-                    <td>
-                        @Html.DisplayFor(modelItem => club.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => club.Description)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => club.Password)
-                    </td>
-                    <td>
-                        @string.Join(", ", club.ClubMembers.Select(cm => cm.Member?.Email))
-                    </td>
-                    <td>
-                        @await Html.PartialAsync("_CrudButtons", club.ClubId)
-                    </td>
-                </tr>
+                    <tr>
+                        <th>
+                            @Html.DisplayFor(modelItem => club.Creator)
+                        </th>
+                        <td>
+                            @Html.DisplayFor(modelItem => club.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => club.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => club.Password)
+                        </td>
+                        <td>
+                            @string.Join(", ", club.ClubMembers.Select(cm => cm.Member?.Email))
+                        </td>
+                        <td>
+                            @await Html.PartialAsync("_CrudButtons", club.ClubId)
+                            <a class="btn btn-white btn-bitbucket" asp-controller="BoardPosts" asp-action="Index"><i class="fa fa-info"></i> Messageboard</a>
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>
