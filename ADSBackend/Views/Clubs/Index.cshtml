@@ -26,9 +26,6 @@
                     <th>
                         @Html.DisplayNameFor(model => model.Password)
                     </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.ClubMembers)
-                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -48,11 +45,8 @@
                             @Html.DisplayFor(modelItem => club.Password)
                         </td>
                         <td>
-                            @string.Join(", ", club.ClubMembers.Select(cm => cm.Member?.Email))
-                        </td>
-                        <td>
                             @await Html.PartialAsync("_CrudButtons", club.ClubId)
-                            <a class="btn btn-white btn-bitbucket" asp-controller="BoardPosts" asp-action="Index"><i class="fa fa-info"></i> Messageboard</a>
+                            <a class="btn btn-white btn-bitbucket" asp-controller="Clubs" asp-action="BoardIndex" asp-route-id="@club.ClubId"><i class="fa fa-info"></i> Messageboard</a>
                         </td>
                     </tr>
                 }

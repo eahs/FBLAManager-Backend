@@ -17,6 +17,7 @@ namespace ADSBackend.Models
 
         public string Image { get; set; }
 
+        [Display(Name = "Website")]
         public string WebsiteLink { get; set; }
 
         public int Level { get; set; }

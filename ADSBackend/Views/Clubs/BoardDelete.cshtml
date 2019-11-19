@@ -1,13 +1,13 @@
 ﻿@model ADSBackend.Models.BoardPost
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Delete";
 }
 
-<h2>Details</h2>
+<h2>Delete Board Post</h2>
 
+<h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>BoardPost</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -35,8 +35,10 @@
             @Html.DisplayFor(model => model.Message)
         </dd>
     </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.PostId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    
+    <form asp-controller="Clubs" asp-action="BoardDelete">
+        <input type="hidden" asp-for="PostId" />
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a asp-action="BoardIndex" asp-route-id="@Model.ClubId">Back to List</a>
+    </form>
 </div>

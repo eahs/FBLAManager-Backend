@@ -23,6 +23,7 @@ namespace ADSBackend.Models
 
         public string Message { get; set; }
 
+        public int ClubId { get; set; }
         public Club Club { get; set; }
     }
 }

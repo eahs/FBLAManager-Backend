@@ -11,8 +11,10 @@ namespace ADSBackend.Models
         [Key]
         public int MemberId { get; set; }
 
+        [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
+        [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
         public string Gender { get; set; }
@@ -23,10 +25,12 @@ namespace ADSBackend.Models
 
         public string State { get; set; } = "PA";
 
+        [Display(Name = "Zip Code")]
         public string ZipCode { get; set; }
 
         public int Grade { get; set; }
 
+        [Display(Name = "Recruited By")]
         public string RecruitedBy { get; set; }
 
         public string Email { get; set; }

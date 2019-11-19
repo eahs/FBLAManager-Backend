@@ -4,21 +4,20 @@
     ViewData["Title"] = "Create";
 }
 
-<h2>Create</h2>
+<h2>Create Member</h2>
 
-<h4>Member</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
+                <label asp-for="FirstName" class="control-label">First Name</label>
                 <input asp-for="FirstName" class="form-control" />
                 <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
+                <label asp-for="LastName" class="control-label">Last Name</label>
                 <input asp-for="LastName" class="form-control" />
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
@@ -42,7 +41,7 @@
                 <span asp-validation-for="City" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ZipCode" class="control-label"></label>
+                <label asp-for="ZipCode" class="control-label">Zip Code</label>
                 <input asp-for="ZipCode" class="form-control" />
                 <span asp-validation-for="ZipCode" class="text-danger"></span>
             </div>
@@ -52,7 +51,7 @@
                 <span asp-validation-for="Grade" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="RecruitedBy" class="control-label"></label>
+                <label asp-for="RecruitedBy" class="control-label">Recruited By</label>
                 <input asp-for="RecruitedBy" class="form-control" />
                 <span asp-validation-for="RecruitedBy" class="text-danger"></span>
             </div>
@@ -72,12 +71,12 @@
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ClubIds" class="control-label"></label>
+                <label asp-for="ClubIds" class="control-label">Clubs</label>
                 <select asp-for="ClubIds" asp-items="ViewBag.Clubs" class="form-control"></select>
                 <span asp-validation-for="ClubIds" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MeetingIds" class="control-label"></label>
+                <label asp-for="MeetingIds" class="control-label">Meetings</label>
                 <select asp-for="MeetingIds" asp-items="ViewBag.Meetings" class="form-control"></select>
                 <span asp-validation-for="MeetingIds" class="text-danger"></span>
             </div>

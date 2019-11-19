@@ -29,9 +29,6 @@
                     <th>
                         @Html.DisplayNameFor(model => model.Phone)
                     </th>
-                    <th>
-                        Clubs
-                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -52,9 +49,6 @@
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => member.Phone)
-                    </td>
-                    <td>
-                        @string.Join(", ", member.ClubMembers.Select(cm => cm.Club?.Name))
                     </td>
                     <td>
                         @await Html.PartialAsync("_CrudButtons", member.MemberId)

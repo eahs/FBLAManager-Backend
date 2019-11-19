@@ -18,9 +18,6 @@
                         @Html.DisplayNameFor(model => model.Organizer)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.ContactId)
-                    </th>
-                    <th>
                         @Html.DisplayNameFor(model => model.EventName)
                     </th>
                     <th>
@@ -47,9 +44,6 @@
                     <th>
                         @Html.DisplayNameFor(model => model.Type)
                     </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.MeetingAttendees)
-                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -58,9 +52,6 @@
                 <tr>
                     <td>
                         @Html.DisplayFor(modelItem => meeting.Organizer)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => meeting.ContactId)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => meeting.EventName)
@@ -88,9 +79,6 @@
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => meeting.Type)
-                    </td>
-                    <td>
-                        @string.Join(", ", meeting.MeetingAttendees.Select(ma => ma.Member?.Email))
                     </td>
                     <td>
                         @await Html.PartialAsync("_CrudButtons", meeting.MeetingId)

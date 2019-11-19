@@ -3,11 +3,12 @@
 @{
     ViewData["Title"] = "Messageboard";
 }
+<a class="btn btn-white btn-bitbucket" asp-action="Index"><i class="fa fa-info"></i> Back to Clubs</a>
 
-<h2>Messageboard</h2>
+<h2>@ViewBag.Club.Name Messageboard</h2>
 
 <p>
-    <a asp-action="Create" class="btn btn-primary">New Post</a>
+    <a asp-action="BoardCreate" asp-route-id="@ViewBag.ClubId" class="btn btn-primary">New Post</a>
 </p>
 <div class="ibox">
     <div class="ibox-content">
@@ -46,9 +47,8 @@
                             @Html.DisplayFor(modelItem => item.Message)
                         </td>
                         <td>
-                            <a asp-action="Edit" asp-route-id="@item.PostId">Edit</a> |
-                            <a asp-action="Details" asp-route-id="@item.PostId">Details</a> |
-                            <a asp-action="Delete" asp-route-id="@item.PostId">Delete</a>
+                            <a class="btn btn-white btn-bitbucket" asp-action="BoardEdit" asp-route-id="@item.PostId"><i class="fa fa-wrench"></i> Edit</a>
+                            <a class="btn btn-white btn-bitbucket" asp-action="BoardDelete" asp-route-id="@item.PostId"><i class="fa fa-trash"></i> Delete</a>
                         </td>
                     </tr>
                 }

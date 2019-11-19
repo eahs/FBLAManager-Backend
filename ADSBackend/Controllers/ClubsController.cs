@@ -241,5 +241,136 @@ namespace ADSBackend.Controllers
         {
             return _context.Club.Any(e => e.ClubId == id);
         }
+
+        // GET: BoardPosts
+        public async Task<IActionResult> BoardIndex(int? id)
+        {
+            ViewBag.ClubId = id;
+            ViewBag.Club = await _context.Club.FirstOrDefaultAsync(c => c.ClubId == id);
+
+            return View(await _context.BoardPost.Where(p => p.Club.ClubId == id).ToListAsync());
+        }
+
+
+        // GET: BoardPosts/Create
+        public IActionResult BoardCreate(int id)
+        {
+            BoardPost post = new BoardPost
+            {
+                ClubId = id
+            };
+            return View(post);
+        }
+
+        // POST: BoardPosts/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> BoardCreate([Bind("PostId,Title,Director,PostTime,Message,ClubId")] BoardPost boardPost)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                boardPost.Director = user.FullName;
+                boardPost.PostTime = DateTime.Now;
+                _context.Add(boardPost);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(BoardIndex), new { id = boardPost.ClubId });
+            }
+            return View(boardPost);
+        }
+
+        // GET: BoardPosts/Edit/5
+        public async Task<IActionResult> BoardEdit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var boardPost = await _context.BoardPost.FindAsync(id);
+            if (boardPost == null)
+            {
+                return NotFound();
+            }
+            return View(boardPost);
+        }
+
+        // POST: BoardPosts/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> BoardEdit(int id, [Bind("PostId,Title,Message")] BoardPost boardPost)
+        {
+            if (id != boardPost.PostId)
+            {
+                return NotFound();
+            }
+
+            var _boardPost = await _context.BoardPost.FirstOrDefaultAsync(m => m.PostId == id);
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var user = await _userManager.GetUserAsync(User);
+                    _boardPost.Title = boardPost.Title;
+                    _boardPost.Message = boardPost.Message;
+                    _boardPost.EditedTime = DateTime.Now;
+                    _context.Update(_boardPost);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!BoardPostExists(boardPost.PostId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(BoardIndex), new { id = _boardPost.ClubId });
+            }
+            return RedirectToAction(nameof(BoardEdit), new { id = _boardPost.ClubId });
+        }
+
+        // GET: BoardPosts/Delete/5
+        public async Task<IActionResult> BoardDelete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var boardPost = await _context.BoardPost
+                .FirstOrDefaultAsync(m => m.PostId == id);
+            if (boardPost == null)
+            {
+                return NotFound();
+            }
+
+            return View(boardPost);
+        }
+
+        // POST: BoardPosts/Delete/5
+        [HttpPost, ActionName("BoardDelete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> BoardDeleteConfirmed(int id)
+        {
+            var boardPost = await _context.BoardPost.FindAsync(id);
+            _context.BoardPost.Remove(boardPost);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(BoardIndex), new { id = boardPost.ClubId });
+        }
+
+        private bool BoardPostExists(int id)
+        {
+            return _context.BoardPost.Any(e => e.PostId == id);
+        }
+
     }
 }
