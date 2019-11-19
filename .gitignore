@@ -301,3 +301,5 @@ __pycache__/
 ADSBackend/Util/TwitterConfigSecrets\.cs
 
 ADSBackend/appsettings.json
+
+ADSBackend/appsettings.Development.json

@@ -3,7 +3,6 @@
 @{
     ViewData["Title"] = "Details";
 }
-
 <h2>Meeting Details</h2>
 
 <div>
@@ -76,7 +75,7 @@
             @Html.DisplayFor(model => model.Type)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.MeetingAttendees)
+            Attendees
         </dt>
         <dd>
             @string.Join(", ", Model.MeetingAttendees.Select(cm => cm.Member?.Email))
