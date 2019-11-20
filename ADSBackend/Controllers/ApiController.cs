@@ -42,6 +42,17 @@ namespace ADSBackend.Controllers
             return null;
         }
 
+        [HttpGet("Messageboard")]
+        public async Task<List<BoardPost>> GetMessageboard()
+        {
+            if (await IsAuthorized() == null)
+                return new List<BoardPost>();
+
+            var messageboard = await _context.BoardPost.Where(x => x.ClubId == 5).OrderBy(x => x.PostTime).ToListAsync();
+
+            return messageboard;
+        }
+
         [HttpGet("SingleMeeting")]
         public async Task<Meeting> GetSingleMeeting(int meetingId)
         {
