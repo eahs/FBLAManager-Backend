@@ -3,30 +3,30 @@
 @{
     ViewData["Title"] = "Edit";
 }
+<div class="ibox-content">
+    <h2>Edit Board Post</h2>
 
-<h2>Edit Board Post</h2>
-
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="BoardEdit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="PostId" />
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Message" class="control-label"></label>
-                <input asp-for="Message" class="form-control" />
-                <span asp-validation-for="Message" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" /> |
-                <a class="btn btn-danger btn-bitbucket" asp-action="BoardIndex" asp-route-id="@Model.ClubId"> Back to List</a>
-            </div>
-        </form>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="BoardEdit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="PostId" />
+                <div class="form-group">
+                    <label asp-for="Title" class="control-label"></label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Message" class="control-label"></label>
+                    <input asp-for="Message" class="form-control" />
+                    <span asp-validation-for="Message" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" /> |
+                    <a class="btn btn-danger btn-bitbucket" asp-action="BoardIndex" asp-route-id="@Model.ClubId"> Back to List</a>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
-

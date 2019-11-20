@@ -3,50 +3,50 @@
 @{
     ViewData["Title"] = "Edit";
 }
+<div class="ibox-content">
+    <h2>Edit Officer</h2>
 
-<h2>Edit Officer</h2>
-
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="OfficerId" />
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Position" class="control-label"></label>
-                <input asp-for="Position" class="form-control" />
-                <span asp-validation-for="Position" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Image" class="control-label"></label>
-                <input asp-for="Image" class="form-control" />
-                <span asp-validation-for="Image" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="WebsiteLink" class="control-label">Website</label>
-                <input asp-for="WebsiteLink" class="form-control" />
-                <span asp-validation-for="WebsiteLink" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Level" class="control-label"></label>
-                <input asp-for="Level" class="form-control" />
-                <span asp-validation-for="Level" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Order" class="control-label"></label>
-                <input asp-for="Order" class="form-control" />
-                <span asp-validation-for="Order" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" /> |
-                <a class="btn btn-danger btn-bitbucket" asp-action="Index"> Back to List</a>
-            </div>
-        </form>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="OfficerId" />
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Position" class="control-label"></label>
+                    <input asp-for="Position" class="form-control" />
+                    <span asp-validation-for="Position" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Image" class="control-label"></label>
+                    <input asp-for="Image" class="form-control" />
+                    <span asp-validation-for="Image" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="WebsiteLink" class="control-label">Website</label>
+                    <input asp-for="WebsiteLink" class="form-control" />
+                    <span asp-validation-for="WebsiteLink" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Level" class="control-label"></label>
+                    <input asp-for="Level" class="form-control" />
+                    <span asp-validation-for="Level" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Order" class="control-label"></label>
+                    <input asp-for="Order" class="form-control" />
+                    <span asp-validation-for="Order" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" /> |
+                    <a class="btn btn-danger btn-bitbucket" asp-action="Index"> Back to List</a>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
-

@@ -3,89 +3,86 @@
 @{
     ViewData["Title"] = "Meetings";
 }
-
-<h2>Meetings</h2>
-<hr />
-<p>
-    <a asp-action="Create" class="btn btn-primary">Create New Meeting</a>
-</p>
 <div class="ibox">
-    <div class="ibox-content">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Organizer)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.EventName)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Description)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Capacity)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Start)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.End)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Password)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Color)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.AllDay)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Type)
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var meeting in Model)
-                {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => meeting.Organizer)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => meeting.EventName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => meeting.Description)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => meeting.Capacity)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => meeting.Start)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => meeting.End)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => meeting.Password)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => meeting.Color)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => meeting.AllDay)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => meeting.Type)
-                    </td>
-                    <td>
-                        @await Html.PartialAsync("_CrudButtons", meeting.MeetingId)
-                    </td>
-                </tr>
-                }
-            </tbody>
-        </table>
+    <div class="ibox-title">
+        <h2>Meetings</h2>
+        <hr />
+        <p>
+            <a asp-action="Create" class="btn btn-primary">Create New Meeting</a>
+        </p>
+    </div>
+    <div class="ibox">
+        <div class="ibox-content">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Organizer)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.EventName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Capacity)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Start)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.End)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Password)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Color)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.AllDay)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Type)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var meeting in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => meeting.Organizer)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => meeting.EventName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => meeting.Capacity)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => meeting.Start)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => meeting.End)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => meeting.Password)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => meeting.Color)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => meeting.AllDay)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => meeting.Type)
+                            </td>
+                            <td>
+                                @await Html.PartialAsync("_CrudButtons", meeting.MeetingId)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
