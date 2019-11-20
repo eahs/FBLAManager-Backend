@@ -23,13 +23,10 @@
                 <span asp-validation-for="Message" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Save" class="btn btn-primary" /> |
+                <a class="btn btn-danger btn-bitbucket" asp-action="BoardIndex" asp-route-id="@Model.ClubId"> Back to List</a>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="BoardIndex" asp-route-id="">Back to List</a>
 </div>
 

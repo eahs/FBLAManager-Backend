@@ -10,6 +10,7 @@
 <p>
     <a asp-action="BoardCreate" asp-route-id="@ViewBag.ClubId" class="btn btn-primary">New Post</a>
 </p>
+<hr />
 <div class="ibox">
     <div class="ibox-content">
         <table class="table table-hover">
@@ -48,7 +49,7 @@
                         </td>
                         <td>
                             <a class="btn btn-white btn-bitbucket" asp-action="BoardEdit" asp-route-id="@item.PostId"><i class="fa fa-wrench"></i> Edit</a>
-                            <a class="btn btn-white btn-bitbucket" asp-action="BoardDelete" asp-route-id="@item.PostId"><i class="fa fa-trash"></i> Delete</a>
+                            <a class="btn btn-danger btn-bitbucket" asp-action="BoardDelete" asp-route-id="@item.PostId"><i class="fa fa-trash"></i> Delete</a>
                         </td>
                     </tr>
                 }

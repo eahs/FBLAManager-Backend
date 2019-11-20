@@ -5,7 +5,7 @@
 }
 
 <h2>Clubs</h2>
-
+<hr />
 <p>
     <a asp-action="Create" class="btn btn-primary">Create New Club</a>
 </p>
@@ -46,7 +46,7 @@
                         </td>
                         <td>
                             @await Html.PartialAsync("_CrudButtons", club.ClubId)
-                            <a class="btn btn-white btn-bitbucket" asp-controller="Clubs" asp-action="BoardIndex" asp-route-id="@club.ClubId"><i class="fa fa-info"></i> Messageboard</a>
+                            <a class="btn btn-warning btn-bitbucket" asp-controller="Clubs" asp-action="BoardIndex" asp-route-id="@club.ClubId"><i class="fa fa-rss"></i> Messageboard</a>
                         </td>
                     </tr>
                 }
