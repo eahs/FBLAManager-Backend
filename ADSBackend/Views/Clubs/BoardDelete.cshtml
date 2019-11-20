@@ -39,7 +39,7 @@
         <form asp-controller="Clubs" asp-action="BoardDelete">
             <input type="hidden" asp-for="PostId" />
             <input type="submit" value="Delete" class="btn btn-danger" /> |
-            <a class="btn btn-white btn-bitbucket" asp-action="BoardIndex" asp-route-id="@Model.ClubId"> Back to List</a>
+            <a class="btn btn-white btn-bitbucket" asp-action="BoardIndex" asp-route-id="@Model.ClubId"><i class="fa fa-chevron-left"></i> Back to List</a>
         </form>
     </div>
 </div>
