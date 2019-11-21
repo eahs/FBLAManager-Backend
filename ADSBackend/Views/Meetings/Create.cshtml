@@ -41,9 +41,9 @@
                     <span asp-validation-for="End" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <div class="checkbox">
-                        <label> <input asp-for="AllDay" /> <b> All Day</b></label>
-                    </div>
+                    <label> 
+                        <input type="checkbox" class="js-switch" data-switchery="true" asp-for="AllDay" /> <b> All Day</b>
+                    </label>
                 </div>
                 <div class="form-group">
                     <label asp-for="Password" class="control-label"></label>
@@ -52,7 +52,7 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="Color" class="control-label"></label>
-                    <input asp-for="Color" class="form-control colorpick" />
+                    <input asp-for="Color" autocomplete="off" class="form-control colorpick" />
                     <span asp-validation-for="Color" class="text-danger"></span>
                 </div>
                 <div class="form-group">
@@ -67,7 +67,7 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="MemberIds" class="control-label">Members</label>
-                    <select asp-for="MemberIds" asp-items="ViewBag.Members" class="form-control"></select>
+                    <select asp-for="MemberIds" asp-items="ViewBag.Members" class="form-control multiselect" multiple="multiple"></select>
                     <span asp-validation-for="MemberIds" class="text-danger"></span>
                 </div>
                 <div class="form-group">
@@ -82,17 +82,19 @@
 @section Styles {
 
     <link href="~/lib/bootstrap-colorpicker/bootstrap-colorpicker.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/lib/switchery/switchery.css" />
 }
 
 @section Scripts {
     <script type="text/javascript" src="~/lib/bootstrap-colorpicker/bootstrap-colorpicker.min.js"></script>
-
+    <script src="~/lib/switchery/switchery.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
 
             $('.colorpick').colorpicker();
-
-
+            var elem = document.querySelector('.js-switch');
+            var switchery = new Switchery(elem, { color: '#1AB394' });
+            $('.multiselect').select2();
         });
     </script>
 
