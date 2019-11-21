@@ -48,7 +48,7 @@ namespace ADSBackend.Controllers
             if (await IsAuthorized() == null)
                 return new List<BoardPost>();
 
-            var messageboard = await _context.BoardPost.Where(x => x.ClubId == 5).OrderBy(x => x.PostTime).ToListAsync();
+            var messageboard = await _context.BoardPost.Where(x => x.ClubId == 5).OrderByDescending(x => x.PostTime).Take(20).ToListAsync();
 
             return messageboard;
         }

@@ -3,12 +3,12 @@
 @{
     ViewData["Title"] = "Edit";
 }
-<div class="ibox-content">
-    <h2>Edit Club</h2>
+<div class="row">
+    <div class="col-md-5">
+        <div class="ibox-content">
+            <h2>Edit Club</h2>
 
-    <hr />
-    <div class="row">
-        <div class="col-md-4">
+            <hr />
             <form asp-action="Edit">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="ClubId" />
@@ -45,11 +45,11 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
     <script type="text/javascript">
-            $(document).ready(function () {
+        $(document).ready(function () {
 
-                $('.multiselect').select2();
+            $('.multiselect').select2();
 
-            });
+        });
     </script>
 
 }

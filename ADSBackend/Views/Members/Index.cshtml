@@ -4,61 +4,59 @@
     ViewData["Title"] = "Members";
 }
 <div class="ibox">
-    <div class="ibox-title">
+    <div class="ibox-title b-r-md">
         <h2>Members</h2>
         <hr />
         <p>
             <a asp-action="Create" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Create New Member</a>
         </p>
     </div>
-    <div class="ibox">
-        <div class="ibox-content">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>
-                            @Html.DisplayNameFor(model => model.FirstName)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.LastName)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Grade)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Email)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Phone)
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var member in Model)
-                    {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => member.FirstName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => member.LastName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => member.Grade)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => member.Email)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => member.Phone)
-                        </td>
-                        <td>
-                            @await Html.PartialAsync("_CrudButtons", member.MemberId)
-                        </td>
-                    </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
+    <div class="ibox-content b-r-md">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FirstName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.LastName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Grade)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Email)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Phone)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var member in Model)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => member.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => member.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => member.Grade)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => member.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => member.Phone)
+                    </td>
+                    <td>
+                        @await Html.PartialAsync("_CrudButtons", member.MemberId)
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
     </div>
 </div>

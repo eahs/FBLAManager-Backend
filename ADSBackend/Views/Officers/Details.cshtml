@@ -3,52 +3,56 @@
 @{
     ViewData["Title"] = "Details";
 }
-<div class="ibox-content">
-    <h2>Officer Details</h2>
+<div class="row">
+    <div class="col-md-5">
+        <div class="ibox-content b-r-md">
+            <h2>Officer Details</h2>
 
-    <div>
-        <hr />
-        <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayNameFor(model => model.Name)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Name)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.Position)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Position)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.Image)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Image)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.WebsiteLink)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.WebsiteLink)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.Level)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Level)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.Order)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Order)
-            </dd>
-        </dl>
-    </div>
-    <div>
-        <a class="btn btn-success" asp-action="Edit" asp-route-id="@Model.OfficerId"><i class="fa fa-wrench"></i> Edit</a> |
-        <a class="btn btn-white btn-bitbucket" asp-action="Index"><i class="fa fa-chevron-left"></i> Back to List</a>
+            <div>
+                <hr />
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Name)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Position)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Position)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Image)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Image)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.WebsiteLink)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.WebsiteLink)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Level)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Level)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Order)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Order)
+                    </dd>
+                </dl>
+            </div>
+            <div>
+                <a class="btn btn-success" asp-action="Edit" asp-route-id="@Model.OfficerId"><i class="fa fa-wrench"></i> Edit</a> |
+                <a class="btn btn-white btn-bitbucket" asp-action="Index"><i class="fa fa-chevron-left"></i> Back to List</a>
+            </div>
+        </div>
     </div>
 </div>
