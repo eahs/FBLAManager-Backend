@@ -71,7 +71,8 @@ namespace ADSBackend.Controllers
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return View(model);
+                    ViewBag.Status = "Invalid";
+                    return View("~/Views/Home/Index.cshtml",model);
                 }
             }
 
