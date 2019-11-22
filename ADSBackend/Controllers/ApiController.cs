@@ -42,6 +42,15 @@ namespace ADSBackend.Controllers
             return null;
         }
 
+        [HttpGet("ForgotPassword")]
+        public async Task<object> ForgotPassword(IFormCollection forms)
+        {
+            return new
+            {
+                Status = "Success"
+            };
+        }
+
         [HttpGet("Messageboard")]
         public async Task<List<BoardPost>> GetMessageboard()
         {
