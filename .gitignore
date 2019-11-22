@@ -303,3 +303,5 @@ ADSBackend/Util/TwitterConfigSecrets\.cs
 ADSBackend/appsettings.json
 
 ADSBackend/appsettings.Development.json
+
+ADSBackend/Services/EmailSender.cs
