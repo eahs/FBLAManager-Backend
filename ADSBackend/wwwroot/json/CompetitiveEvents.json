@@ -1,0 +1,434 @@
+[
+  {
+    "Name": "3-D Animation",
+    "Type": "Individual, Team",
+    "Category": "Prejudged Projects & Presentation",
+    "URL": "https://www.fbla-pbl.org/competitive-event/3-d-animation/"
+  },
+  {
+    "Name": "Accounting I",
+    "Type": "Individual",
+    "Category": "Objective Test",
+    "URL": "https://www.fbla-pbl.org/competitive-event/accounting-i/"
+  },
+  {
+    "Name": "Accounting II",
+    "Type": "Individual",
+    "Category": "Objective Test",
+    "URL": "https://www.fbla-pbl.org/competitive-event/accounting-ii/"
+  },
+  {
+    "Name": "Advertising",
+    "Type": "Individual",
+    "Category": "Objective Test",
+    "URL": "https://www.fbla-pbl.org/competitive-event/advertising/"
+  },
+  {
+    "Name": "Agribusiness",
+    "Type": "Individual",
+    "Category": "Objective Test",
+    "URL": "https://www.fbla-pbl.org/competitive-event/agribusiness/"
+  },
+  {
+    "Name": "American Enterprise Project",
+    "Type": "Chapter",
+    "Category": "Prejudged Reports & Presentation",
+    "URL": "https://www.fbla-pbl.org/competitive-event/american-enterprise-project/"
+  },
+  {
+    "Name": "Banking & Financial Systems",
+    "Type": "Individual, Team",
+    "Category": "Collaborative Objective Test & Team Performance (Role Play)",
+    "URL": "https://www.fbla-pbl.org/competitive-event/banking-financial-systems/"
+  },
+  {
+    "Name": "Broadcast Journalism",
+    "Type": "Individual, Team",
+    "Category": "Presentation with Equipment",
+    "URL": "https://www.fbla-pbl.org/competitive-event/broadcast-journalism/"
+  },
+  {
+    "Name": "Business Calculations",
+    "Type": "Individual",
+    "Category": "Objective Test",
+    "URL": "https://www.fbla-pbl.org/competitive-event/business-calculations/"
+  },
+  {
+    "Name": "Business Communication (FBLA)",
+    "Type": "Individual",
+    "Category": "Objective Test",
+    "URL": "https://www.fbla-pbl.org/competitive-event/business-communication-fbla/"
+  },
+  {
+    "Name": "Business Ethics (FBLA)",
+    "Type": "Individual, Team",
+    "Category": "Presentation without Equipment",
+    "URL": "https://www.fbla-pbl.org/competitive-event/business-ethics-fbla/"
+  },
+  {
+    "Name": "Business Financial Plan",
+    "Type": "Individual, Team",
+    "Category": "Prejudged Reports & Presentation",
+    "URL": "https://www.fbla-pbl.org/competitive-event/business-financial-plan/"
+  },
+  {
+    "Name": "Business Law (FBLA)",
+    "Type": "Individual",
+    "Category": "Objective Test",
+    "URL": "https://www.fbla-pbl.org/competitive-event/business-law-fbla/"
+  },
+  {
+    "Name": "Business Plan",
+    "Type": "Individual, Team",
+    "Category": "Prejudged Reports & Presentation",
+    "URL": "https://www.fbla-pbl.org/competitive-event/business-plan/"
+  },
+  {
+    "Name": "Client Service (FBLA)",
+    "Type": "Individual",
+    "Category": "Presentation without Equipment",
+    "URL": "https://www.fbla-pbl.org/competitive-event/client-service-fbla/"
+  },
+  {
+    "Name": "Coding & Programming",
+    "Type": "Individual",
+    "Category": "Demonstration",
+    "URL": "https://www.fbla-pbl.org/competitive-event/coding-programming/"
+  },
+  {
+    "Name": "Community Service Project (FBLA)",
+    "Type": "Chapter",
+    "Category": "Prejudged Reports & Presentation",
+    "URL": "https://www.fbla-pbl.org/competitive-event/community-service-project-fbla/"
+  },
+  {
+    "Name": "Computer Applications (FBLA)",
+    "Type": "Individual",
+    "Category": "Production & Objective Test",
+    "URL": "https://www.fbla-pbl.org/competitive-event/computer-applications-fbla/"
+  },
+  {
+    "Name": "Computer Game & Simulation Programming    Modified",
+    "Type": "Individual, Team",
+    "Category": "Demonstration",
+    "URL": "https://www.fbla-pbl.org/competitive-event/computer-game-simulation-programming/"
+  },
+  {
+    "Name": "Computer Problem Solving",
+    "Type": "Individual",
+    "Category": "Objective Test",
+    "URL": "https://www.fbla-pbl.org/competitive-event/computer-problem-solving/"
+  },
+  {
+    "Name": "Cyber Security (FBLA)",
+    "Type": "Individual",
+    "Category": "Objective Test",
+    "URL": "https://www.fbla-pbl.org/competitive-event/cyber-security-fbla/"
+  },
+  {
+    "Name": "Database Design & Applications",
+    "Type": "Individual",
+    "Category": "Production & Objective Test",
+    "URL": "https://www.fbla-pbl.org/competitive-event/database-design-applications/"
+  },
+  {
+    "Name": "Digital Video Production",
+    "Type": "Individual, Team",
+    "Category": "Prejudged Projects & Presentation",
+    "URL": "https://www.fbla-pbl.org/competitive-event/digital-video-production/"
+  },
+  {
+    "Name": "E-business",
+    "Type": "Individual, Team",
+    "Category": "Demonstration",
+    "URL": "https://www.fbla-pbl.org/competitive-event/e-business/"
+  },
+  {
+    "Name": "Economics",
+    "Type": "Individual",
+    "Category": "Objective Test",
+    "URL": "https://www.fbla-pbl.org/competitive-event/economics/"
+  },
+  {
+    "Name": "Electronic Career Portfolio",
+    "Type": "Individual",
+    "Category": "Presentation with Equipment",
+    "URL": "https://www.fbla-pbl.org/competitive-event/electronic-career-portfolio/"
+  },
+  {
+    "Name": "Emerging Business Issues (FBLA)",
+    "Type": "Individual, Team",
+    "Category": "Presentation without Equipment",
+    "URL": "https://www.fbla-pbl.org/competitive-event/emerging-business-issues-fbla/"
+  },
+  {
+    "Name": "Entrepreneurship",
+    "Type": "Individual, Team",
+    "Category": "Collaborative Objective Test & Team Performance (Role Play)",
+    "URL": "https://www.fbla-pbl.org/competitive-event/entrepreneurship/"
+  },
+  {
+    "Name": "Future Business Leader",
+    "Type": "Individual",
+    "Category": "Interview",
+    "URL": "https://www.fbla-pbl.org/competitive-event/future-business-leader/"
+  },
+  {
+    "Name": "Global Business",
+    "Type": "Individual, Team",
+    "Category": "Collaborative Objective Test & Team Performance (Role Play)",
+    "URL": "https://www.fbla-pbl.org/competitive-event/global-business/"
+  },
+  {
+    "Name": "Graphic Design",
+    "Type": "Individual, Team",
+    "Category": "Presentation with Equipment",
+    "URL": "https://www.fbla-pbl.org/competitive-event/graphic-design/"
+  },
+  {
+    "Name": "Health Care Administration",
+    "Type": "Individual",
+    "Category": "Objective Test",
+    "URL": "https://www.fbla-pbl.org/competitive-event/health-care-administration/"
+  },
+  {
+    "Name": "Help Desk (FBLA)",
+    "Type": "Individual",
+    "Category": "Objective Test & Role Play",
+    "URL": "https://www.fbla-pbl.org/competitive-event/help-desk-fbla/"
+  },
+  {
+    "Name": "Hospitality Management (FBLA)",
+    "Type": "Individual, Team",
+    "Category": "Collaborative Objective Test & Team Performance (Role Play)",
+    "URL": "https://www.fbla-pbl.org/competitive-event/hospitality-management-fbla/"
+  },
+  {
+    "Name": "Impromptu Speaking (FBLA)",
+    "Type": "Individual",
+    "Category": "Speech",
+    "URL": "https://www.fbla-pbl.org/competitive-event/impromptu-speaking-fbla/"
+  },
+  {
+    "Name": "Insurance & Risk Management",
+    "Type": "Individual",
+    "Category": "Objective Test",
+    "URL": "https://www.fbla-pbl.org/competitive-event/insurance-risk-management/"
+  },
+  {
+    "Name": "Introduction to Business    9th & 10th Grade Event",
+    "Type": "Individual",
+    "Category": "Objective Test",
+    "URL": "https://www.fbla-pbl.org/competitive-event/introduction-to-business/"
+  },
+  {
+    "Name": "Introduction to Business Communication    9th & 10th Grade Event",
+    "Type": "Individual",
+    "Category": "Objective Test",
+    "URL": "https://www.fbla-pbl.org/competitive-event/introduction-to-business-communication/"
+  },
+  {
+    "Name": "Introduction to Business Presentation    9th & 10th Grade Event",
+    "Type": "Individual, Team",
+    "Category": "Presentation with Equipment",
+    "URL": "https://www.fbla-pbl.org/competitive-event/introduction-to-business-presentation/"
+  },
+  {
+    "Name": "Introduction to Business Procedures    9th & 10th Grade Event",
+    "Type": "Individual",
+    "Category": "Objective Test",
+    "URL": "https://www.fbla-pbl.org/competitive-event/introduction-to-business-procedures/"
+  },
+  {
+    "Name": "Introduction to FBLA    9th & 10th Grade Event",
+    "Type": "Individual",
+    "Category": "Objective Test",
+    "URL": "https://www.fbla-pbl.org/competitive-event/introduction-to-fbla/"
+  },
+  {
+    "Name": "Introduction to Financial Math    9th & 10th Grade Event",
+    "Type": "Individual",
+    "Category": "Objective Test",
+    "URL": "https://www.fbla-pbl.org/competitive-event/introduction-to-financial-math/"
+  },
+  {
+    "Name": "Introduction to Information Technology    9th & 10th Grade Event",
+    "Type": "Individual",
+    "Category": "Objective Test",
+    "URL": "https://www.fbla-pbl.org/competitive-event/introduction-to-information-technology/"
+  },
+  {
+    "Name": "Introduction to Parliamentary Procedure    9th & 10th Grade Event",
+    "Type": "Individual",
+    "Category": "Objective Test",
+    "URL": "https://www.fbla-pbl.org/competitive-event/introduction-to-parliamentary-procedure/"
+  },
+  {
+    "Name": "Introduction to Public Speaking    9th & 10th Grade Event",
+    "Type": "Individual",
+    "Category": "Speech",
+    "URL": "https://www.fbla-pbl.org/competitive-event/introduction-to-public-speaking/"
+  },
+  {
+    "Name": "Job Interview (FBLA)",
+    "Type": "Individual",
+    "Category": "Interview",
+    "URL": "https://www.fbla-pbl.org/competitive-event/job-interview-fbla/"
+  },
+  {
+    "Name": "Journalism",
+    "Type": "Individual",
+    "Category": "Objective Test",
+    "URL": "https://www.fbla-pbl.org/competitive-event/journalism/"
+  },
+  {
+    "Name": "LifeSmarts",
+    "Type": "Team",
+    "Category": "Team Performance",
+    "URL": "https://www.fbla-pbl.org/competitive-event/lifesmarts/"
+  },
+  {
+    "Name": "Local Chapter Annual Business Report (FBLA)    Modified",
+    "Type": "Chapter",
+    "Category": "Prejudged Reports & Presentation",
+    "URL": "https://www.fbla-pbl.org/competitive-event/local-chapter-annual-business-report-fbla/"
+  },
+  {
+    "Name": "Management Decision Making",
+    "Type": "Individual, Team",
+    "Category": "Collaborative Objective Test & Team Performance (Role Play)",
+    "URL": "https://www.fbla-pbl.org/competitive-event/management-decision-making/"
+  },
+  {
+    "Name": "Management Information Systems",
+    "Type": "Individual, Team",
+    "Category": "Collaborative Objective Test & Team Performance (Role Play)",
+    "URL": "https://www.fbla-pbl.org/competitive-event/management-information-systems/"
+  },
+  {
+    "Name": "Marketing",
+    "Type": "Individual, Team",
+    "Category": "Collaborative Objective Test & Team Performance (Role Play)",
+    "URL": "https://www.fbla-pbl.org/competitive-event/marketing/"
+  },
+  {
+    "Name": "Mobile Application Development (FBLA)",
+    "Type": "Individual, Team",
+    "Category": "Demonstration",
+    "URL": "https://www.fbla-pbl.org/competitive-event/mobile-application-development-fbla/"
+  },
+  {
+    "Name": "Network Design (FBLA)",
+    "Type": "Individual, Team",
+    "Category": "Collaborative Objective Test & Team Performance (Role Play)",
+    "URL": "https://www.fbla-pbl.org/competitive-event/network-design-fbla/"
+  },
+  {
+    "Name": "Networking Concepts (FBLA)",
+    "Type": "Individual",
+    "Category": "Objective Test",
+    "URL": "https://www.fbla-pbl.org/competitive-event/networking-concepts-fbla/"
+  },
+  {
+    "Name": "Organizational Leadership",
+    "Type": "Individual",
+    "Category": "Objective Test",
+    "URL": "https://www.fbla-pbl.org/competitive-event/organizational-leadership/"
+  },
+  {
+    "Name": "Parliamentary Procedure (FBLA)",
+    "Type": "Team",
+    "Category": "Objective Test & Role Play",
+    "URL": "https://www.fbla-pbl.org/competitive-event/parliamentary-procedure-fbla/"
+  },
+  {
+    "Name": "Partnership with Business Project",
+    "Type": "Chapter",
+    "Category": "Prejudged Reports & Presentation",
+    "URL": "https://www.fbla-pbl.org/competitive-event/partnership-with-business-project/"
+  },
+  {
+    "Name": "Personal Finance (FBLA)",
+    "Type": "Individual",
+    "Category": "Objective Test",
+    "URL": "https://www.fbla-pbl.org/competitive-event/personal-finance-fbla/"
+  },
+  {
+    "Name": "Political Science",
+    "Type": "Individual",
+    "Category": "Objective Test",
+    "URL": "https://www.fbla-pbl.org/competitive-event/political-science/"
+  },
+  {
+    "Name": "Public Service Announcement",
+    "Type": "Individual, Team",
+    "Category": "Presentation with Equipment",
+    "URL": "https://www.fbla-pbl.org/competitive-event/public-service-announcement/"
+  },
+  {
+    "Name": "Public Speaking (FBLA)",
+    "Type": "Individual",
+    "Category": "Speech",
+    "URL": "https://www.fbla-pbl.org/competitive-event/public-speaking-fbla/"
+  },
+  {
+    "Name": "Publication Design",
+    "Type": "Individual, Team",
+    "Category": "Presentation with Equipment",
+    "URL": "https://www.fbla-pbl.org/competitive-event/publication-design/"
+  },
+  {
+    "Name": "Sales Presentation (FBLA)",
+    "Type": "Individual",
+    "Category": "Presentation with Equipment",
+    "URL": "https://www.fbla-pbl.org/competitive-event/sales-presentation-fbla/"
+  },
+  {
+    "Name": "Securities & Investments",
+    "Type": "Individual",
+    "Category": "Objective Test",
+    "URL": "https://www.fbla-pbl.org/competitive-event/securities-investments/"
+  },
+  {
+    "Name": "Social Media Campaign",
+    "Type": "Individual, Team",
+    "Category": "Presentation with Equipment",
+    "URL": "https://www.fbla-pbl.org/competitive-event/social-media-campaign/"
+  },
+  {
+    "Name": "Sports & Entertainment Management",
+    "Type": "Individual, Team",
+    "Category": "Collaborative Objective Test & Team Performance (Role Play)",
+    "URL": "https://www.fbla-pbl.org/competitive-event/sports-entertainment-management/"
+  },
+  {
+    "Name": "Spreadsheet Applications",
+    "Type": "Individual",
+    "Category": "Production & Objective Test",
+    "URL": "https://www.fbla-pbl.org/competitive-event/spreadsheet-applications/"
+  },
+  {
+    "Name": "Virtual Business Finance Challenge",
+    "Type": "Individual, Team",
+    "Category": "Team Performance",
+    "URL": "https://www.fbla-pbl.org/competitive-event/virtual-business-finance-challenge/"
+  },
+  {
+    "Name": "Virtual Business Management Challenge",
+    "Type": "Individual, Team",
+    "Category": "Team Performance",
+    "URL": "https://www.fbla-pbl.org/competitive-event/virtual-business-management-challenge/"
+  },
+  {
+    "Name": "Website Design (FBLA)",
+    "Type": "Individual, Team",
+    "Category": "Demonstration",
+    "URL": "https://www.fbla-pbl.org/competitive-event/website-design-fbla/"
+  },
+  {
+    "Name": "Word Processing",
+    "Type": "Individual",
+    "Category": "Production & Objective Test",
+    "URL": "https://www.fbla-pbl.org/competitive-event/word-processing/"
+  }
+]
