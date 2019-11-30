@@ -80,25 +80,34 @@ namespace ADSBackend.Controllers
             };
         }
 
-        [HttpGet("ResetPassword")]
-        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        [HttpGet]
+        public IActionResult ResetPassword()
         {
-            if (!ModelState.IsValid)
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(int userId, [Bind("Email,Password,ConfirmPassword")] ResetPasswordViewModel vm)
+        {
+            if (ModelState.IsValid)
             {
-                return View(model);
+                var member = await _context.Member.FirstOrDefaultAsync(m => m.Email == vm.Email);
+                if (member == null || member.MemberId != userId)
+                {
+                    // Don't reveal that the user does not exist
+                    return RedirectToAction();
+                }
+
+                PasswordHash ph = PasswordHasher.Hash(vm.Password);
+                member.Password = ph.HashedPassword;
+                member.Salt = ph.Salt;
+
+                _context.Update(member);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction(nameof(ResetPasswordConfirmation));
             }
-            var member = await _context.Member.FirstOrDefaultAsync(m => m.Email == model.Email);
-            if (member == null)
-            {
-                // Don't reveal that the user does not exist
-                return RedirectToAction();
-            }
-            PasswordHash ph = PasswordHasher.Hash(model.Password);
-            member.Password = ph.HashedPassword;
-            member.Salt = ph.Salt;
-            _context.Update(member);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(ResetPasswordConfirmation));
+            return View(vm);
         }
 
         public IActionResult ResetPasswordConfirmation()
