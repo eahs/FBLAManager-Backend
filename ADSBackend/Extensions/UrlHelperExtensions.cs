@@ -25,5 +25,13 @@ namespace Microsoft.AspNetCore.Mvc
                 values: new { userId, code },
                 protocol: scheme);
         }
+        public static string MemberResetPasswordCallbackLink(this IUrlHelper urlHelper, int userId, string code, string scheme)
+        {
+            return urlHelper.Action( 
+                action: nameof(ApiController.ResetPassword),
+                controller: "api",
+                values: new { userId, code },
+                protocol: scheme);
+        }
     }
 }

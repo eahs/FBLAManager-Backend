@@ -20,6 +20,8 @@
     <Compile Remove="Migrations\20191118171726_MessageboardDirectorFix.Designer.cs" />
     <Compile Remove="Migrations\20191118171817_MessageboardEditTime.cs" />
     <Compile Remove="Migrations\20191118171817_MessageboardEditTime.Designer.cs" />
+    <Compile Remove="Migrations\20191130172400_what.cs" />
+    <Compile Remove="Migrations\20191130172400_what.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,8 +1,13 @@
 ﻿using ADSBackend.Data;
 using ADSBackend.Models;
+using ADSBackend.Models.AccountViewModels;
 using ADSBackend.Models.ApiModels;
+using ADSBackend.Models.MemberViewModels;
+using ADSBackend.Services;
 using ADSBackend.Util;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -20,13 +25,24 @@ namespace ADSBackend.Controllers
         private readonly Services.Configuration Configuration;
         private readonly Services.Cache _cache;
         private readonly ApplicationDbContext _context;
+        private readonly IEmailSender _emailSender;
+        private static Random random = new Random();
 
-        public ApiController(Services.Configuration configuration, Services.Cache cache, ApplicationDbContext context)
+        public ApiController(Services.Configuration configuration, Services.Cache cache, ApplicationDbContext context, IEmailSender emailSender)
         {
             Configuration = configuration;
             _cache = cache;
             _context = context;
+            _emailSender = emailSender;
         }
+
+        public static string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
 
         public async Task<Session> IsAuthorized()
         {
@@ -40,6 +56,64 @@ namespace ADSBackend.Controllers
             }
 
             return null;
+        }
+
+        [HttpPost("ForgotPassword")]
+        public async Task<object> ForgotPassword(IFormCollection forms)
+        {
+            var member = await _context.Member.FirstOrDefaultAsync(m => m.Email == forms["email"]);
+            if (member == null)
+            {
+                return new
+                {
+                    Status = "InvalidCredentials"
+                };
+            }
+
+            var code = RandomString(10);
+            var callbackUrl = Url.MemberResetPasswordCallbackLink(member.MemberId, code, Request.Scheme);
+
+            await _emailSender.SendEmailAsync(member.Email, "Reset Password", $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>");
+            return new
+            {
+                Status = "Success"
+            };
+        }
+
+        [HttpGet("ResetPassword")]
+        public IActionResult ResetPassword()
+        {
+            return View();
+        }
+
+        [HttpPost("ResetPassword")]
+        public async Task<IActionResult> ResetPassword(int userId, [Bind("Email,Password,ConfirmPassword")] ResetPasswordViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                var member = await _context.Member.FirstOrDefaultAsync(m => m.Email == vm.Email);
+                if (member == null || member.MemberId != userId)
+                {
+                    // Don't reveal that the user does not exist
+                    return RedirectToAction();
+                }
+
+                PasswordHash ph = PasswordHasher.Hash(vm.Password);
+                member.Password = ph.HashedPassword;
+                member.Salt = ph.Salt;
+
+                _context.Update(member);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction(nameof(ResetPasswordConfirmation));
+            }
+            return View(vm);
+        }
+
+        [HttpGet("ResetPasswordConfirmation")]
+        public IActionResult ResetPasswordConfirmation()
+        {
+            return View();
         }
 
         [HttpGet("Messageboard")]
