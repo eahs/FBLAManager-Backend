@@ -80,13 +80,13 @@ namespace ADSBackend.Controllers
             };
         }
 
-        [HttpGet]
+        [HttpGet("ResetPassword")]
         public IActionResult ResetPassword()
         {
             return View();
         }
 
-        [HttpPost]
+        [HttpPost("ResetPassword")]
         public async Task<IActionResult> ResetPassword(int userId, [Bind("Email,Password,ConfirmPassword")] ResetPasswordViewModel vm)
         {
             if (ModelState.IsValid)
@@ -110,6 +110,7 @@ namespace ADSBackend.Controllers
             return View(vm);
         }
 
+        [HttpGet("ResetPasswordConfirmation")]
         public IActionResult ResetPasswordConfirmation()
         {
             return View();
