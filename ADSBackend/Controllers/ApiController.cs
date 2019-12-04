@@ -58,6 +58,36 @@ namespace ADSBackend.Controllers
             return null;
         }
 
+        public async Task<Session> CreateSession (Member member)
+        {
+            var sessionKey = System.Guid.NewGuid().ToString();
+            var session = await _context.Session?.FirstOrDefaultAsync(s => s.MemberId == member.MemberId);
+
+            if (session != null)
+            {
+                sessionKey = session.Key;
+                session.LastAccessTime = DateTime.Now;
+                _context.Update(session);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                // Create a new session
+                session = new Session
+                {
+                    MemberId = member.MemberId,
+                    Key = sessionKey,
+                    Email = member.Email,
+                    LastAccessTime = DateTime.Now
+                };
+
+                _context.Add(session);
+                await _context.SaveChangesAsync();
+            }
+
+            return session;
+        }
+
         [HttpPost("ForgotPassword")]
         public async Task<object> ForgotPassword(IFormCollection forms)
         {
@@ -73,7 +103,8 @@ namespace ADSBackend.Controllers
             var code = RandomString(10);
             var callbackUrl = Url.MemberResetPasswordCallbackLink(member.MemberId, code, Request.Scheme);
 
-            await _emailSender.SendEmailAsync(member.Email, "Reset Password", $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>");
+            await _emailSender.SendEmailAsync(member.Email, "FBLA Navigator: Password reset link", 
+                $"Someone requested to change your password. If this was you, click here to reset your password: <a href='{callbackUrl}'>link</a>");
             return new
             {
                 Status = "Success"
@@ -279,35 +310,12 @@ namespace ADSBackend.Controllers
                 };
             }
 
-            var sessionKey = System.Guid.NewGuid().ToString();
-            var session = await _context.Session?.FirstOrDefaultAsync(s => s.MemberId == member.MemberId);
-
-            if (session != null)
-            {
-                sessionKey = session.Key;
-                session.LastAccessTime = DateTime.Now;
-                _context.Update(session);
-                await _context.SaveChangesAsync();
-            }
-            else
-            {
-                // Create a new session
-                session = new Session
-                {
-                    MemberId = member.MemberId,
-                    Key = sessionKey,
-                    Email = member.Email,
-                    LastAccessTime = DateTime.Now
-                };
-
-                _context.Add(session);
-                await _context.SaveChangesAsync();
-            }
+            var session = await CreateSession(member);
 
             var response = new
             {
                 Status = "LoggedIn",
-                Key = sessionKey
+                Key = session.Key
             };
 
             return response;
@@ -353,9 +361,12 @@ namespace ADSBackend.Controllers
             _context.Member.Add(member);
             await _context.SaveChangesAsync();
 
+            var session = await CreateSession(member);
+
             var response = new
             {
-                Status = "Success"
+                Status = "Success",
+                Key = session.Key
             };
 
             return response;
