@@ -195,7 +195,7 @@ namespace ADSBackend.Controllers
             if (await IsAuthorized() == null)
                 return new List<Meeting>();
 
-            var meetings = await _context.Meeting.Include(mem => mem.MeetingAttendees).ThenInclude(a => a.Member).OrderByDescending(x => x.Start).ToListAsync();
+            var meetings = await _context.Meeting.Include(mem => mem.MeetingAttendees).ThenInclude(a => a.Member).OrderBy(x => x.Start).ToListAsync();
 
             foreach (var meeting in meetings)
             {

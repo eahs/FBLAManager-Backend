@@ -5,6 +5,7 @@ using ADSBackend.Util;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,14 +21,26 @@ namespace ADSBackend.Controllers
         }
 
         // GET: Members
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string search)
         {
+            ViewData["Search"] = search;
             var members = await _context.Member
                 .Include(m => m.ClubMembers)
                 .ThenInclude(cm => cm.Club)
                 .Include(meet => meet.MeetingAttendees)
                 .ThenInclude(ma => ma.Meeting)
                 .ToListAsync();
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                members = await _context.Member
+                .Where(s => s.LastName.Contains(search) || s.FirstName.Contains(search))
+                .Include(m => m.ClubMembers)
+                .ThenInclude(cm => cm.Club)
+                .Include(meet => meet.MeetingAttendees)
+                .ThenInclude(ma => ma.Meeting)
+                .ToListAsync();
+            }
 
             return View(members);
         }
