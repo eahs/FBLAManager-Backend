@@ -31,6 +31,7 @@ namespace ADSBackend.Controllers
             var meetings = await _context.Meeting
                 .Include(mem => mem.MeetingAttendees)
                 .ThenInclude(ma => ma.Member)
+                .OrderBy(m => m.Start)
                 .ToListAsync();
             if (await _userManager.IsInRoleAsync(user, "Admin"))
             {
