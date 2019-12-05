@@ -10,9 +10,11 @@ using ADSBackend.Models;
 using ADSBackend.Models.Identity;
 using Microsoft.AspNetCore.Identity;
 using ADSBackend.Models.MeetingViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ADSBackend.Controllers
 {
+    [Authorize]
     public class MeetingsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -25,13 +27,26 @@ namespace ADSBackend.Controllers
         }
 
         // GET: Meetings
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string search)
         {
+            ViewData["Search"] = search;
             var user = await _userManager.GetUserAsync(User);
             var meetings = await _context.Meeting
                 .Include(mem => mem.MeetingAttendees)
                 .ThenInclude(ma => ma.Member)
+                .OrderBy(m => m.Start)
                 .ToListAsync();
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                meetings = await _context.Meeting
+                .Where(s => s.EventName.Contains(search))
+                .Include(mem => mem.MeetingAttendees)
+                .ThenInclude(ma => ma.Member)
+                .OrderBy(m => m.Start)
+                .ToListAsync();
+            }
+
             if (await _userManager.IsInRoleAsync(user, "Admin"))
             {
                 return View(meetings);

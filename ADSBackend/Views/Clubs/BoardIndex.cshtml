@@ -6,53 +6,58 @@
 <div class="ibox">
     <div class="ibox-title b-r-md">
         <h2>@ViewBag.Club.Name Messageboard</h2>
-        <hr />
-        <p>
-            <a asp-action="BoardCreate" asp-route-id="@ViewBag.ClubId" class="btn btn-primary"><i class="fa fa-pencil"></i> New Post</a>
-        </p>
     </div>
-        <div class="ibox-content b-r-md">
-            <table class="table table-hover">
-                <thead>
+    <div class="ibox-content b-r-md">
+        <a asp-action="BoardCreate" asp-route-id="@ViewBag.ClubId" class="btn btn-primary"><i class="fa fa-pencil"></i> New Post</a>
+        <form asp-action="BoardIndex" method="get" style="float:right">
+            <div class="form-actions no-color">
+                Find by title: <input class="form-control-static" name="search" value="@ViewData["Search"]" />
+                <input type="submit" value="Search" class="btn btn-default" /> |
+                <a asp-action="BoardIndex" asp-route-id="@ViewBag.ClubId" class="btn btn-default">Back to Full List</a>
+            </div>
+        </form>
+        <hr />
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Title)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Director)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PostTime)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Message)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
                     <tr>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Title)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Director)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.PostTime)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Message)
-                        </th>
-                        <th></th>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Director)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PostTime)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Message)
+                        </td>
+                        <td>
+                            <a class="btn btn-success btn-bitbucket" asp-action="BoardEdit" asp-route-id="@item.PostId"><i class="fa fa-wrench"></i> Edit</a>
+                            <a class="btn btn-danger btn-bitbucket" asp-action="BoardDelete" asp-route-id="@item.PostId"><i class="fa fa-trash"></i> Delete</a>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Title)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Director)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.PostTime)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Message)
-                            </td>
-                            <td>
-                                <a class="btn btn-success btn-bitbucket" asp-action="BoardEdit" asp-route-id="@item.PostId"><i class="fa fa-wrench"></i> Edit</a>
-                                <a class="btn btn-danger btn-bitbucket" asp-action="BoardDelete" asp-route-id="@item.PostId"><i class="fa fa-trash"></i> Delete</a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>

@@ -6,12 +6,17 @@
 <div class="ibox">
     <div class="ibox-title b-r-md">
         <h2>Members</h2>
-        <hr />
-        <p>
-            <a asp-action="Create" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Create New Member</a>
-        </p>
     </div>
     <div class="ibox-content b-r-md">
+        <a asp-action="Create" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Create New Member</a>
+        <form asp-action="Index" method="get" style="float:right">
+            <div class="form-actions no-color">
+                Find by first or last name: <input class="form-control-static" name="search" value="@ViewData["Search"]" />
+                <input type="submit" value="Search" class="btn btn-default" /> |
+                <a asp-action="Index" class="btn btn-default">Back to Full List</a>
+            </div>
+        </form>
+        <hr />
         <table class="table table-hover">
             <thead>
                 <tr>
@@ -35,26 +40,26 @@
             <tbody>
                 @foreach (var member in Model)
                 {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => member.FirstName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => member.LastName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => member.Grade)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => member.Email)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => member.Phone)
-                    </td>
-                    <td>
-                        @await Html.PartialAsync("_CrudButtons", member.MemberId)
-                    </td>
-                </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => member.FirstName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => member.LastName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => member.Grade)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => member.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => member.Phone)
+                        </td>
+                        <td>
+                            @await Html.PartialAsync("_CrudButtons", member.MemberId)
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>
