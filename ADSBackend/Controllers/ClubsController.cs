@@ -10,9 +10,11 @@ using ADSBackend.Models;
 using Microsoft.AspNetCore.Identity;
 using ADSBackend.Models.Identity;
 using ADSBackend.Models.ClubViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ADSBackend.Controllers
 {
+    [Authorize]
     public class ClubsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -25,13 +27,24 @@ namespace ADSBackend.Controllers
         }
 
         // GET: Clubs
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string search)
         {
+            ViewData["Search"] = search;
             var user = await _userManager.GetUserAsync(User);
             var clubs = await _context.Club
                 .Include(c => c.ClubMembers)
                 .ThenInclude(cm => cm.Member)
                 .ToListAsync();
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                clubs = await _context.Club
+                .Where(s => s.Name.Contains(search))
+                .Include(c => c.ClubMembers)
+                .ThenInclude(cm => cm.Club)
+                .ToListAsync();
+            }
+
             if (await _userManager.IsInRoleAsync(user,"Admin"))
             {
                 return View(clubs);
@@ -243,12 +256,23 @@ namespace ADSBackend.Controllers
         }
 
         // GET: BoardPosts
-        public async Task<IActionResult> BoardIndex(int? id)
+        public async Task<IActionResult> BoardIndex(int? id, string search)
         {
             ViewBag.ClubId = id;
             ViewBag.Club = await _context.Club.FirstOrDefaultAsync(c => c.ClubId == id);
 
-            return View(await _context.BoardPost.Where(p => p.Club.ClubId == id).ToListAsync());
+            var boardposts = await _context.BoardPost
+                .Where(p => p.Club.ClubId == id)
+                .ToListAsync();
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                boardposts = await _context.BoardPost
+                .Where(p => p.Club.ClubId == id && p.Title.Contains(search))
+                .ToListAsync();
+            }
+
+            return View(boardposts);
         }
 
 

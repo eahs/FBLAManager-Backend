@@ -2,6 +2,7 @@
 using ADSBackend.Models;
 using ADSBackend.Models.MemberViewModels;
 using ADSBackend.Util;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace ADSBackend.Controllers
 {
+    [Authorize]
     public class MembersController : Controller
     {
         private readonly ApplicationDbContext _context;

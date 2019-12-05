@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
+using System;
 
 namespace ADSBackend.Controllers
 {
@@ -28,8 +29,9 @@ namespace ADSBackend.Controllers
             _emailSender = emailSender;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string search)
         {
+            ViewData["Search"] = search;
             var users = await _context.Users.OrderBy(x => x.LastName).ToListAsync();
 
             var viewModel = users.Select(x => new UserViewModel
@@ -40,6 +42,19 @@ namespace ADSBackend.Controllers
                 LastName = x.LastName,
                 Role = _userManager.GetRolesAsync(x).Result.FirstOrDefault()
             }).ToList();
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                viewModel = users.Select(x => new UserViewModel
+                {
+                    Id = x.Id,
+                    Email = x.Email,
+                    FirstName = x.FirstName,
+                    LastName = x.LastName,
+                    Role = _userManager.GetRolesAsync(x).Result.FirstOrDefault()
+                }).Where(s => s.LastName.Contains(search) || s.FirstName.Contains(search))
+                  .ToList();
+            }
 
             return View(viewModel);
         }

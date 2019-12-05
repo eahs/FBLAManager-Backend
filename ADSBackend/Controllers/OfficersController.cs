@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ADSBackend.Data;
 using ADSBackend.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ADSBackend.Controllers
 {
+    [Authorize]
     public class OfficersController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -20,9 +22,17 @@ namespace ADSBackend.Controllers
         }
 
         // GET: Officers
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string search)
         {
-            return View(await _context.Officer.ToListAsync());
+            ViewData["Search"] = search;
+            var officers = await _context.Officer.ToListAsync();
+            if (!String.IsNullOrEmpty(search))
+            {
+                officers = await _context.Officer
+                    .Where(s => s.Name.Contains(search))
+                    .ToListAsync();
+            }
+            return View(officers);
         }
 
         // GET: Officers/Details/5
