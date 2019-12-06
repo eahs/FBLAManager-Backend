@@ -11,7 +11,23 @@ namespace ADSBackend.Models.MemberViewModels
         [Key]
         public int MemberId { get; set; }
 
-        public string Username { get; set; }
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
+        public string Gender { get; set; }
+
+        public string Address { get; set; }
+
+        public string City { get; set; }
+
+        public string State { get; set; } = "PA";
+
+        public string ZipCode { get; set; }
+
+        public int Grade { get; set; }
+
+        public string RecruitedBy { get; set; }
 
         public string Email { get; set; }
 
@@ -35,7 +51,15 @@ namespace ADSBackend.Models.MemberViewModels
         public MemberViewModel(Member member)
         {
             this.MemberId = member.MemberId;
-            this.Username = member.Username;
+            this.FirstName = member.FirstName;
+            this.LastName = member.LastName;
+            this.Gender = member.Gender;
+            this.Address = member.Address;
+            this.City = member.City;
+            this.State = member.State;
+            this.ZipCode = member.ZipCode;
+            this.Grade = member.Grade;
+            this.RecruitedBy = member.RecruitedBy;
             this.Email = member.Email;
             this.Password = member.Password;
             this.Phone = member.Phone;

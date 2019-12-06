@@ -10,9 +10,11 @@ using ADSBackend.Models;
 using Microsoft.AspNetCore.Identity;
 using ADSBackend.Models.Identity;
 using ADSBackend.Models.ClubViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ADSBackend.Controllers
 {
+    [Authorize]
     public class ClubsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -25,13 +27,24 @@ namespace ADSBackend.Controllers
         }
 
         // GET: Clubs
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string search)
         {
+            ViewData["Search"] = search;
             var user = await _userManager.GetUserAsync(User);
             var clubs = await _context.Club
                 .Include(c => c.ClubMembers)
                 .ThenInclude(cm => cm.Member)
                 .ToListAsync();
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                clubs = await _context.Club
+                .Where(s => s.Name.Contains(search))
+                .Include(c => c.ClubMembers)
+                .ThenInclude(cm => cm.Club)
+                .ToListAsync();
+            }
+
             if (await _userManager.IsInRoleAsync(user,"Admin"))
             {
                 return View(clubs);
@@ -65,8 +78,8 @@ namespace ADSBackend.Controllers
         // GET: Clubs/Create
         public async Task<IActionResult> Create()
         {
-            var members = await _context.Member.OrderBy(c => c.Username).ToListAsync();
-            ViewBag.Members = new MultiSelectList(members, "MemberId", "Username");
+            var members = await _context.Member.OrderBy(c => c.LastName).ToListAsync();
+            ViewBag.Members = new MultiSelectList(members, "MemberId", "Email");
 
             return View();
         }
@@ -107,8 +120,8 @@ namespace ADSBackend.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            var members = await _context.Member.OrderBy(c => c.Username).ToListAsync();
-            ViewBag.Members = new MultiSelectList(members, "MemberId", "Username");
+            var members = await _context.Member.OrderBy(c => c.LastName).ToListAsync();
+            ViewBag.Members = new MultiSelectList(members, "MemberId", "Email");
             return View(vm);
         }
 
@@ -127,8 +140,8 @@ namespace ADSBackend.Controllers
             {
                 return NotFound();
             }
-            var members = await _context.Member.OrderBy(c => c.Username).ToListAsync();
-            ViewBag.Members = new MultiSelectList(members, "MemberId", "Username");
+            var members = await _context.Member.OrderBy(c => c.LastName).ToListAsync();
+            ViewBag.Members = new MultiSelectList(members, "MemberId", "Email");
 
             var vm = new ClubViewModel(club);
             return View(vm);
@@ -200,8 +213,8 @@ namespace ADSBackend.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            var members = await _context.Member.OrderBy(c => c.Username).ToListAsync();
-            ViewBag.Members = new MultiSelectList(members, "MemberId", "Username");
+            var members = await _context.Member.OrderBy(c => c.LastName).ToListAsync();
+            ViewBag.Members = new MultiSelectList(members, "MemberId", "Email");
 
             return View(vm);
         }
@@ -241,5 +254,147 @@ namespace ADSBackend.Controllers
         {
             return _context.Club.Any(e => e.ClubId == id);
         }
+
+        // GET: BoardPosts
+        public async Task<IActionResult> BoardIndex(int? id, string search)
+        {
+            ViewBag.ClubId = id;
+            ViewBag.Club = await _context.Club.FirstOrDefaultAsync(c => c.ClubId == id);
+
+            var boardposts = await _context.BoardPost
+                .Where(p => p.Club.ClubId == id)
+                .ToListAsync();
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                boardposts = await _context.BoardPost
+                .Where(p => p.Club.ClubId == id && p.Title.Contains(search))
+                .ToListAsync();
+            }
+
+            return View(boardposts);
+        }
+
+
+        // GET: BoardPosts/Create
+        public IActionResult BoardCreate(int id)
+        {
+            BoardPost post = new BoardPost
+            {
+                ClubId = id
+            };
+            return View(post);
+        }
+
+        // POST: BoardPosts/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> BoardCreate([Bind("PostId,Title,Director,PostTime,Message,ClubId")] BoardPost boardPost)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                boardPost.Director = user.FullName;
+                boardPost.PostTime = DateTime.Now;
+                _context.Add(boardPost);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(BoardIndex), new { id = boardPost.ClubId });
+            }
+            return View(boardPost);
+        }
+
+        // GET: BoardPosts/Edit/5
+        public async Task<IActionResult> BoardEdit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var boardPost = await _context.BoardPost.FindAsync(id);
+            if (boardPost == null)
+            {
+                return NotFound();
+            }
+            return View(boardPost);
+        }
+
+        // POST: BoardPosts/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> BoardEdit(int id, [Bind("PostId,Title,Message")] BoardPost boardPost)
+        {
+            if (id != boardPost.PostId)
+            {
+                return NotFound();
+            }
+
+            var _boardPost = await _context.BoardPost.FirstOrDefaultAsync(m => m.PostId == id);
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var user = await _userManager.GetUserAsync(User);
+                    _boardPost.Title = boardPost.Title;
+                    _boardPost.Message = boardPost.Message;
+                    _boardPost.EditedTime = DateTime.Now;
+                    _context.Update(_boardPost);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!BoardPostExists(boardPost.PostId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(BoardIndex), new { id = _boardPost.ClubId });
+            }
+            return RedirectToAction(nameof(BoardEdit), new { id = _boardPost.ClubId });
+        }
+
+        // GET: BoardPosts/Delete/5
+        public async Task<IActionResult> BoardDelete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var boardPost = await _context.BoardPost
+                .FirstOrDefaultAsync(m => m.PostId == id);
+            if (boardPost == null)
+            {
+                return NotFound();
+            }
+
+            return View(boardPost);
+        }
+
+        // POST: BoardPosts/Delete/5
+        [HttpPost, ActionName("BoardDelete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> BoardDeleteConfirmed(int id)
+        {
+            var boardPost = await _context.BoardPost.FindAsync(id);
+            _context.BoardPost.Remove(boardPost);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(BoardIndex), new { id = boardPost.ClubId });
+        }
+
+        private bool BoardPostExists(int id)
+        {
+            return _context.BoardPost.Any(e => e.PostId == id);
+        }
+
     }
 }

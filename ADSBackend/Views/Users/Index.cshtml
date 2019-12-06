@@ -3,59 +3,60 @@
 @{
     ViewData["Title"] = "Admin";
 }
-
 <div class="ibox">
-    <div class="ibox-title">
+    <div class="ibox-title b-r-md">
         <h2>Manage Users</h2>
-        <p>
-            <a asp-action="Create" class="btn btn-primary">Create New</a>
-        </p>
     </div>
-    <div class="ibox-content">
-        <div class="table-responsive">
-            <table class="table table-bordered table-hover">
-                <thead>
+    <div class="ibox-content b-r-md">
+        <a asp-action="Create" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Create New</a>
+        <form asp-action="Index" method="get" style="float:right">
+            <div class="form-actions no-color">
+                Find by first or last name: <input class="form-control-static" name="search" value="@ViewData["Search"]" />
+                <input type="submit" value="Search" class="btn btn-default" /> |
+                <a asp-action="Index" class="btn btn-default">Back to Full List</a>
+            </div>
+        </form>
+        <hr />
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].FirstName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].LastName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].Email)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].Role)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
                     <tr>
-                        <th>
-                            @Html.DisplayNameFor(model => model[0].FirstName)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model[0].LastName)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model[0].Email)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model[0].Role)
-                        </th>
-                        <th></th>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FirstName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LastName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Role)
+                        </td>
+                        <td>
+                            @await Html.PartialAsync("_CrudButtons", item.Id)
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.FirstName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.LastName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Email)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Role)
-                            </td>
-                            <td>
-                                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
+                }
+            </tbody>
+        </table>
     </div>
 </div>

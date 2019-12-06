@@ -3,88 +3,92 @@
 @{
     ViewData["Title"] = "Details";
 }
+<div class="row">
+    <div class="col-md-5">
+        <div class="ibox-content b-r-md">
+            <h2>Meeting Details</h2>
 
-<h2>Details</h2>
-
-<div>
-    <h4>Meeting</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Organizer)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Organizer)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ContactId)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ContactId)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.EventName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.EventName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Capacity)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Capacity)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Start)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Start)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.End)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.End)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Password)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Password)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Color)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Color)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.AllDay)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.AllDay)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Type)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Type)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.MeetingAttendees)
-        </dt>
-        <dd>
-            @string.Join(", ", Model.MeetingAttendees.Select(cm => cm.Member?.Username))
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.MeetingId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+            <div>
+                <hr />
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Organizer)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Organizer)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.ContactId)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.ContactId)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.EventName)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.EventName)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Description)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Description)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Capacity)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Capacity)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Start)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Start)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.End)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.End)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Password)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Password)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Color)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Color)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.AllDay)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.AllDay)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Type)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Type)
+                    </dd>
+                    <dt>
+                        Attendees
+                    </dt>
+                    <dd>
+                        @string.Join(", ", Model.MeetingAttendees.Select(cm => cm.Member?.Email))
+                    </dd>
+                </dl>
+            </div>
+            <div>
+                <a class="btn btn-success" asp-action="Edit" asp-route-id="@Model.MeetingId"><i class="fa fa-wrench"></i> Edit</a> |
+                <a class="btn btn-white btn-bitbucket" asp-action="Index"><i class="fa fa-chevron-left"></i> Back to List</a>
+            </div>
+        </div>
+    </div>
 </div>

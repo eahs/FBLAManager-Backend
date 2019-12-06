@@ -11,13 +11,35 @@ namespace ADSBackend.Models
         [Key]
         public int MemberId { get; set; }
 
-        public string Username { get; set; }
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; }
+
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
+
+        public string Gender { get; set; }
+
+        public string Address { get; set; }
+
+        public string City { get; set; }
+
+        public string State { get; set; } = "PA";
+
+        [Display(Name = "Zip Code")]
+        public string ZipCode { get; set; }
+
+        public int Grade { get; set; }
+
+        [Display(Name = "Recruited By")]
+        public string RecruitedBy { get; set; }
 
         public string Email { get; set; }
 
         public string Phone { get; set; }
 
         public string Password { get; set; }
+
+        public string Salt { get; set; }
 
         public List<ClubMember> ClubMembers { get; set; }
 

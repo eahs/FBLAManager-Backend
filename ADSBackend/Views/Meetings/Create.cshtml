@@ -3,94 +3,99 @@
 @{
     ViewData["Title"] = "Create";
 }
-
-<h2>Create</h2>
-
-<h4>Meeting</h4>
-<hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="ContactId" class="control-label"></label>
-                <input asp-for="ContactId" class="form-control" />
-                <span asp-validation-for="ContactId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EventName" class="control-label"></label>
-                <input asp-for="EventName" class="form-control" />
-                <span asp-validation-for="EventName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Capacity" class="control-label"></label>
-                <input asp-for="Capacity" class="form-control" />
-                <span asp-validation-for="Capacity" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Start" class="control-label">Start (DD-MM-YYYY HH:MM(AM/PM)</label>
-                <div class="input-group date" id="startDate" data-target-input="nearest">
-                    <input asp-for="Start" class="form-control datetimepicker-input" data-target="#startDate" />
-                    <div class="input-group-append" data-target="#startDate" data-toggle="datetimepicker">
-                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                    </div>
+    <div class="col-md-5">
+        <div class="ibox-content b-r-md">
+            <h2>Create Meeting</h2>
+            <hr />
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="ContactId" class="control-label">Contact ID</label>
+                    <input asp-for="ContactId" class="form-control" />
+                    <span asp-validation-for="ContactId" class="text-danger"></span>
                 </div>
-                <span asp-validation-for="Start" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="End" class="control-label">End (DD-MM-YYYY HH:MM(AM/PM)</label>
-                <input asp-for="End" class="form-control" />
-                <span asp-validation-for="End" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Color" class="control-label"></label>
-                <input asp-for="Color" class="form-control" />
-                <span asp-validation-for="Color" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <div class="checkbox">
+                <div class="form-group">
+                    <label asp-for="EventName" class="control-label">Name</label>
+                    <input asp-for="EventName" class="form-control" />
+                    <span asp-validation-for="EventName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <textarea asp-for="Description" class="form-control"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Capacity" class="control-label"></label>
+                    <input asp-for="Capacity" class="form-control" />
+                    <span asp-validation-for="Capacity" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Start" class="control-label"></label>
+                    <input asp-for="Start" class="form-control" />
+                    <span asp-validation-for="Start" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="End" class="control-label"></label>
+                    <input asp-for="End" class="form-control" />
+                    <span asp-validation-for="End" class="text-danger"></span>
+                </div>
+                <div class="form-group">
                     <label>
-                        <input asp-for="AllDay" /> @Html.DisplayNameFor(model => model.AllDay)
+                        <input type="checkbox" class="js-switch" data-switchery="true" asp-for="AllDay" /> <b> All Day</b>
                     </label>
                 </div>
-            </div>
-            <div class="form-group">
-                <label asp-for="Type" class="control-label"></label>
-                <input asp-for="Type" class="form-control" />
-                <span asp-validation-for="Type" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MemberIds" class="control-label"></label>
-                <select asp-for="MemberIds" asp-items="ViewBag.Members" class="form-control"></select>
-                <span asp-validation-for="MemberIds" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </form>
+                <div class="form-group">
+                    <label asp-for="Password" class="control-label"></label>
+                    <input asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Color" class="control-label"></label>
+                    <input asp-for="Color" autocomplete="off" class="form-control colorpick" />
+                    <span asp-validation-for="Color" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Type" class="control-label"></label>
+                    <select asp-for="Type" class="form-control">
+                        <option value="Meeting">Meeting</option>
+                        <option value="ClubEvent">Club Event</option>
+                        <option value="CompetitiveEvent">Competitive Event</option>
+                        <option value="CommunityService">Community Service</option>
+                    </select>
+                    <span asp-validation-for="Type" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="MemberIds" class="control-label">Members</label>
+                    <select asp-for="MemberIds" asp-items="ViewBag.Members" class="form-control multiselect" multiple="multiple"></select>
+                    <span asp-validation-for="MemberIds" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" /> |
+                    <a class="btn btn-danger btn-bitbucket" asp-action="Index"><i class="fa fa-chevron-left"></i> Back to List</a>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+@section Styles {
+
+    <link href="~/lib/bootstrap-colorpicker/bootstrap-colorpicker.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/lib/switchery/switchery.css" />
+}
 
 @section Scripts {
-
+    <script type="text/javascript" src="~/lib/bootstrap-colorpicker/bootstrap-colorpicker.min.js"></script>
+    <script src="~/lib/switchery/switchery.js"></script>
     <script type="text/javascript">
-            $(function () {
-                $('#startDate').datetimepicker();
-            });
+        $(document).ready(function () {
+
+            $('.colorpick').colorpicker();
+            var elem = document.querySelector('.js-switch');
+            var switchery = new Switchery(elem, { color: '#1AB394' });
+            $('.multiselect').select2();
+        });
     </script>
 
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

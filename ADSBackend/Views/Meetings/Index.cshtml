@@ -3,14 +3,20 @@
 @{
     ViewData["Title"] = "Meetings";
 }
-
-<h2>Meetings</h2>
-
-<p>
-    <a asp-action="Create" class="btn btn-primary">Create New Meeting</a>
-</p>
 <div class="ibox">
-    <div class="ibox-content">
+    <div class="ibox-title b-r-md">
+        <h2>Meetings</h2>
+    </div>
+    <div class="ibox-content b-r-md">
+        <a asp-action="Create" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Create New Meeting</a>
+        <form asp-action="Index" method="get" style="float:right">
+            <div class="form-actions no-color">
+                Find by name: <input class="form-control-static" name="search" value="@ViewData["Search"]" />
+                <input type="submit" value="Search" class="btn btn-default" /> |
+                <a asp-action="Index" class="btn btn-default">Back to Full List</a>
+            </div>
+        </form>
+        <hr />
         <table class="table table-hover">
             <thead>
                 <tr>
@@ -18,13 +24,7 @@
                         @Html.DisplayNameFor(model => model.Organizer)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.ContactId)
-                    </th>
-                    <th>
                         @Html.DisplayNameFor(model => model.EventName)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Description)
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.Capacity)
@@ -47,55 +47,43 @@
                     <th>
                         @Html.DisplayNameFor(model => model.Type)
                     </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.MeetingAttendees)
-                    </th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var meeting in Model)
                 {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => meeting.Organizer)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => meeting.ContactId)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => meeting.EventName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => meeting.Description)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => meeting.Capacity)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => meeting.Start)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => meeting.End)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => meeting.Password)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => meeting.Color)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => meeting.AllDay)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => meeting.Type)
-                    </td>
-                    <td>
-                        @string.Join(", ", meeting.MeetingAttendees.Select(ma => ma.Member?.Username))
-                    </td>
-                    <td>
-                        @await Html.PartialAsync("_CrudButtons", meeting.MeetingId)
-                    </td>
-                </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => meeting.Organizer)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => meeting.EventName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => meeting.Capacity)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => meeting.Start)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => meeting.End)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => meeting.Password)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => meeting.Color)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => meeting.AllDay)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => meeting.Type)
+                        </td>
+                        <td>
+                            @await Html.PartialAsync("_CrudButtons", meeting.MeetingId)
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>

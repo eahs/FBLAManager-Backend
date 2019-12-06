@@ -19,6 +19,31 @@ namespace ADSBackend.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("ADSBackend.Models.BoardPost", b =>
+                {
+                    b.Property<int>("PostId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ClubId");
+
+                    b.Property<string>("Director");
+
+                    b.Property<DateTime>("EditedTime");
+
+                    b.Property<string>("Message");
+
+                    b.Property<DateTime>("PostTime");
+
+                    b.Property<string>("Title");
+
+                    b.HasKey("PostId");
+
+                    b.HasIndex("ClubId");
+
+                    b.ToTable("BoardPost");
+                });
+
             modelBuilder.Entity("ADSBackend.Models.Club", b =>
                 {
                     b.Property<int>("ClubId")
@@ -202,13 +227,31 @@ namespace ADSBackend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Address");
+
+                    b.Property<string>("City");
+
                     b.Property<string>("Email");
+
+                    b.Property<string>("FirstName");
+
+                    b.Property<string>("Gender");
+
+                    b.Property<int>("Grade");
+
+                    b.Property<string>("LastName");
 
                     b.Property<string>("Password");
 
                     b.Property<string>("Phone");
 
-                    b.Property<string>("Username");
+                    b.Property<string>("RecruitedBy");
+
+                    b.Property<string>("Salt");
+
+                    b.Property<string>("State");
+
+                    b.Property<string>("ZipCode");
 
                     b.HasKey("MemberId");
 
@@ -338,6 +381,14 @@ namespace ADSBackend.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("ADSBackend.Models.BoardPost", b =>
+                {
+                    b.HasOne("ADSBackend.Models.Club", "Club")
+                        .WithMany("Messageboard")
+                        .HasForeignKey("ClubId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("ADSBackend.Models.ClubMember", b =>

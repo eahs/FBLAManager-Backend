@@ -3,46 +3,91 @@
 @{
     ViewData["Title"] = "Details";
 }
-
-<h2>Details</h2>
-
-<div>
-    <h4>Member</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Username)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Username)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Phone)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Phone)
-        </dd>
-        <dt>
-            Clubs
-        </dt>
-        <dd>
-            @string.Join(", ", Model.ClubMembers.Select(cm => cm.Club?.Name))
-        </dd>
-        <dt>
-            Meetings
-        </dt>
-        <dd>
-            @string.Join(", ", Model.MeetingAttendees.Select(ma => ma.Meeting?.EventName))
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.MemberId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<div class="row">
+    <div class="col-md-5">
+        <div class="ibox-content b-r-md">
+            <h2>Member Details</h2>
+            <div>
+                <hr />
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.FirstName)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.FirstName)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.LastName)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.LastName)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Gender)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Gender)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Address)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Address)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.City)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.City)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.ZipCode)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.ZipCode)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Grade)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Grade)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.RecruitedBy)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.RecruitedBy)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Email)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Email)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Phone)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Phone)
+                    </dd>
+                    <dt>
+                        Clubs
+                    </dt>
+                    <dd>
+                        @string.Join(", ", Model.ClubMembers.Select(cm => cm.Club?.Name))
+                    </dd>
+                    <dt>
+                        Meetings
+                    </dt>
+                    <dd>
+                        @string.Join(", ", Model.MeetingAttendees.Select(ma => ma.Meeting?.EventName))
+                    </dd>
+                </dl>
+            </div>
+            <div>
+                <a class="btn btn-success" asp-action="Edit" asp-route-id="@Model.MemberId"><i class="fa fa-wrench"></i> Edit</a> |
+                <a class="btn btn-white btn-bitbucket" asp-action="Index"><i class="fa fa-chevron-left"></i> Back to List</a>
+            </div>
+        </div>
+    </div>
 </div>

@@ -1,8 +1,75 @@
-﻿@{
+﻿@using ADSBackend.Models.Identity
+
+@{
     ViewData["Title"] = "Home Page";
 }
+@model LoginViewModel
+@inject SignInManager<ApplicationUser> SignInManager
 
-<div class="text-center">
-    <h1 class="display-4">Welcome to the FBLA Club Manager!</h1>
-    <a asp-controller="Admin" asp-action="Index" class="btn btn-success">Click Here to Login</a>
+<div class="ibox-title b-r-md">
+    <div class="text-center">
+        <h1 class="display-4">Welcome to the FBLA Club Manager!</h1>
+        <hr />
+        <a class="btn btn-success" data-toggle="modal" href="#modal-form">Click Here to Login</a>
+    </div>
 </div>
+
+<div id="modal-form" class="modal fade" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-6 b-r">
+                        <h3 class="m-t-none m-b">Sign in</h3>
+                        <p>Already a Member?</p>
+                        <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+                            <div asp-validation-summary="All" class="text-danger"></div>
+                            <div class="form-group">
+                                <label asp-for="Username"></label>
+                                <input asp-for="Username" class="form-control" />
+                                <span asp-validation-for="Username" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Password"></label>
+                                <input asp-for="Password" class="form-control" />
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <div class="checkbox">
+                                    <label asp-for="RememberMe">
+                                        <input asp-for="RememberMe" />
+                                        @Html.DisplayNameFor(m => m.RememberMe)
+                                    </label>
+                                </div>
+                            </div>
+                            <button asp-controller="Account" asp-action="Login" type="submit" class="btn btn-primary block full-width m-b">Login</button>
+                            <div class="form-group">
+                                <a class="btn btn-white block full-width m-b" asp-controller="Account" asp-action="ForgotPassword">Forgot your password?</a>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-sm-6">
+                        <h3>Not a member?</h3>
+                        <p>You can create an account:</p>
+                        <p class="text-center">
+                            <a asp-controller="Account" asp-action="Register"><i class="fa fa-sign-in big-icon"></i></a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <script type="text/javascript">
+            $(document).ready(function () {
+
+                $(function () {
+                if ('@ViewBag.Status' != "") {
+                    $('#modal-form').modal('show');
+                }
+                });
+            });
+    </script>
+}

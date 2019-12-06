@@ -11,8 +11,11 @@ namespace ADSBackend.Models
     public enum MeetingType
     {
         Meeting = 1,
+        [Display(Name = "Club Event")]
         ClubEvent = 2,
+        [Display(Name = "Competitive Event")]
         CompetitiveEvent = 3,
+        [Display(Name = "Community Service")]
         CommunityService = 4
     }
     public class Meeting
@@ -24,8 +27,10 @@ namespace ADSBackend.Models
 
         public string Organizer { get; set; }
 
+        [Display(Name = "Contact ID")]
         public string ContactId { get; set; }
 
+        [Display(Name = "Name")]
         public string EventName { get; set; }
 
         public string Description { get; set; }
@@ -42,6 +47,7 @@ namespace ADSBackend.Models
 
         public string Color { get; set; }
 
+        [Display(Name = "All Day")]
         public bool AllDay { get; set; }
 
         public MeetingType Type { get; set; } = MeetingType.Meeting;

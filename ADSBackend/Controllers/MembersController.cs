@@ -1,14 +1,18 @@
 ﻿using ADSBackend.Data;
 using ADSBackend.Models;
 using ADSBackend.Models.MemberViewModels;
+using ADSBackend.Util;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace ADSBackend.Controllers
 {
+    [Authorize]
     public class MembersController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -19,14 +23,26 @@ namespace ADSBackend.Controllers
         }
 
         // GET: Members
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string search)
         {
+            ViewData["Search"] = search;
             var members = await _context.Member
                 .Include(m => m.ClubMembers)
                 .ThenInclude(cm => cm.Club)
                 .Include(meet => meet.MeetingAttendees)
                 .ThenInclude(ma => ma.Meeting)
                 .ToListAsync();
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                members = await _context.Member
+                .Where(s => s.LastName.Contains(search) || s.FirstName.Contains(search))
+                .Include(m => m.ClubMembers)
+                .ThenInclude(cm => cm.Club)
+                .Include(meet => meet.MeetingAttendees)
+                .ThenInclude(ma => ma.Meeting)
+                .ToListAsync();
+            }
 
             return View(members);
         }
@@ -69,16 +85,26 @@ namespace ADSBackend.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Username,Email,Phone,Password,ClubIds,MeetingIds")] MemberViewModel vm)
+        public async Task<IActionResult> Create([Bind("FirstName,LastName,Gender,Address,City,ZipCode,Grade,RecruitedBy,Email,Phone,Password,ClubIds,MeetingIds")] MemberViewModel vm)
         {
             if (ModelState.IsValid)
             {
+                PasswordHash ph = PasswordHasher.Hash(vm.Password);
+
                 var member = new Member
                 {
-                    Username = vm.Username,
+                    FirstName = vm.FirstName,
+                    LastName = vm.LastName,
+                    Gender = vm.Gender,
+                    Address = vm.Address,
+                    City = vm.City,
+                    ZipCode = vm.ZipCode,
+                    Grade = vm.Grade,
+                    RecruitedBy = vm.RecruitedBy,
                     Email = vm.Email,
                     Phone = vm.Phone,
-                    Password = vm.Password
+                    Password = ph.HashedPassword,
+                    Salt = ph.Salt
                 };
                 _context.Member.Add(member);
                 await _context.SaveChangesAsync();
@@ -150,7 +176,7 @@ namespace ADSBackend.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MemberId,Username,Email,Phone,ClubIds,MeetingIds")] MemberViewModel vm)
+        public async Task<IActionResult> Edit(int id, [Bind("MemberId,FirstName,LastName,Gender,Address,City,ZipCode,Grade,Email,Phone,ClubIds,MeetingIds")] MemberViewModel vm)
         {
             var member = await _context.Member
                 .Include(m => m.ClubMembers)
@@ -167,7 +193,13 @@ namespace ADSBackend.Controllers
             {
                 try
                 {
-                    member.Username = vm.Username;
+                    member.FirstName = vm.FirstName;
+                    member.LastName = vm.LastName;
+                    member.Gender = vm.Gender;
+                    member.Address = vm.Address;
+                    member.City = vm.City;
+                    member.ZipCode = vm.ZipCode;
+                    member.Grade = vm.Grade;
                     member.Email = vm.Email;
                     member.Phone = vm.Phone;
 
