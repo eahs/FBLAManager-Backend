@@ -188,6 +188,22 @@ namespace ADSBackend.Controllers
             return meeting;
         }
 
+        [HttpGet("Members")]
+        public async Task<List<Member>> GetMembers()
+        {
+            if (await IsAuthorized() == null)
+                return new List<Member>();
+
+            var members = await _context.Member.ToListAsync();
+            foreach(Member member in members)
+            {
+                member.Password = "";
+                member.Salt = "";
+            }
+
+            return members;
+        }
+
         // GET: api/Meetings
         [HttpGet("Meetings")]
         public async Task<List<Meeting>> GetMeetings()
