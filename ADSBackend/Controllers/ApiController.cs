@@ -58,12 +58,6 @@ namespace ADSBackend.Controllers
             return null;
         }
 
-        [HttpGet("Twitter")]
-        public IActionResult Twitter()
-        {
-            return View();
-        }
-
         public async Task<Session> CreateSession (Member member)
         {
             var sessionKey = System.Guid.NewGuid().ToString();
