@@ -298,6 +298,16 @@ namespace ADSBackend.Controllers
 
         }
 
+        [HttpGet("Profile")]
+        public async Task<Member> GetProfile()
+        {
+            Session session = await IsAuthorized();
+            if (session == null)
+                return new Member();
+
+            return await _context.Member.FirstOrDefaultAsync(m => m.MemberId == session.MemberId);
+        }
+
         [HttpPost("Login")]
         public async Task<object> Login(IFormCollection forms)
         {
@@ -328,13 +338,15 @@ namespace ADSBackend.Controllers
 
             var session = await CreateSession(member);
 
-            var response = new
+            member.Password = "";
+            member.Salt = "";
+
+            return new
             {
                 Status = "LoggedIn",
-                Key = session.Key
+                Key = session.Key,
+                Profile = member
             };
-
-            return response;
         }
 
         [HttpPost("CreateMember")]
