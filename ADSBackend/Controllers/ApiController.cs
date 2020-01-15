@@ -305,7 +305,11 @@ namespace ADSBackend.Controllers
             if (session == null)
                 return new Member();
 
-            return await _context.Member.FirstOrDefaultAsync(m => m.MemberId == session.MemberId);
+            Member member = await _context.Member.FirstOrDefaultAsync(m => m.MemberId == session.MemberId);
+            member.Password = "";
+            member.Salt = "";
+
+            return member;
         }
 
         [HttpPost("Login")]
