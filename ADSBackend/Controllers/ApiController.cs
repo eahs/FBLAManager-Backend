@@ -211,7 +211,11 @@ namespace ADSBackend.Controllers
             if (await IsAuthorized() == null)
                 return new List<Meeting>();
 
-            var meetings = await _context.Meeting.Include(mem => mem.MeetingAttendees).ThenInclude(a => a.Member).OrderBy(x => x.Start).ToListAsync();
+            var meetings = await _context.Meeting
+                .Include(mem => mem.MeetingAttendees)
+                .ThenInclude(a => a.Member)
+                .OrderBy(x => x.Start)
+                .ToListAsync();
 
             foreach (var meeting in meetings)
             {
@@ -352,6 +356,34 @@ namespace ADSBackend.Controllers
                 Profile = member
             };
         }
+
+        [HttpPost("EditMember")]
+        public async Task<object> EditMember(IFormCollection forms)
+        {
+            Session session = await IsAuthorized();
+            if (session == null)
+                return new { Status = "NotLoggedIn" };
+
+            int grade;
+            Int32.TryParse(forms["Grade"], out grade);
+
+            Member member = await _context.Member.FirstOrDefaultAsync(m => m.MemberId == session.MemberId);
+            member.FirstName = forms["FirstName"];
+            member.LastName = forms["LastName"];
+            member.Gender = forms["Gender"];
+            member.Address = forms["Address"];
+            member.City = forms["City"];
+            member.State = forms["State"];
+            member.ZipCode = forms["ZipCode"];
+            member.Grade = grade;
+            member.Email = forms["Email"];
+            member.Phone = forms["Phone"];
+
+            _context.Member.Update(member);
+
+            return new { Status = "Success" };
+        }
+
 
         [HttpPost("CreateMember")]
         public async Task<object> CreateMember(IFormCollection forms)
