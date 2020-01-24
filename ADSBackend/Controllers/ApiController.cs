@@ -370,6 +370,7 @@ namespace ADSBackend.Controllers
             Member member = await _context.Member.FirstOrDefaultAsync(m => m.MemberId == session.MemberId);
             member.FirstName = forms["FirstName"];
             member.LastName = forms["LastName"];
+            member.FullName = forms["FirstName"] + " " + forms["LastName"];
             member.Gender = forms["Gender"];
             member.Address = forms["Address"];
             member.City = forms["City"];
@@ -380,6 +381,7 @@ namespace ADSBackend.Controllers
             member.Phone = forms["Phone"];
 
             _context.Member.Update(member);
+            await _context.SaveChangesAsync();
 
             return new { Status = "Success" };
         }
@@ -410,6 +412,7 @@ namespace ADSBackend.Controllers
             {
                 FirstName = forms["FirstName"],
                 LastName = forms["LastName"],
+                FullName = forms["FirstName"] + " " + forms["LastName"],
                 Gender = forms["Gender"],
                 Address = forms["Address"],
                 City = forms["City"],
