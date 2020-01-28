@@ -1,0 +1,44 @@
+﻿@model IEnumerable<ADSBackend.Models.FAQ>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<div class="ibox">
+    <div class="ibox-title b-r-md">
+        <h2>Frequently Asked Questions</h2>
+    </div>
+    <div class="ibox-content b-r-md">
+        <a asp-action="Create" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Create New Question</a>
+        <form asp-action="Index" method="get" style="float:right"></form>
+        <hr />
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Question)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Answer)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Question)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Answer)
+                        </td>
+                        <td>
+                            <a class="btn btn-success btn-bitbucket" asp-action="Edit" asp-route-id="@item.FAQId"><i class="fa fa-wrench"></i> Edit</a>
+                            <a class="btn btn-danger btn-bitbucket" asp-action="Delete" asp-route-id="@item.FAQId"><i class="fa fa-trash"></i> Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

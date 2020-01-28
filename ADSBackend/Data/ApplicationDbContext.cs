@@ -29,6 +29,8 @@ namespace ADSBackend.Data
 
         public DbSet<BoardPost> BoardPost { get; set; }
 
+        public DbSet<FAQ> FAQ { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

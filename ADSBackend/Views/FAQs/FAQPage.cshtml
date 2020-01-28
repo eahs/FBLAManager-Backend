@@ -1,0 +1,33 @@
+﻿@model IEnumerable<ADSBackend.Models.FAQ>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "/Views/Shared/Layouts/_LayoutNavless.cshtml";
+}
+@foreach (var item in Model)
+{
+    <div class="ibox">
+        <div class="ibox-content b-r-md">
+            <div class="question" data-answer="@item.FAQId">
+                <b>@Html.DisplayFor(modelItem => item.Question)</b>
+            </div>
+            <hr />
+            <div id="answer_@item.FAQId" style="display:none">
+                @Html.DisplayFor(modelItem => item.Answer)
+            </div>
+        </div>
+    </div>
+}
+@section Scripts {
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+        $(".question").click(function () {
+
+            var answerid = $(this).data("answer");
+            $("#answer_" + answerid).fadeToggle("slow");
+        });
+    </script>
+
+}
