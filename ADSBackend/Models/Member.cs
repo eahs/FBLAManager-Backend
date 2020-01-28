@@ -39,6 +39,12 @@ namespace ADSBackend.Models
 
         public string Phone { get; set; }
 
+        [Display(Name = "Profile Picture")]
+        public string profileImageSource { get; set; }
+
+        [Display(Name = "Bio")]
+        public string Description { get; set; }
+
         public string Password { get; set; }
 
         public string Salt { get; set; }

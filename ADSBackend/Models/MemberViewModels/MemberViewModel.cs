@@ -33,6 +33,10 @@ namespace ADSBackend.Models.MemberViewModels
 
         public string Phone { get; set; }
 
+        public string profileImageSource { get; set; }
+
+        public string Description { get; set; }
+
         public string Password { get; set; }
 
         public List<ClubMember> ClubMembers { get; set; }
@@ -63,6 +67,8 @@ namespace ADSBackend.Models.MemberViewModels
             this.Email = member.Email;
             this.Password = member.Password;
             this.Phone = member.Phone;
+            this.profileImageSource = member.profileImageSource;
+            this.Description = member.Description;
             this.ClubMembers = member.ClubMembers;
             this.MeetingAttendees = member.MeetingAttendees;
             this.ClubIds = member.ClubMembers?.Select(cm => cm.ClubId).ToList();
