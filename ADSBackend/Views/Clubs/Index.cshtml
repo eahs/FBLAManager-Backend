@@ -5,7 +5,7 @@
 }
 <div class="ibox">
     <div class="ibox-title b-r-md">
-        <h2>Clubs</h2>
+        <h2>Your Clubs</h2>
     </div>
     <div class="ibox-content b-r-md">
         <a asp-action="Create" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Create New Club</a>
@@ -21,9 +21,6 @@
             <thead>
                 <tr>
                     <th>
-                        @Html.DisplayNameFor(model => model.Creator)
-                    </th>
-                    <th>
                         @Html.DisplayNameFor(model => model.Name)
                     </th>
                     <th>
@@ -38,9 +35,6 @@
                 @foreach (var club in Model)
                 {
                     <tr>
-                        <th>
-                            @Html.DisplayFor(modelItem => club.Creator)
-                        </th>
                         <td>
                             @Html.DisplayFor(modelItem => club.Name)
                         </td>
