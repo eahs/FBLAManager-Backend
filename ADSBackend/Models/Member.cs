@@ -45,6 +45,7 @@ namespace ADSBackend.Models
         [Display(Name = "Bio")]
         public string Description { get; set; }
 
+        [Required]
         public string Password { get; set; }
 
         public string Salt { get; set; }
