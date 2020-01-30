@@ -1,11 +1,14 @@
 ﻿@model IEnumerable<ADSBackend.Models.Club>
+@using ADSBackend.Models.Identity
+@inject UserManager<ApplicationUser> UserManager
 
 @{
     ViewData["Title"] = "Clubs";
+    var user = await UserManager.GetUserAsync(User);
 }
 <div class="ibox">
     <div class="ibox-title b-r-md">
-        <h2>Your Clubs</h2>
+        <h2>Clubs</h2>
     </div>
     <div class="ibox-content b-r-md">
         <a asp-action="Create" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Create New Club</a>
@@ -20,6 +23,9 @@
         <table class="table table-hover">
             <thead>
                 <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Creator)
+                    </th>
                     <th>
                         @Html.DisplayNameFor(model => model.Name)
                     </th>
@@ -36,6 +42,9 @@
                 {
                     <tr>
                         <td>
+                            @Html.DisplayFor(modelItem => club.Creator)
+                        </td>
+                        <td>
                             @Html.DisplayFor(modelItem => club.Name)
                         </td>
                         <td>
@@ -45,7 +54,15 @@
                             @Html.DisplayFor(modelItem => club.Password)
                         </td>
                         <td>
-                            @await Html.PartialAsync("_CrudButtons", club.ClubId)
+                            @if (club.CreatorId == user.Id || User.IsInRole("Admin"))
+                            {
+                                <a class="btn btn-success btn-bitbucket" asp-action="Edit" asp-route-id="@club.ClubId"><i class="fa fa-wrench"></i> Edit</a>
+                            }
+                            <a class="btn btn-white btn-bitbucket" asp-action="Details" asp-route-id="@club.ClubId"><i class="fa fa-info"></i> Details</a>
+                            @if (club.CreatorId == user.Id || User.IsInRole("Admin"))
+                            {
+                                <a class="btn btn-danger btn-bitbucket" asp-action="Delete" asp-route-id="@club.ClubId"><i class="fa fa-trash"></i> Delete</a>
+                            }
                             <a class="btn btn-warning btn-bitbucket" asp-controller="Clubs" asp-action="BoardIndex" asp-route-id="@club.ClubId"><i class="fa fa-rss"></i> Messageboard</a>
                         </td>
                     </tr>

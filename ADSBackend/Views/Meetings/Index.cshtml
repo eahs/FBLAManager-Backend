@@ -1,7 +1,10 @@
 ﻿@model IEnumerable<ADSBackend.Models.Meeting>
+@using ADSBackend.Models.Identity
+@inject UserManager<ApplicationUser> UserManager
 
 @{
     ViewData["Title"] = "Meetings";
+    var user = await UserManager.GetUserAsync(User);
 }
 <div class="ibox">
     <div class="ibox-title b-r-md">
@@ -20,9 +23,6 @@
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Organizer)
-                    </th>
                     <th>
                         @Html.DisplayNameFor(model => model.EventName)
                     </th>
@@ -54,9 +54,6 @@
                 {
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => meeting.Organizer)
-                        </td>
-                        <td>
                             @Html.DisplayFor(modelItem => meeting.EventName)
                         </td>
                         <td>
@@ -81,7 +78,15 @@
                             @Html.DisplayFor(modelItem => meeting.Type)
                         </td>
                         <td>
-                            @await Html.PartialAsync("_CrudButtons", meeting.MeetingId)
+                            @if (meeting.OrganizerId == user.Id || User.IsInRole("Admin"))
+                            {
+                                <a class="btn btn-success btn-bitbucket" asp-action="Edit" asp-route-id="@meeting.MeetingId"><i class="fa fa-wrench"></i> Edit</a>
+                            }
+                            <a class="btn btn-white btn-bitbucket" asp-action="Details" asp-route-id="@meeting.MeetingId"><i class="fa fa-info"></i> Details</a>
+                            @if (meeting.OrganizerId == user.Id || User.IsInRole("Admin"))
+                            {
+                                <a class="btn btn-danger btn-bitbucket" asp-action="Delete" asp-route-id="@meeting.MeetingId"><i class="fa fa-trash"></i> Delete</a>
+                            }
                         </td>
                     </tr>
                 }

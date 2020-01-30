@@ -31,6 +31,7 @@ namespace ADSBackend.Controllers
                 .ThenInclude(cm => cm.Club)
                 .Include(meet => meet.MeetingAttendees)
                 .ThenInclude(ma => ma.Meeting)
+                .OrderBy(m => m.LastName)
                 .ToListAsync();
 
             if (!String.IsNullOrEmpty(search))
@@ -41,6 +42,7 @@ namespace ADSBackend.Controllers
                 .ThenInclude(cm => cm.Club)
                 .Include(meet => meet.MeetingAttendees)
                 .ThenInclude(ma => ma.Meeting)
+                .OrderBy(m => m.LastName)
                 .ToListAsync();
             }
 

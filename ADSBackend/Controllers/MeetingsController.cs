@@ -34,7 +34,8 @@ namespace ADSBackend.Controllers
             var meetings = await _context.Meeting
                 .Include(mem => mem.MeetingAttendees)
                 .ThenInclude(ma => ma.Member)
-                .OrderBy(m => m.Start)
+                .OrderByDescending(m => m.OrganizerId == user.Id)
+                .ThenBy(m => m.Start)
                 .ToListAsync();
 
             if (!String.IsNullOrEmpty(search))
@@ -43,18 +44,12 @@ namespace ADSBackend.Controllers
                 .Where(s => s.EventName.Contains(search))
                 .Include(mem => mem.MeetingAttendees)
                 .ThenInclude(ma => ma.Member)
-                .OrderBy(m => m.Start)
+                .OrderByDescending(m => m.OrganizerId == user.Id)
+                .ThenBy(m => m.Start)
                 .ToListAsync();
             }
 
-            if (await _userManager.IsInRoleAsync(user, "Admin"))
-            {
-                return View(meetings);
-            }
-            else
-            {
-                return View(meetings.Where(m => m.OrganizerId == user.Id));
-            }
+            return View(meetings);
         }
 
         // GET: Meetings/Details/5
@@ -147,6 +142,11 @@ namespace ADSBackend.Controllers
             if (meeting == null)
             {
                 return NotFound();
+            }
+            var user = await _userManager.GetUserAsync(User);
+            if (meeting.OrganizerId != user.Id && !User.IsInRole("Admin"))
+            {
+                return RedirectToAction(nameof(Index));
             }
             var members = await _context.Member.OrderBy(c => c.LastName).ToListAsync();
             ViewBag.Members = new MultiSelectList(members, "MemberId", "Email");
@@ -247,7 +247,11 @@ namespace ADSBackend.Controllers
             {
                 return NotFound();
             }
-
+            var user = await _userManager.GetUserAsync(User);
+            if (meeting.OrganizerId != user.Id && !User.IsInRole("Admin"))
+            {
+                return RedirectToAction(nameof(Index));
+            }
             return View(meeting);
         }
 

@@ -34,6 +34,7 @@ namespace ADSBackend.Controllers
             var clubs = await _context.Club
                 .Include(c => c.ClubMembers)
                 .ThenInclude(cm => cm.Member)
+                .OrderByDescending(c => c.CreatorId == user.Id)
                 .ToListAsync();
 
             if (!String.IsNullOrEmpty(search))
@@ -42,17 +43,10 @@ namespace ADSBackend.Controllers
                 .Where(s => s.Name.Contains(search))
                 .Include(c => c.ClubMembers)
                 .ThenInclude(cm => cm.Club)
+                .OrderByDescending(c => c.CreatorId == user.Id)
                 .ToListAsync();
             }
-
-            if (await _userManager.IsInRoleAsync(user,"Admin"))
-            {
-                return View(clubs);
-            }
-            else
-            {
-                return View(clubs.Where(m => m.CreatorId == user.Id));
-            }
+            return View(clubs);
         }
 
         // GET: Clubs/Details/5
@@ -139,6 +133,11 @@ namespace ADSBackend.Controllers
             if (club == null)
             {
                 return NotFound();
+            }
+            var user = await _userManager.GetUserAsync(User);
+            if (club.CreatorId != user.Id && !User.IsInRole("Admin"))
+            {
+                return RedirectToAction(nameof(Index));
             }
             var members = await _context.Member.OrderBy(c => c.LastName).ToListAsync();
             ViewBag.Members = new MultiSelectList(members, "MemberId", "Email");
@@ -235,7 +234,11 @@ namespace ADSBackend.Controllers
             {
                 return NotFound();
             }
-
+            var user = await _userManager.GetUserAsync(User);
+            if (club.CreatorId != user.Id && !User.IsInRole("Admin"))
+            {
+                return RedirectToAction(nameof(Index));
+            }
             return View(club);
         }
 
@@ -318,6 +321,12 @@ namespace ADSBackend.Controllers
             {
                 return NotFound();
             }
+            var user = await _userManager.GetUserAsync(User);
+            var club = await _context.Club.FirstOrDefaultAsync(c => c.ClubId == boardPost.ClubId);
+            if (club.CreatorId != user.Id && !User.IsInRole("Admin"))
+            {
+                return RedirectToAction(nameof(Index));
+            }
             return View(boardPost);
         }
 
@@ -376,7 +385,12 @@ namespace ADSBackend.Controllers
             {
                 return NotFound();
             }
-
+            var user = await _userManager.GetUserAsync(User);
+            var club = await _context.Club.FirstOrDefaultAsync(c => c.ClubId == boardPost.ClubId);
+            if (club.CreatorId != user.Id && !User.IsInRole("Admin"))
+            {
+                return RedirectToAction(nameof(Index));
+            }
             return View(boardPost);
         }
 

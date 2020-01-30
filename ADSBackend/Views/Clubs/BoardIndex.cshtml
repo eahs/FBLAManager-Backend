@@ -1,7 +1,15 @@
 ﻿@model IEnumerable<ADSBackend.Models.BoardPost>
+@using ADSBackend.Models.Identity
+@using Microsoft.EntityFrameworkCore;
+
+
+@inject UserManager<ApplicationUser> UserManager
+@inject ADSBackend.Data.ApplicationDbContext  _context
 
 @{
     ViewData["Title"] = ViewBag.Club.Name + " Messageboard";
+    var user = await UserManager.GetUserAsync(User);
+
 }
 <div class="ibox">
     <div class="ibox-title b-r-md">
@@ -32,30 +40,34 @@
                     <th>
                         @Html.DisplayNameFor(model => model.Message)
                     </th>
-                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model)
                 {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Title)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Director)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.PostTime)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Message)
-                        </td>
-                        <td>
-                            <a class="btn btn-success btn-bitbucket" asp-action="BoardEdit" asp-route-id="@item.PostId"><i class="fa fa-wrench"></i> Edit</a>
-                            <a class="btn btn-danger btn-bitbucket" asp-action="BoardDelete" asp-route-id="@item.PostId"><i class="fa fa-trash"></i> Delete</a>
-                        </td>
-                    </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Director)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PostTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Message)
+                    </td>
+                    @{  var club = await _context.Club.FirstOrDefaultAsync(c => c.ClubId == item.ClubId);
+                        if (club.CreatorId == user.Id || User.IsInRole("Admin"))
+                        {
+                            <td>
+                                <a class="btn btn-success btn-bitbucket" asp-action="BoardEdit" asp-route-id="@item.PostId"><i class="fa fa-wrench"></i> Edit</a>
+                                <a class="btn btn-danger btn-bitbucket" asp-action="BoardDelete" asp-route-id="@item.PostId"><i class="fa fa-trash"></i> Delete</a>
+                            </td>
+                        }
+                    }
+                </tr>
                 }
             </tbody>
         </table>
