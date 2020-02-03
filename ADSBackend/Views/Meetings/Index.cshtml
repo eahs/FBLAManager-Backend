@@ -69,7 +69,9 @@
                             @Html.DisplayFor(modelItem => meeting.Password)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => meeting.Color)
+                            <div class="input-color">
+                                <div class="color-box" style="background-color: @meeting.Color"></div>
+                            </div>
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => meeting.AllDay)

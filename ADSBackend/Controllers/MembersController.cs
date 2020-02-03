@@ -194,6 +194,8 @@ namespace ADSBackend.Controllers
                 return NotFound();
             }
 
+            ModelState.Remove("Password");
+
             if (ModelState.IsValid)
             {
                 try

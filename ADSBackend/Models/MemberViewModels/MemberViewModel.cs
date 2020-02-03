@@ -46,6 +46,7 @@ namespace ADSBackend.Models.MemberViewModels
         public string Description { get; set; }
 
         [Required]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
 
         public List<ClubMember> ClubMembers { get; set; }
