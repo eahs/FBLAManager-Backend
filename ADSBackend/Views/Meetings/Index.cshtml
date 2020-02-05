@@ -24,6 +24,9 @@
             <thead>
                 <tr>
                     <th>
+                        @Html.DisplayNameFor(model => model.Organizer)
+                    </th>
+                    <th>
                         @Html.DisplayNameFor(model => model.EventName)
                     </th>
                     <th>
@@ -53,6 +56,9 @@
                 @foreach (var meeting in Model)
                 {
                     <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => meeting.Organizer)
+                        </td>
                         <td>
                             @Html.DisplayFor(modelItem => meeting.EventName)
                         </td>
