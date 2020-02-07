@@ -13,8 +13,14 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using FileTypeChecker;
+using FileTypeChecker.Abstracts;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
+using SixLabors.ImageSharp.Formats.Jpeg;
 
 namespace ADSBackend.Controllers
 {
@@ -357,6 +363,70 @@ namespace ADSBackend.Controllers
             };
         }
 
+        [HttpPost("EditProfileImage")]
+        public async Task<object> EditProfileImage(IFormCollection forms)
+        {
+            var session = await IsAuthorized();
+            if (session == null)
+                return new
+                {
+                    Status = "NotLoggedIn"
+                };
+
+            string encoded = forms["profileImageSource"];
+            byte[] bytearray = System.Convert.FromBase64String(encoded);
+            MemoryStream memstream = new MemoryStream();
+            memstream.Write(bytearray, 0, bytearray.Length);
+            IFileType fileType = FileTypeValidator.GetFileType(memstream);
+
+            if (new[] { "png", "jpg" }.Contains(fileType.Extension))
+            {
+                // Save this to disk and update profile with the image filename for their profile
+                try
+                {
+                    string path = Path.Combine("wwwroot/images/members/", session.MemberId + "temp." + fileType.Extension);
+                    string finalpath = Path.Combine("wwwroot/images/members/", session.MemberId + ".jpg");
+
+                    await System.IO.File.WriteAllBytesAsync(path, bytearray);
+
+                    using (Image image = Image.Load(path))
+                    {
+                        int cropWidth = Math.Min(image.Width, image.Height);
+                        int x = image.Width / 2 - cropWidth / 2;
+                        int y = image.Height / 2 - cropWidth / 2;
+
+                        image.Mutate(a => a
+                             .Crop(new SixLabors.Primitives.Rectangle(x, y, cropWidth, cropWidth))
+                             .Resize(150, 150));
+
+                        // Delete the original file
+                        System.IO.File.Delete(path);
+
+                        // Save the new one
+                        image.Save(finalpath, new JpegEncoder()); // Automatic encoder selected based on extension.                       
+                    }
+
+                    // Update profile with the filename being memberId plus .jpg
+                    var member = await _context.Member.FirstOrDefaultAsync(a => a.MemberId == session.MemberId);
+                    member.profileImageSource = "http://fblamanager.me/images/members/" + session.MemberId + ".jpg";
+                    _context.Member.Update(member);
+                    await _context.SaveChangesAsync();
+
+                }
+                catch (Exception e)
+                {
+                    // Things crashed
+                }
+
+
+            }
+
+            return new
+            {
+                Status = "Success"
+            };
+        }
+
         [HttpPost("EditMember")]
         public async Task<object> EditMember(IFormCollection forms)
         {
@@ -370,6 +440,7 @@ namespace ADSBackend.Controllers
             Member member = await _context.Member.FirstOrDefaultAsync(m => m.MemberId == session.MemberId);
             member.FirstName = forms["FirstName"];
             member.LastName = forms["LastName"];
+            member.Description = forms["Description"];
             member.FullName = forms["FirstName"] + " " + forms["LastName"];
             member.Gender = forms["Gender"];
             member.Address = forms["Address"];
