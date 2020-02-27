@@ -417,10 +417,7 @@ namespace ADSBackend.Controllers
                 {
                     // Things crashed
                 }
-
-
             }
-
             return new
             {
                 Status = "Success"
@@ -484,6 +481,7 @@ namespace ADSBackend.Controllers
                 FirstName = forms["FirstName"],
                 LastName = forms["LastName"],
                 FullName = forms["FirstName"] + " " + forms["LastName"],
+                profileImageSource = "http://fblamanager.me/images/members/default.png",
                 Gender = forms["Gender"],
                 Address = forms["Address"],
                 City = forms["City"],
