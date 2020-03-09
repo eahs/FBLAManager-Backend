@@ -294,13 +294,13 @@ namespace ADSBackend.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> BoardCreate([Bind("PostId,Title,Director,PostTime,Message,ClubId")] BoardPost boardPost)
+        public async Task<IActionResult> BoardCreate([Bind("PostId,Title,PostTime,Message,ClubId")] BoardPost boardPost)
         {
             if (ModelState.IsValid)
             {
                 var user = await _userManager.GetUserAsync(User);
                 boardPost.Director = user.FullName;
-                boardPost.PostTime = DateTime.Now;
+                boardPost.WriteTime = DateTime.Now;
                 _context.Add(boardPost);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(BoardIndex), new { id = boardPost.ClubId });

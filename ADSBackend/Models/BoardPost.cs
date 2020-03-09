@@ -16,12 +16,17 @@ namespace ADSBackend.Models
         public string Director { get; set; }
 
         [DataType(DataType.DateTime)]
-        public DateTime PostTime { get; set; }
+        public DateTime WriteTime { get; set; }
 
         [DataType(DataType.DateTime)]
         public DateTime EditedTime { get; set; }
 
+        [DataType(DataType.DateTime)]
+        public DateTime PostTime { get; set; }
+
         public string Message { get; set; }
+
+        public string Status { get; set; }
 
         public int ClubId { get; set; }
         public Club Club { get; set; }
