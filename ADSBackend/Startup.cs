@@ -1,6 +1,7 @@
 ﻿using ADSBackend.Configuration;
 using ADSBackend.Data;
 using ADSBackend.Models.Identity;
+using ADSBackend.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -38,7 +39,7 @@ namespace ADSBackend
 
             // Add application services.
             services.AddTransient<Services.IEmailSender, Services.EmailSender>();
-
+            services.AddSingleton<IHostedService, NotificationSender>();
             // caching
             services.AddMemoryCache();
             services.AddTransient<Services.Cache>();

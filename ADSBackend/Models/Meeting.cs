@@ -37,9 +37,11 @@ namespace ADSBackend.Models
 
         public int Capacity { get; set; }
 
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MMMM d, yyyy @ h:mm tt}")]
         [DataType(DataType.DateTime)]
         public DateTime Start { get; set; }
 
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MMMM d, yyyy @ h:mm tt}")]
         [DataType(DataType.DateTime)]
         public DateTime End { get; set; }
 

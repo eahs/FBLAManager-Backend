@@ -18,17 +18,21 @@ namespace ADSBackend.Models.MeetingViewModels
 
         public string Organizer { get; set; }
 
+        [Display(Name = "Contact ID")]
         public string ContactId { get; set; }
 
+        [Display(Name = "Name")]
         public string EventName { get; set; }
 
         public string Description { get; set; }
 
         public int Capacity { get; set; }
 
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MMMM d, yyyy @ h:mm tt}")]
         [DataType(DataType.DateTime)]
         public DateTime Start { get; set; }
 
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MMMM d, yyyy @ h:mm tt}")]
         [DataType(DataType.DateTime)]
         public DateTime End { get; set; }
 
@@ -36,6 +40,7 @@ namespace ADSBackend.Models.MeetingViewModels
 
         public string Color { get; set; }
 
+        [Display(Name = "All Day")]
         public bool AllDay { get; set; }
 
         public MeetingType Type { get; set; } = MeetingType.Meeting;

@@ -15,12 +15,16 @@ namespace ADSBackend.Models
 
         public string Director { get; set; }
 
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MMMM d, yyyy @ h:mm tt}")]
         [DataType(DataType.DateTime)]
         public DateTime WriteTime { get; set; }
 
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MMMM d, yyyy @ h:mm tt}")]
         [DataType(DataType.DateTime)]
         public DateTime EditedTime { get; set; }
 
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MMMM d, yyyy @ h:mm tt}")]
+        [Display(Name = "Scheduled Time")]
         [DataType(DataType.DateTime)]
         public DateTime PostTime { get; set; }
 

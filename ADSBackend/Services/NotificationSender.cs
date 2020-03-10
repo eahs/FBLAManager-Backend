@@ -1,7 +1,13 @@
 ﻿using ADSBackend.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OneSignal.RestAPIv3.Client;
+using OneSignal.RestAPIv3.Client.Resources;
+using OneSignal.RestAPIv3.Client.Resources.Notifications;
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading;
@@ -27,6 +33,11 @@ namespace ADSBackend.Services
                     var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
                     var config = scope.ServiceProvider.GetRequiredService<Configuration>();
 
+                    var bconfig = new ConfigurationBuilder()
+                        .SetBasePath(Directory.GetCurrentDirectory())
+                        .AddJsonFile("appsettings.json", optional: true)
+                        .Build();
+
                     try
                     {
                         var pendingNotifications = await context.BoardPost
@@ -36,11 +47,21 @@ namespace ADSBackend.Services
 
                         if (pendingNotifications.Count > 0)
                         {
+                            string apiKey = bconfig["OneSignalAPIKey"];
+
+                            var client = new OneSignalClient(apiKey); // Use your Api Key
+
                             foreach (var notification in pendingNotifications)
                             {
-                                // TODO: Create the message to send
-                                
-                                // TODO: Send it
+                                var options = new NotificationCreateOptions
+                                {
+                                    AppId = new Guid("1c3e4393-0690-49b2-8e35-1281c2172bef"),   // Use your AppId
+                                    IncludedSegments = new string[] { "Subscribed Users" }.ToList()
+                                };
+                                options.Headings.Add(LanguageCodes.English, notification.Title);
+                                options.Contents.Add(LanguageCodes.English, notification.Message);
+
+                                var result = client.Notifications.Create(options);
 
                                 notification.Status = "sent";
                             }
@@ -49,7 +70,7 @@ namespace ADSBackend.Services
                             await context.SaveChangesAsync();
                         }
                     }
-                    catch
+                    catch(Exception e)
                     {
                         // if the DB is not currently connected, wait a second and try again
                         await Task.Delay(TimeSpan.FromSeconds(1));

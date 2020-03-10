@@ -301,6 +301,7 @@ namespace ADSBackend.Controllers
                 var user = await _userManager.GetUserAsync(User);
                 boardPost.Director = user.FullName;
                 boardPost.WriteTime = DateTime.Now;
+                boardPost.Status = "pending";
                 _context.Add(boardPost);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(BoardIndex), new { id = boardPost.ClubId });
@@ -335,7 +336,7 @@ namespace ADSBackend.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> BoardEdit(int id, [Bind("PostId,Title,Message")] BoardPost boardPost)
+        public async Task<IActionResult> BoardEdit(int id, [Bind("PostId,Title,Message,PostTime")] BoardPost boardPost)
         {
             if (id != boardPost.PostId)
             {
@@ -352,6 +353,9 @@ namespace ADSBackend.Controllers
                     _boardPost.Title = boardPost.Title;
                     _boardPost.Message = boardPost.Message;
                     _boardPost.EditedTime = DateTime.Now;
+                    _boardPost.PostTime = boardPost.PostTime;
+                    if (_boardPost.PostTime > DateTime.Now)
+                        _boardPost.Status = "pending";
                     _context.Update(_boardPost);
                     await _context.SaveChangesAsync();
                 }
