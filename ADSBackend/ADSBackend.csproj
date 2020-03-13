@@ -50,6 +50,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\images\announcements\" />
     <Folder Include="wwwroot\images\officers\national\" />
   </ItemGroup>
 

@@ -32,6 +32,9 @@ namespace ADSBackend.Models
 
         public string Status { get; set; }
 
+        [Display(Name = "Image URL")]
+        public string ImageURL { get; set; }
+
         public int ClubId { get; set; }
         public Club Club { get; set; }
     }

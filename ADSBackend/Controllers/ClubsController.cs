@@ -294,7 +294,7 @@ namespace ADSBackend.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> BoardCreate([Bind("PostId,Title,PostTime,Message,ClubId")] BoardPost boardPost)
+        public async Task<IActionResult> BoardCreate([Bind("PostId,Title,PostTime,Message,ImageURL,ClubId")] BoardPost boardPost)
         {
             if (ModelState.IsValid)
             {
@@ -336,7 +336,7 @@ namespace ADSBackend.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> BoardEdit(int id, [Bind("PostId,Title,Message,PostTime")] BoardPost boardPost)
+        public async Task<IActionResult> BoardEdit(int id, [Bind("PostId,Title,Message,PostTime,ImageURL")] BoardPost boardPost)
         {
             if (id != boardPost.PostId)
             {
@@ -354,6 +354,7 @@ namespace ADSBackend.Controllers
                     _boardPost.Message = boardPost.Message;
                     _boardPost.EditedTime = DateTime.Now;
                     _boardPost.PostTime = boardPost.PostTime;
+                    _boardPost.ImageURL = boardPost.ImageURL;
                     if (_boardPost.PostTime > DateTime.Now)
                         _boardPost.Status = "pending";
                     _context.Update(_boardPost);
