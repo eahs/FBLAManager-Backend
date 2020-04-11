@@ -17,6 +17,10 @@ namespace ADSBackend.Models
 
         public string Key { get; set; }
 
+        public string GoogleToken { get; set; }
+
+        public string AppleToken { get; set; }
+
         public DateTime LastAccessTime { get; set; }
     }
 }
