@@ -2,6 +2,7 @@
 using ADSBackend.Data;
 using ADSBackend.Models.Identity;
 using ADSBackend.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -49,17 +50,22 @@ namespace ADSBackend
 
             services.AddMvc();
 
-            services.AddAuthentication()
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            })
             .AddGoogle(options =>
             {
                 var config = new ConfigurationBuilder()
                         .SetBasePath(Directory.GetCurrentDirectory())
                         .AddJsonFile("appsettings.json", optional: true)
                         .Build();
-
+                
                 options.ClientId = config["GoogleClientID"];
                 options.ClientSecret = config["GoogleClientSecret"];
-            });
+                options.SaveTokens = true;
+            })
+            .AddCookie();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

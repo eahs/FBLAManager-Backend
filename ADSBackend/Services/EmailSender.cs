@@ -27,7 +27,7 @@ namespace ADSBackend.Services
             SmtpClient client = new SmtpClient("smtp.mail.yahoo.com")
             {
                 UseDefaultCredentials = false,
-                Port = 465,
+                Port = 587,
                 EnableSsl = true,
                 Credentials = new NetworkCredential("fblamanager@yahoo.com", config["EmailPassword"])
             };
@@ -35,7 +35,7 @@ namespace ADSBackend.Services
             MailMessage mailMessage = new MailMessage
             {
                 IsBodyHtml = true,
-                From = new MailAddress("fblamanager@yahoo.com", "ADS Backend"),
+                From = new MailAddress("fblamanager@yahoo.com", "FBLA Manager"),
                 Body = message,
                 Subject = subject,
             };
