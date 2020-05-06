@@ -61,27 +61,39 @@ namespace ADSBackend.Controllers
                   .Select(s => s[random.Next(s.Length)]).ToArray());
                 PasswordHash ph = PasswordHasher.Hash(_password);
 
-                Member member = new Member
+                var member = _context.Member.FirstOrDefault(m => m.Email == _email);
+                if (member == null)
                 {
-                    Email = _email,
-                    FirstName = _firstname,
-                    LastName = _lastname,
-                    FullName = _fullname,
-                    Password = ph.HashedPassword,
-                    Salt = ph.Salt
-                };
-                _context.Add(member);
-                await _context.SaveChangesAsync();
+                    member = new Member
+                    {
+                        Email = _email,
+                        FirstName = _firstname,
+                        LastName = _lastname,
+                        FullName = _fullname,
+                        Password = ph.HashedPassword,
+                        Salt = ph.Salt
+                    };
+                    _context.Add(member);
+                    await _context.SaveChangesAsync();
 
-                Session session = new Session
+                    Session session = new Session
+                    {
+                        MemberId = member.MemberId,
+                        Key = auth.Properties.GetTokenValue("access_token"),
+                        Email = member.Email,
+                        LastAccessTime = DateTime.Now
+                    };
+                    _context.Add(session);
+                    await _context.SaveChangesAsync();
+                }
+                else
                 {
-                    MemberId = member.MemberId,
-                    Key = auth.Properties.GetTokenValue("access_token"),
-                    Email = member.Email,
-                    LastAccessTime = DateTime.Now
-                };
-                _context.Add(session);
-                await _context.SaveChangesAsync();
+                    var session = _context.Session.FirstOrDefault(s => s.MemberId == member.MemberId);
+                    session.Key = auth.Properties.GetTokenValue("access_token");
+                    session.LastAccessTime = DateTime.Now;
+                    _context.Update(session);
+                    await _context.SaveChangesAsync();
+                }
 
                 // Build the result url
                 var url = callbackScheme + "://#" + string.Join(
