@@ -54,7 +54,8 @@ namespace ADSBackend
             {
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             })
-            .AddGoogle(options =>
+            .AddCookie()
+            .AddGoogle("google", options =>
             {
                 var config = new ConfigurationBuilder()
                         .SetBasePath(Directory.GetCurrentDirectory())
@@ -64,8 +65,7 @@ namespace ADSBackend
                 options.ClientId = config["GoogleClientID"];
                 options.ClientSecret = config["GoogleClientSecret"];
                 options.SaveTokens = true;
-            })
-            .AddCookie();
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

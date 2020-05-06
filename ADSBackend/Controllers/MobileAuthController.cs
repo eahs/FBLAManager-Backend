@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using ADSBackend.Models;
+using ADSBackend.Util;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,11 +20,10 @@ namespace ADSBackend.Controllers
     {
         const string callbackScheme = "fblanavigator";
 
-        [HttpGet("google")]
+        [HttpGet("{scheme}")]
         public async Task Get([FromRoute]string scheme)
         {
             var auth = await Request.HttpContext.AuthenticateAsync(scheme);
-
             if (!auth.Succeeded
                 || auth?.Principal == null
                 || !auth.Principal.Identities.Any(id => id.IsAuthenticated)
@@ -33,11 +36,11 @@ namespace ADSBackend.Controllers
             {
                 // Get parameters to send back to the callback
                 var qs = new Dictionary<string, string>
-            {
-                { "access_token", auth.Properties.GetTokenValue("access_token") },
-                { "refresh_token", auth.Properties.GetTokenValue("refresh_token") ?? string.Empty },
-                { "expires", (auth.Properties.ExpiresUtc?.ToUnixTimeSeconds() ?? -1).ToString() }
-            };
+                {
+                    { "access_token", auth.Properties.GetTokenValue("access_token") },
+                    { "refresh_token", auth.Properties.GetTokenValue("refresh_token") ?? string.Empty },
+                    { "expires", (auth.Properties.ExpiresUtc?.ToUnixTimeSeconds() ?? -1).ToString() }
+                };
 
                 // Build the result url
                 var url = callbackScheme + "://#" + string.Join(
